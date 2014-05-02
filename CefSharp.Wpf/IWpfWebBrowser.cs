@@ -91,6 +91,11 @@ namespace CefSharp.Wpf
         void Reload();
 
         /// <summary>
+        /// Print the current browser contents
+        /// </summary>
+        void Print();
+
+        /// <summary>
         /// Reloads the current WebView, optionally ignoring the cache
         /// (which means the whole page including all .css, .js etc. resources will be re-fetched)
         /// </summary>

@@ -73,10 +73,9 @@ namespace CefSharp.Wpf.Example.ViewModels
         public BrowserTabViewModel(string address)
         {
             Address = address;
-            AddressEditable = Address;
 
             GoCommand = new DelegateCommand(Go, () => !String.IsNullOrWhiteSpace(Address));
-            HomeCommand = new DelegateCommand(() => AddressEditable = Address = ExamplePresenter.DefaultUrl);
+            HomeCommand = new DelegateCommand(() => Address = ExamplePresenter.DefaultUrl);
             ExecuteJavaScriptCommand = new DelegateCommand<string>(ExecuteJavaScript, s => !String.IsNullOrWhiteSpace(s));
             EvaluateJavaScriptCommand = new DelegateCommand<string>(EvaluateJavaScript, s => !String.IsNullOrWhiteSpace(s));
 

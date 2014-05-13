@@ -13,11 +13,12 @@ namespace CefSharp.Wpf.Example
 	/// <summary>
 	/// Interaction logic for AuthDialog.xaml
 	/// </summary>
-	public partial class AuthDialog : Window, INotifyPropertyChanged
+	public partial class AuthDialog : Window, INotifyPropertyChanged, IAuthDialog
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private string userName;
+		
 		public string UserName
 		{
 			get { return userName; }

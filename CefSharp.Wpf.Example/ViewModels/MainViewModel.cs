@@ -57,7 +57,7 @@ namespace CefSharp.Wpf.Example.ViewModels
 				var browserViewModel = viewModel ?? CurrentTab;
 
 				BrowserTabs.Remove(browserViewModel);
-				browserViewModel.WebBrowser.Dispose();
+				browserViewModel.Dispose();
 			}
 		}
 

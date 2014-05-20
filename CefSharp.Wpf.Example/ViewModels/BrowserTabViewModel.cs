@@ -168,5 +168,12 @@ namespace CefSharp.Wpf.Example.ViewModels
         {
             webBrowser.Reload(ignoreCache);
         }
+
+        protected override void DoDispose(bool isDisposing)
+        {
+            DisposeMember(ref webBrowser);
+
+            base.DoDispose(isDisposing);
+        }
     }
 }

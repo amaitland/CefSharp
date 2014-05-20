@@ -6,7 +6,16 @@
         mc:Ignorable="d"
         Title="CefSharp.Wpf.Example"
         WindowState="Maximized">
-    <Grid>
+    <DockPanel>
+        <Menu Width="Auto" FontSize="14" IsMainMenu="True" DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="New Tab" InputGestureText="Ctrl+T" Command="{Binding Content.NewTabCommand, ElementName=ViewModelContainer}" />
+                <MenuItem Header="Close Tab" InputGestureText="Ctrl+W" Command="{Binding Content.CloseTabCommand, ElementName=ViewModelContainer}" />
+                <MenuItem Header="Reload Tab" InputGestureText="Ctrl+R" Command="{Binding Content.ReloadTabCommand, ElementName=ViewModelContainer}" />
+                <Separator />
+                <MenuItem Header="Exit" Command="{Binding Path=ExitCommand}" />
+            </MenuItem>
+        </Menu>
         <ContentControl x:Name="ViewModelContainer"/>
-    </Grid>
+    </DockPanel>
 </Window>

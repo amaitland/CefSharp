@@ -19,6 +19,8 @@ namespace CefSharp.Wpf.Example
 		{
 			InitializeComponent();
 
+			DataContext = this;
+
 			viewModel = new MainViewModel();
 
 			ViewModelContainer.Content = viewModel;

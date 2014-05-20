@@ -131,7 +131,7 @@ namespace CefSharp.Wpf.Example.ViewModels
                         // TODO: This is a bit of a hack. It would be nicer/cleaner to give the webBrowser focus in the Go()
                         // TODO: method, but it seems like "something" gets messed up (= doesn't work correctly) if we give it
                         // TODO: focus "too early" in the loading process...
-                        WebBrowser.FrameLoadEnd += delegate { Application.Current.Dispatcher.BeginInvoke((Action)(() => webBrowser.Focus())); };
+                        WebBrowser.FrameLoadEnd += OnWebBrowserFrameLoadEnd;
                     }
 
                     break;
@@ -156,6 +156,15 @@ namespace CefSharp.Wpf.Example.ViewModels
             webBrowser.LoadHtml(errorMessage, failedUrl);
         }
 
+        private void OnWebBrowserFrameLoadEnd(object sender, FrameLoadEndEventArgs url)
+        {
+            var browser = webBrowser;
+            if (browser != null)
+            {
+                Application.Current.Dispatcher.BeginInvoke((Action)(() => browser.Focus()));
+            }
+        }
+
         private void Go()
         {
             Address = AddressEditable;
@@ -171,6 +180,12 @@ namespace CefSharp.Wpf.Example.ViewModels
 
         protected override void DoDispose(bool isDisposing)
         {
+            if (webBrowser != null)
+            {
+                WebBrowser.ConsoleMessage -= OnWebBrowserConsoleMessage;
+                WebBrowser.LoadError -= OnWebBrowserLoadError;
+                WebBrowser.FrameLoadEnd -= OnWebBrowserFrameLoadEnd;
+            }
             DisposeMember(ref webBrowser);
 
             base.DoDispose(isDisposing);

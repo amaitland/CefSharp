@@ -156,12 +156,12 @@ namespace CefSharp.Wpf.Example.ViewModels
             webBrowser.LoadHtml(errorMessage, failedUrl);
         }
 
-        private void OnWebBrowserFrameLoadEnd(object sender, FrameLoadEndEventArgs url)
+        private void OnWebBrowserFrameLoadEnd(object sender, FrameLoadEndEventArgs args)
         {
             var browser = webBrowser;
             if (browser != null)
             {
-                Application.Current.Dispatcher.BeginInvoke((Action)(() => browser.Focus()));
+                DoInUi(() => browser.Focus());
             }
         }
 

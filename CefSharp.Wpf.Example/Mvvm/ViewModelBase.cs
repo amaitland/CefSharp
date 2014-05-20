@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace CefSharp.Wpf.Example.Mvvm
 {
@@ -77,5 +79,18 @@ namespace CefSharp.Wpf.Example.Mvvm
         }
 
         #endregion
+
+        protected void DoInUi(Action action, DispatcherPriority priority = DispatcherPriority.DataBind)
+        {
+            var dispatcher = Application.Current.Dispatcher;
+            if (dispatcher.CheckAccess())
+            {
+                action();
+            }
+            else if (!dispatcher.HasShutdownStarted)
+            {
+                dispatcher.BeginInvoke(action, priority);
+            }
+        }
     }
 }

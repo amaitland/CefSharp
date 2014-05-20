@@ -11,41 +11,41 @@ using System.Windows.Input;
 
 namespace CefSharp.Wpf.Example.ViewModels
 {
-    public class BrowserTabViewModel : INotifyPropertyChanged
+    public class BrowserTabViewModel : ViewModelBase
     {
         private string address;
         public string Address
         {
             get { return address; }
-            set { PropertyChanged.ChangeAndNotify(ref address, value, () => Address); }
+            set { Set(ref address, value, new PropertyChangedEventArgs("Address")); }
         }
 
         private string addressEditable;
         public string AddressEditable
         {
             get { return addressEditable; }
-            set { PropertyChanged.ChangeAndNotify(ref addressEditable, value, () => AddressEditable); }
+            set { Set(ref addressEditable, value, new PropertyChangedEventArgs("AddressEditable")); }
         }
 
         private string outputMessage;
         public string OutputMessage
         {
             get { return outputMessage; }
-            set { PropertyChanged.ChangeAndNotify(ref outputMessage, value, () => OutputMessage); }
+            set { Set(ref outputMessage, value, new PropertyChangedEventArgs("OutputMessage")); }
         }
 
         private string title;
         public string Title
         {
             get { return title; }
-            set { PropertyChanged.ChangeAndNotify(ref title, value, () => Title); }
+            set { Set(ref title, value, new PropertyChangedEventArgs("Title")); }
         }
 
         private IWpfWebBrowser webBrowser;
         public IWpfWebBrowser WebBrowser
         {
             get { return webBrowser; }
-            set { PropertyChanged.ChangeAndNotify(ref webBrowser, value, () => WebBrowser); }
+            set { Set(ref webBrowser, value, new PropertyChangedEventArgs("WebBrowser")); }
         }
 
         private object evaluateJavaScriptResult;
@@ -53,29 +53,27 @@ namespace CefSharp.Wpf.Example.ViewModels
         public object EvaluateJavaScriptResult
         {
             get { return evaluateJavaScriptResult; }
-            set { PropertyChanged.ChangeAndNotify(ref evaluateJavaScriptResult, value, () => EvaluateJavaScriptResult); }
+            set { Set(ref evaluateJavaScriptResult, value, new PropertyChangedEventArgs("EvaluateJavaScriptResult")); }
         }
 
         private bool showSidebar;
         public bool ShowSidebar
         {
             get { return showSidebar; }
-            set { PropertyChanged.ChangeAndNotify(ref showSidebar, value, () => ShowSidebar); }
+            set { Set(ref showSidebar, value, new PropertyChangedEventArgs("ShowSidebar")); }
         }
 
         private bool isAddressFocused;
         public bool IsAddressFocused
         {
             get { return isAddressFocused; }
-            set { PropertyChanged.ChangeAndNotify(ref isAddressFocused, value, () => IsAddressFocused); }
+            set { Set(ref isAddressFocused, value, new PropertyChangedEventArgs("IsAddressFocused")); }
         }
 
         public ICommand GoCommand { get; set; }
         public ICommand HomeCommand { get; set; }
         public ICommand ExecuteJavaScriptCommand { get; set; }
         public ICommand EvaluateJavaScriptCommand { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public BrowserTabViewModel(string address)
         {

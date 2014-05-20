@@ -8,5 +8,8 @@
         <DataTemplate DataType="{x:Type viewModel:BrowserTabViewModel}">
             <view:BrowserTabView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:MainViewModel}">
+            <view:MainView />
+        </DataTemplate>
     </Application.Resources>
 </Application>

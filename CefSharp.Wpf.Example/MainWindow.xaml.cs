@@ -21,7 +21,7 @@ namespace CefSharp.Wpf.Example
 
 			viewModel = new MainViewModel();
 
-			DataContext = viewModel;
+			ViewModelContainer.Content = viewModel;
 
 			ExitCommand = new DelegateCommand(Exit);
 		}

@@ -99,6 +99,7 @@
     <Compile Include="Controls\NonReloadingTabControl.cs" />
     <Compile Include="Mvvm\DelegateCommand.cs" />
     <Compile Include="Mvvm\DelegateCommandT.cs" />
+    <Compile Include="Mvvm\FocusExtensions.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />
     <Compile Include="Views\BrowserTabView.xaml.cs">
       <DependentUpon>BrowserTabView.xaml</DependentUpon>

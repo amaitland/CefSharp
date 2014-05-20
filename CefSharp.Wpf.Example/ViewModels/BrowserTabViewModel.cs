@@ -63,6 +63,13 @@ namespace CefSharp.Wpf.Example.ViewModels
             set { PropertyChanged.ChangeAndNotify(ref showSidebar, value, () => ShowSidebar); }
         }
 
+        private bool isAddressFocused;
+        public bool IsAddressFocused
+        {
+            get { return isAddressFocused; }
+            set { PropertyChanged.ChangeAndNotify(ref isAddressFocused, value, () => IsAddressFocused); }
+        }
+
         public ICommand GoCommand { get; set; }
         public ICommand HomeCommand { get; set; }
         public ICommand ExecuteJavaScriptCommand { get; set; }

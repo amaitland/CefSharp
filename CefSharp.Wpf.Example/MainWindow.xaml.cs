@@ -19,6 +19,7 @@ namespace CefSharp.Wpf.Example
 
         public ICommand NewTabCommand { get; private set; }
         public ICommand CloseTabCommand { get; private set; }
+        public ICommand FocusAddressCommand { get; private set; }
 
         public MainWindow()
         {
@@ -29,6 +30,7 @@ namespace CefSharp.Wpf.Example
 
             NewTabCommand = new DelegateCommand(OpenNewTab);
             CloseTabCommand = new DelegateCommand<BrowserTabViewModel>(CloseTab);
+            FocusAddressCommand = new DelegateCommand(FocusAddress);
 
             Loaded += MainWindowLoaded;
         }
@@ -50,6 +52,12 @@ namespace CefSharp.Wpf.Example
             CreateNewTab();
 
             TabControl.SelectedIndex = TabControl.Items.Count - 1;
+        }
+
+        private void FocusAddress()
+        {
+            var viewModel = (BrowserTabViewModel)TabControl.SelectedContent;
+            viewModel.IsAddressFocused = true;
         }
 
         private void MainWindowLoaded(object sender, RoutedEventArgs e)

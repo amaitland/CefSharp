@@ -87,6 +87,7 @@
     <Window.InputBindings>
         <KeyBinding Key="T" Modifiers="Control" Command="{Binding NewTabCommand}"/>
         <KeyBinding Key="W" Modifiers="Control" Command="{Binding CloseTabCommand}"/>
+        <KeyBinding Key="F6" Command="{Binding FocusAddressCommand}"/>
     </Window.InputBindings>
     <Grid>
         <controls:NonReloadingTabControl x:Name="TabControl"

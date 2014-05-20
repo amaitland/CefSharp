@@ -101,6 +101,7 @@
     <Compile Include="Mvvm\DelegateCommandT.cs" />
     <Compile Include="Mvvm\FocusExtensions.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\BrowserTabView.xaml.cs">
       <DependentUpon>BrowserTabView.xaml</DependentUpon>
     </Compile>

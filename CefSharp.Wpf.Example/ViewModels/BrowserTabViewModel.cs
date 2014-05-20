@@ -166,5 +166,10 @@ namespace CefSharp.Wpf.Example.ViewModels
             // Part of the Focus hack further described in the OnPropertyChanged() method...
             Keyboard.ClearFocus();
         }
+
+        public void Reload(bool ignoreCache)
+        {
+            webBrowser.Reload(ignoreCache);
+        }
     }
 }

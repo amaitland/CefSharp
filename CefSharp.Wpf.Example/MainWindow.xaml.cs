@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using CefSharp.Example;
 using CefSharp.Wpf.Example.ViewModels;
+using CefSharp.Wpf.Example.Mvvm;
 
 namespace CefSharp.Wpf.Example
 {
@@ -16,6 +17,9 @@ namespace CefSharp.Wpf.Example
 
         public ObservableCollection<BrowserTabViewModel> BrowserTabs { get; set; }
 
+        public ICommand NewTabCommand { get; private set; }
+        public ICommand CloseTabCommand { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -23,38 +27,25 @@ namespace CefSharp.Wpf.Example
 
             BrowserTabs = new ObservableCollection<BrowserTabViewModel>();
 
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.New, OpenNewTab));
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, CloseTab));
+            NewTabCommand = new DelegateCommand(OpenNewTab);
+            CloseTabCommand = new DelegateCommand<BrowserTabViewModel>(CloseTab);
 
             Loaded += MainWindowLoaded;
         }
 
-        private void CloseTab(object sender, ExecutedRoutedEventArgs e)
+        private void CloseTab(BrowserTabViewModel viewModel)
         {
             if (BrowserTabs.Count > 0)
             {
-                //Obtain the original source element for this event
-                var originalSource = (FrameworkElement)e.OriginalSource;
+                var browserViewModel = viewModel ?? (BrowserTabViewModel)TabControl.SelectedContent;
 
-                BrowserTabViewModel browserViewModel = null;
-
-                if (originalSource is MainWindow)
-                {
-                    browserViewModel = BrowserTabs[TabControl.SelectedIndex];
-                    BrowserTabs.RemoveAt(TabControl.SelectedIndex);
-                }
-                else
-                {
-                    //Remove the matching DataContext from the BrowserTabs collection
-                    browserViewModel = (BrowserTabViewModel)originalSource.DataContext;
-                    BrowserTabs.Remove(browserViewModel);
-                }
+                BrowserTabs.Remove(browserViewModel);
 
                 browserViewModel.WebBrowser.Dispose();
             }
         }
 
-        private void OpenNewTab(object sender, ExecutedRoutedEventArgs e)
+        private void OpenNewTab()
         {
             CreateNewTab();
 

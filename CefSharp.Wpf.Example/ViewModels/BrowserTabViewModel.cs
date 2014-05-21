@@ -80,6 +80,7 @@ namespace CefSharp.Wpf.Example.ViewModels
 
         public ICommand GoCommand { get; set; }
         public ICommand HomeCommand { get; set; }
+        public ICommand PasteGoCommand { get; set; }
         public ICommand ExecuteJavaScriptCommand { get; set; }
         public ICommand EvaluateJavaScriptCommand { get; set; }
 
@@ -89,6 +90,7 @@ namespace CefSharp.Wpf.Example.ViewModels
 
             GoCommand = new DelegateCommand(Go, () => !String.IsNullOrWhiteSpace(Address));
             HomeCommand = new DelegateCommand(() => Address = ExamplePresenter.DefaultUrl);
+            PasteGoCommand = new DelegateCommand(PasteAndGo, PasteAndGoCanExecute);
             ExecuteJavaScriptCommand = new DelegateCommand<string>(ExecuteJavaScript, s => !String.IsNullOrWhiteSpace(s));
             EvaluateJavaScriptCommand = new DelegateCommand<string>(EvaluateJavaScript, s => !String.IsNullOrWhiteSpace(s));
 
@@ -120,6 +122,20 @@ namespace CefSharp.Wpf.Example.ViewModels
             {
                 MessageBox.Show("Error while executing Javascript: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void PasteAndGo()
+        {
+            Address = Clipboard.GetText();
+
+            // Part of the Focus hack further described in the OnPropertyChanged() method...
+            Keyboard.ClearFocus();
+        }
+
+        private bool PasteAndGoCanExecute()
+        {
+            var text = Clipboard.GetText();
+            return !string.IsNullOrWhiteSpace(text) && Uri.IsWellFormedUriString(text, UriKind.Absolute);
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)

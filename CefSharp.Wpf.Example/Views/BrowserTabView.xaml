@@ -43,6 +43,20 @@
                         <KeyBinding Key="Enter"
                                     Command="{Binding GoCommand}" />
                     </TextBox.InputBindings>
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Cut"
+                                      Command="ApplicationCommands.Cut" />
+                            <MenuItem Header="Copy"
+                                      Command="ApplicationCommands.Copy" />
+                            <MenuItem Header="Paste"
+                                      Command="ApplicationCommands.Paste" />
+                            <MenuItem Header="Paste &amp; Go"
+                                      Command="{Binding PasteGoCommand}" />
+                            <MenuItem Header="Select All"
+                                      Command="ApplicationCommands.SelectAll" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
                 </TextBox>
             </DockPanel>
             <StackPanel DockPanel.Dock="Right"

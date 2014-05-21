@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -51,7 +52,12 @@ namespace CefSharp.Wpf.Example.Mvvm
             var body = propertyexpression.Body as MemberExpression;
             if (body == null)
             {
-                throw new ArgumentException("Lambda must return a property.");
+                var unaryExpression = propertyexpression.Body as UnaryExpression;
+                if (unaryExpression == null)
+                {
+                    throw new ArgumentException("Lambda must return a property.");
+                }
+                body = (MemberExpression)unaryExpression.Operand;
             }
 
             return new PropertyChangedEventArgs(body.Member.Name);

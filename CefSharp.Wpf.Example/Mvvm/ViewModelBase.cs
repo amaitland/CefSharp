@@ -28,10 +28,8 @@ namespace CefSharp.Wpf.Example.Mvvm
         /// Is called when a property is changed and raises a <see cref="PropertyChanged"/> event
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="oldvalue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnPropertyChanged<T>(T oldvalue, T newValue, PropertyChangedEventArgs e)
+        protected virtual void OnPropertyChanged<T>(PropertyChangedEventArgs e)
         {
             var handlers = propertyChanged;
             if (handlers == null)
@@ -64,7 +62,7 @@ namespace CefSharp.Wpf.Example.Mvvm
         }
 
         /// <summary>
-        /// Sets the specified field and calls <see cref="OnPropertyChanged{T}(T,T,PropertyChangedEventArgs)"/> if the value changed.
+        /// Sets the specified field and calls <see cref="OnPropertyChanged{T}(PropertyChangedEventArgs)"/> if the value changed.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="field">The field.</param>
@@ -81,7 +79,7 @@ namespace CefSharp.Wpf.Example.Mvvm
 
             field = value;
 
-            OnPropertyChanged(oldvalue, value, e);
+            OnPropertyChanged<T>(e);
         }
 
         #endregion

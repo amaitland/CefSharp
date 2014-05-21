@@ -2,19 +2,24 @@
 //
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CefSharp.Example;
+using CefSharp.Wpf.Example.Mvvm;
 
 namespace CefSharp.Wpf.Example
 {
 	/// <summary>
-	/// Interaction logic for AuthDialog.xaml
+	/// A basic Authentication Dialog that can be used for WebRequest's that require a UserName/Password
 	/// </summary>
 	public partial class AuthDialog : Window, INotifyPropertyChanged, IAuthDialog
 	{
+		private static readonly PropertyChangedEventArgs UserNameChangedEventArgs = ViewModelBase.GetPropertyChangedEventArgs<AuthDialog>(x => x.UserName);
+		private static readonly PropertyChangedEventArgs PasswordChangedEventArgs = ViewModelBase.GetPropertyChangedEventArgs<AuthDialog>(x => x.Password);
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private string userName;
@@ -22,14 +27,14 @@ namespace CefSharp.Wpf.Example
 		public string UserName
 		{
 			get { return userName; }
-			set { PropertyChanged.ChangeAndNotify(ref userName, value, () => UserName); }
+			set { ChangeAndNotify(ref userName, value, UserNameChangedEventArgs); }
 		}
 
 		private string password;
 		public string Password
 		{
 			get { return password; }
-			set { PropertyChanged.ChangeAndNotify(ref password, value, () => Password); }
+			set { ChangeAndNotify(ref password, value, PasswordChangedEventArgs); }
 		}
 
 		public AuthDialog()
@@ -54,6 +59,25 @@ namespace CefSharp.Wpf.Example
 		{
 			var passwordBox = (PasswordBox)sender;
 			Password = passwordBox.Password;
+		}
+
+		public bool ChangeAndNotify<T>(ref T field, T value, PropertyChangedEventArgs args)
+		{
+			if (EqualityComparer<T>.Default.Equals(field, value))
+			{
+				return false;
+			}
+
+			field = value;
+
+			var handler = PropertyChanged;
+
+			if (handler != null)
+			{
+				handler(this, args);
+			}
+
+			return true;
 		}
 	}
 }

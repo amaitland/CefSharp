@@ -86,6 +86,9 @@
     <UserControl.InputBindings>
         <KeyBinding Key="T" Modifiers="Control" Command="{Binding NewTabCommand}"/>
         <KeyBinding Key="W" Modifiers="Control" Command="{Binding CloseTabCommand}"/>
+        <KeyBinding Key="R" Modifiers="Control" Command="{Binding ReloadTabCommand}"/>
+        <KeyBinding Key="F5" Modifiers="Control" Command="{Binding ReloadTabCommand}" CommandParameter="Force"/>
+        <KeyBinding Key="F5" Command="{Binding ReloadTabCommand}"/>
         <KeyBinding Key="F6" Command="{Binding FocusAddressCommand}"/>
     </UserControl.InputBindings>
     <Grid>

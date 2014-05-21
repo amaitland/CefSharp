@@ -13,14 +13,14 @@ namespace CefSharp.Wpf.Example.ViewModels
 {
     public class BrowserTabViewModel : ViewModelBase
     {
-        private static readonly PropertyChangedEventArgs AddressChangedEventArgs = GetArgs<BrowserTabViewModel>(x => x.Address);
-        private static readonly PropertyChangedEventArgs AddressEditableChangedEventArgs = GetArgs<BrowserTabViewModel>(x => x.AddressEditable);
-        private static readonly PropertyChangedEventArgs OutputMessageChangedEventArgs = GetArgs<BrowserTabViewModel>(x => x.OutputMessage);
-        private static readonly PropertyChangedEventArgs TitleChangedEventArgs = GetArgs<BrowserTabViewModel>(x => x.Title);
-        private static readonly PropertyChangedEventArgs WebBrowserChangedEventArgs = GetArgs<BrowserTabViewModel>(x => x.WebBrowser);
-        private static readonly PropertyChangedEventArgs EvaluateJavaScriptResultChangedEventArgs = GetArgs<BrowserTabViewModel>(x => x.EvaluateJavaScriptResult);
-        private static readonly PropertyChangedEventArgs ShowSidebarChangedEventArgs = GetArgs<BrowserTabViewModel>(x => x.ShowSidebar);
-        private static readonly PropertyChangedEventArgs IsAddressFocusedEventArgs = GetArgs<BrowserTabViewModel>(x => x.IsAddressFocused);
+        private static readonly PropertyChangedEventArgs AddressChangedEventArgs = GetPropertyChangedEventArgs<BrowserTabViewModel>(x => x.Address);
+        private static readonly PropertyChangedEventArgs AddressEditableChangedEventArgs = GetPropertyChangedEventArgs<BrowserTabViewModel>(x => x.AddressEditable);
+        private static readonly PropertyChangedEventArgs OutputMessageChangedEventArgs = GetPropertyChangedEventArgs<BrowserTabViewModel>(x => x.OutputMessage);
+        private static readonly PropertyChangedEventArgs TitleChangedEventArgs = GetPropertyChangedEventArgs<BrowserTabViewModel>(x => x.Title);
+        private static readonly PropertyChangedEventArgs WebBrowserChangedEventArgs = GetPropertyChangedEventArgs<BrowserTabViewModel>(x => x.WebBrowser);
+        private static readonly PropertyChangedEventArgs EvaluateJavaScriptResultChangedEventArgs = GetPropertyChangedEventArgs<BrowserTabViewModel>(x => x.EvaluateJavaScriptResult);
+        private static readonly PropertyChangedEventArgs ShowSidebarChangedEventArgs = GetPropertyChangedEventArgs<BrowserTabViewModel>(x => x.ShowSidebar);
+        private static readonly PropertyChangedEventArgs IsAddressFocusedEventArgs = GetPropertyChangedEventArgs<BrowserTabViewModel>(x => x.IsAddressFocused);
         
         private string address;
         public string Address

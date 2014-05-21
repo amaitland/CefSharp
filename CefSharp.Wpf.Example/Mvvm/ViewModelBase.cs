@@ -42,7 +42,7 @@ namespace CefSharp.Wpf.Example.Mvvm
             handlers(this, e);
         }
 
-        public static PropertyChangedEventArgs GetArgs<T>(Expression<Func<T, object>> propertyexpression)
+        public static PropertyChangedEventArgs GetPropertyChangedEventArgs<T>(Expression<Func<T, object>> propertyexpression)
         {
             if (propertyexpression == null)
             {

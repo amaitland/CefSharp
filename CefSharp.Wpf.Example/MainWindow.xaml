@@ -6,6 +6,14 @@
         mc:Ignorable="d"
         Title="CefSharp.Wpf.Example"
         WindowState="Maximized">
+    <Window.InputBindings>
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding Content.NewTabCommand, ElementName=ViewModelContainer}"/>
+        <KeyBinding Key="W" Modifiers="Control" Command="{Binding Content.CloseTabCommand, ElementName=ViewModelContainer}"/>
+        <KeyBinding Key="R" Modifiers="Control" Command="{Binding Content.ReloadTabCommand, ElementName=ViewModelContainer}"/>
+        <KeyBinding Key="F5" Modifiers="Control" Command="{Binding Content.ReloadTabCommand, ElementName=ViewModelContainer}" CommandParameter="Force"/>
+        <KeyBinding Key="F5" Command="{Binding Content.ReloadTabCommand, ElementName=ViewModelContainer}"/>
+        <KeyBinding Key="F6" Command="{Binding Content.FocusAddressCommand, ElementName=ViewModelContainer}"/>
+    </Window.InputBindings>
     <DockPanel>
         <Menu Width="Auto" FontSize="14" IsMainMenu="True" DockPanel.Dock="Top">
             <MenuItem Header="_File">

@@ -8,7 +8,7 @@ namespace CefSharp.Example
 {
 	public class RequestHandler<TAuthDialog> : IRequestHandler where TAuthDialog : IAuthDialog, new()
 	{
-		public bool OnBeforeBrowse(IWebBrowser browser, IRequest request, NavigationType navigationType, bool isRedirect)
+		public bool OnBeforeBrowse(IWebBrowser browser, IRequest request, bool isRedirect)
 		{
 			return false;
 		}

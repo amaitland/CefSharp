@@ -13,61 +13,69 @@ namespace CefSharp.Wpf.Example.ViewModels
 {
     public class BrowserTabViewModel : ViewModelBase
     {
+        private static readonly PropertyChangedEventArgs AddressChangedEventArgs = GetArgs<BrowserTabViewModel>(owner => owner.Address);
+        private static readonly PropertyChangedEventArgs AddressEditableChangedEventArgs = GetArgs<BrowserTabViewModel>(owner => owner.AddressEditable);
+        private static readonly PropertyChangedEventArgs OutputMessageChangedEventArgs = GetArgs<BrowserTabViewModel>(owner => owner.OutputMessage);
+        private static readonly PropertyChangedEventArgs TitleChangedEventArgs = GetArgs<BrowserTabViewModel>(owner => owner.Title);
+        private static readonly PropertyChangedEventArgs WebBrowserChangedEventArgs = GetArgs<BrowserTabViewModel>(owner => owner.WebBrowser);
+        private static readonly PropertyChangedEventArgs EvaluateJavaScriptResultChangedEventArgs = GetArgs<BrowserTabViewModel>(owner => owner.EvaluateJavaScriptResult);
+        private static readonly PropertyChangedEventArgs ShowSidebarChangedEventArgs = GetArgs<BrowserTabViewModel>(owner => owner.ShowSidebar);
+        private static readonly PropertyChangedEventArgs IsAddressFocusedEventArgs = GetArgs<BrowserTabViewModel>(owner => owner.IsAddressFocused);
+        
         private string address;
         public string Address
         {
             get { return address; }
-            set { Set(ref address, value, new PropertyChangedEventArgs("Address")); }
+            set { Set(ref address, value, AddressChangedEventArgs); }
         }
 
         private string addressEditable;
         public string AddressEditable
         {
             get { return addressEditable; }
-            set { Set(ref addressEditable, value, new PropertyChangedEventArgs("AddressEditable")); }
+            set { Set(ref addressEditable, value, AddressEditableChangedEventArgs); }
         }
 
         private string outputMessage;
         public string OutputMessage
         {
             get { return outputMessage; }
-            set { Set(ref outputMessage, value, new PropertyChangedEventArgs("OutputMessage")); }
+            set { Set(ref outputMessage, value, OutputMessageChangedEventArgs); }
         }
 
         private string title;
         public string Title
         {
             get { return title; }
-            set { Set(ref title, value, new PropertyChangedEventArgs("Title")); }
+            set {Set( ref title, value, TitleChangedEventArgs); }
         }
 
         private IWpfWebBrowser webBrowser;
         public IWpfWebBrowser WebBrowser
         {
             get { return webBrowser; }
-            set { Set(ref webBrowser, value, new PropertyChangedEventArgs("WebBrowser")); }
+            set {Set( ref webBrowser, value, WebBrowserChangedEventArgs); }
         }
 
         private object evaluateJavaScriptResult;
-
         public object EvaluateJavaScriptResult
         {
             get { return evaluateJavaScriptResult; }
-            set { Set(ref evaluateJavaScriptResult, value, new PropertyChangedEventArgs("EvaluateJavaScriptResult")); }
+            set { Set(ref evaluateJavaScriptResult, value, EvaluateJavaScriptResultChangedEventArgs); }
         }
 
         private bool showSidebar;
         public bool ShowSidebar
         {
             get { return showSidebar; }
-            set { Set(ref showSidebar, value, new PropertyChangedEventArgs("ShowSidebar")); }
+            set { Set(ref showSidebar, value, ShowSidebarChangedEventArgs); }
         }
 
         private bool isAddressFocused;
         public bool IsAddressFocused
         {
             get { return isAddressFocused; }
-            set { Set(ref isAddressFocused, value, new PropertyChangedEventArgs("IsAddressFocused")); }
+            set { Set(ref isAddressFocused, value, IsAddressFocusedEventArgs); }
         }
 
         public ICommand GoCommand { get; set; }

@@ -884,7 +884,7 @@ namespace CefSharp.Wpf
 
         public void OnInitialized()
         {
-            //browserCore.OnInitialized();
+            IsBrowserInitialized = true;
         }
 
         public void Load(string url)

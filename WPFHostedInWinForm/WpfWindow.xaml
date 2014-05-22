@@ -1,0 +1,10 @@
+﻿<Window x:Class="WPFHostedInWinForm.WpfWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Title="MainWindow" Height="768" Width="1024">
+    <Grid Name="MainGrid">
+        
+        <!--userControls:UserControl1 Visibility="Visible" x:Name="BrowserContainer" Width="600" Height="610"/  -->
+    </Grid>
+
+</Window>

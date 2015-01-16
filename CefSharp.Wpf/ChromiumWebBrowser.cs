@@ -667,7 +667,7 @@ namespace CefSharp.Wpf
             browserCreated = true;
         }
 
-        private void UiThreadRunAsync(Action action, DispatcherPriority priority = DispatcherPriority.DataBind)
+        public void UiThreadRunAsync(Action action, DispatcherPriority priority = DispatcherPriority.DataBind)
         {
             if (Dispatcher.CheckAccess())
             {
@@ -1427,6 +1427,11 @@ namespace CefSharp.Wpf
             var pixelPosition = matrix.Transform(deviceIndependentPosition);
 
             return pixelPosition;
+        }
+
+        public double CalculateAutoZoom()
+        {
+            return Math.Log(matrix.M11, 1.2);
         }
 
         public void ViewSource()

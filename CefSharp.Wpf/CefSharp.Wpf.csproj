@@ -91,6 +91,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttachedProperties\ZoomBehaviour.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DisposableEventWrapper.cs" />
     <Compile Include="InteropBitmapInfo.cs" />

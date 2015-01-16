@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf" xmlns:local="clr-namespace:CefSharp.Wpf.Example.ViewModels"
+             xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             xmlns:local="clr-namespace:CefSharp.Wpf.Example.ViewModels"
+             xmlns:attachedProperties="clr-namespace:CefSharp.Wpf.AttachedProperties;assembly=CefSharp.Wpf"
              mc:Ignorable="d"
              d:DesignWidth="640"
              d:DesignHeight="480"
@@ -172,6 +174,7 @@
                                   Opacity="{Binding ElementName=opacitySlider, Path=Value}"
                                   Address="{Binding Address, Mode=TwoWay}"
                                   Title="{Binding Title, Mode=OneWayToSource}"
+                                  attachedProperties:ZoomBehaviour.AutoZoom="true"
                                   AllowDrop="True"
                                   WebBrowser="{Binding WebBrowser, Mode=OneWayToSource}">
                     <!-- Just an example of how you may override the BrowserSettings. Disabled by default since it looks so

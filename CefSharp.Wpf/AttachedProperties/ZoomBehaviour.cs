@@ -57,8 +57,8 @@ namespace CefSharp.Wpf.AttachedProperties
 
 			browser.UiThreadRunAsync(() =>
 			{
-				var autoZoomLevel = browser.CalculateAutoZoom();
-				browser.ZoomLevel = autoZoomLevel;
+				//var autoZoomLevel = browser.CalculateAutoZoom();
+				browser.ZoomLevel = 4;
 			}, DispatcherPriority.Render);
 		}
 	}

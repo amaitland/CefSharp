@@ -67,7 +67,7 @@ namespace CefSharp.Wpf.Example
 
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
-			CreateNewTab(DefaultUrlForAddedTabs, false);
+            CreateNewTab(DefaultUrlForAddedTabs, false);
         }
 
         private void CreateNewTab(string url = DefaultUrlForAddedTabs, bool showSideBar = false)

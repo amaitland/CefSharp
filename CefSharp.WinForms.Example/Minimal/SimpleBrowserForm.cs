@@ -38,10 +38,11 @@ namespace CefSharp.WinForms.Example.Minimal
 
         private void CreateBrowser()
         {
-            browser = new ChromiumWebBrowser("www.google.com")
+            browser = new ChromiumWebBrowser("about:blank")
             {
                 Dock = DockStyle.Fill,
             };
+            
             toolStripContainer.ContentPanel.Controls.Add(browser);
 
             browser.NavStateChanged += OnBrowserNavStateChanged;
@@ -49,7 +50,23 @@ namespace CefSharp.WinForms.Example.Minimal
             browser.StatusMessage += OnBrowserStatusMessage;
             browser.TitleChanged += OnBrowserTitleChanged;
             browser.AddressChanged += OnBrowserAddressChanged;
+            browser.LoadError += OnBrowserLoadError;
+            browser.IsBrowserInitializedChanged += BrowserIsBrowserInitializedChanged;
             browser.RegisterJsObject("bound", new BoundObject());
+        }
+
+        private void BrowserIsBrowserInitializedChanged(object sender, IsBrowserInitializedChangedEventArgs e)
+        {
+            if(e.IsBrowserInitialized)
+            {
+                this.InvokeOnUiThreadIfRequired(() => browser.Load("www.google.com.au"));
+                
+            }
+        }
+
+        private void OnBrowserLoadError(object sender, LoadErrorEventArgs e)
+        {
+            var errorCode = e.ErrorCode;
         }
 
         private void OnBrowserConsoleMessage(object sender, ConsoleMessageEventArgs args)

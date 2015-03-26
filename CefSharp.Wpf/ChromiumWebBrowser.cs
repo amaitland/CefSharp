@@ -2,6 +2,7 @@
 //
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
+using System.Diagnostics;
 using CefSharp.Internals;
 using CefSharp.Wpf.Rendering;
 using Microsoft.Win32.SafeHandles;
@@ -967,7 +968,11 @@ namespace CefSharp.Wpf
                         return IntPtr.Zero;
                     }
 
-                    handled = managedCefBrowserAdapter.SendKeyEvent(message, wParam.ToInt32(), lParam);
+                    var msg = ComponentDispatcher.CurrentKeyboardMessage;
+
+                    Debug.WriteLine("message:" + msg.message + ";wParam:" + msg.wParam + ";lParam:" + IntPtrToInt32(msg.lParam));
+
+                    handled = managedCefBrowserAdapter.SendKeyEvent(message, wParam.ToInt32(), IntPtrToInt32(lParam));
 
                     break;
             }
@@ -1121,8 +1126,10 @@ namespace CefSharp.Wpf
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
+            return;
             if (!e.Handled)
             {
+                Debug.WriteLine("OnPreviewKeyDown:" + e.Key);
                 OnPreviewKey(e);
             }
 
@@ -1131,31 +1138,35 @@ namespace CefSharp.Wpf
 
         protected override void OnPreviewKeyUp(KeyEventArgs e)
         {
+            return;
             if (!e.Handled)
             {
+                Debug.WriteLine("OnPreviewKeyUp:" + e.Key);
                 OnPreviewKey(e);
             }
 
             base.OnPreviewKeyUp(e);
         }
 
+        public static int IntPtrToInt32(IntPtr intPtr)
+        {
+            return unchecked((int)intPtr.ToInt64());
+        }
+
         private void OnPreviewKey(KeyEventArgs e)
         {
-            // As KeyDown and KeyUp bubble, it appears they're being handled before they get a chance to
-            // trigger the appropriate WM_ messages handled by our SourceHook, so we have to handle these extra keys here.
-            // Hooking the Tab key like this makes the tab focusing in essence work like
-            // KeyboardNavigation.TabNavigation="Cycle"; you will never be able to Tab out of the web browser control.
-            // We also add the condition to allow ctrl+a to work when the web browser control is put inside listbox.
-            if (e.Key == Key.Tab || e.Key == Key.Home || e.Key == Key.End || e.Key == Key.Up
-                                 || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right
-                                 || (e.Key == Key.A && Keyboard.Modifiers == ModifierKeys.Control))
+            if (e.Key == Key.System && e.SystemKey == Key.F4)
             {
-                var modifiers = GetModifiers(e);
-                var message = (int)(e.IsDown ? WM.KEYDOWN : WM.KEYUP);
-                var virtualKey = KeyInterop.VirtualKeyFromKey(e.Key);
-
-                e.Handled = managedCefBrowserAdapter.SendKeyEvent(message, virtualKey, new IntPtr((int)modifiers));
+                // We don't want CEF to receive this event (and mark it as handled), since that makes it impossible to
+                // shut down a CefSharp-based app by pressing Alt-F4, which is kind of bad.
+                return;
             }
+
+            var msg = ComponentDispatcher.CurrentKeyboardMessage;
+
+            Debug.WriteLine("message:" + msg.message + ";wParam:" + msg.wParam + ";lParam:" + IntPtrToInt32(msg.lParam));
+
+            //e.Handled = managedCefBrowserAdapter.SendKeyEvent(msg.message, msg.wParam.ToInt32(), IntPtrToInt32(msg.lParam));
         }
 
         protected override void OnMouseMove(MouseEventArgs e)

@@ -122,7 +122,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;libcef.lib;libcef_dll_wrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wininet.lib;opengl32.lib;glu32.lib;libcef.lib;libcef_dll_wrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>LinkVerbose</ShowProgress>
       <AdditionalLibraryDirectories>$(SolutionDir)packages\$(CefSdkVer)\CEF\$(Platform)\$(Configuration);$(SolutionDir)packages\$(CefSdkVer)\CEF\$(Platform)\$(Configuration)\VS$(VisualStudioProductVersion)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>

@@ -7,6 +7,7 @@
 #include "Stdafx.h"
 
 using namespace System;
+using namespace CefSharp;
 
 namespace CefSharp
 {
@@ -15,5 +16,6 @@ namespace CefSharp
     public:
         static void CopyMemoryUsingHandle(IntPtr dest, IntPtr src, int numberOfBytes);
         static bool IsFocused(IntPtr handle);
+        static ProxyInfo GetProxyInfo();
     };
 }

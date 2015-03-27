@@ -13,7 +13,7 @@ namespace CefSharp
         /// <summary>
         /// use registry configuration
         /// </summary>
-        Preconfig = 0,
+        PreConfig = 0,
         /// <summary>
         /// Direct to Net
         /// </summary>
@@ -25,6 +25,6 @@ namespace CefSharp
         /// <summary>
         /// prevent using java/script/INS
         /// </summary>
-        PreconfigWithNoAutoProxy = 4
+        PreConfigWithNoAutoProxy = 4
     }
 }

@@ -52,7 +52,7 @@ namespace CefSharp.Example
                     settings.CefCommandLineArgs.Add("proxy-server", proxyInfo.Address);
                     break;
                 }
-                case ProxyType.Preconfig:
+                case ProxyType.PreConfig:
                 {
                     settings.CefCommandLineArgs.Add("proxy-auto-detect", "1");
                     break;

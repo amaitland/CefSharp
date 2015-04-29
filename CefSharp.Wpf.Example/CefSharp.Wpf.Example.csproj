@@ -110,6 +110,9 @@
     <Compile Include="Controls\NonReloadingTabControl.cs" />
     <Compile Include="Handlers\GeolocationHandler.cs" />
     <Compile Include="Handlers\MenuHandler.cs" />
+    <Compile Include="LeakyWindow.xaml.cs">
+      <DependentUpon>LeakyWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mvvm\DelegateCommand.cs" />
     <Compile Include="Mvvm\DelegateCommandT.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />
@@ -117,6 +120,10 @@
       <DependentUpon>BrowserTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BrowserTabViewModel.cs" />
+    <Page Include="LeakyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

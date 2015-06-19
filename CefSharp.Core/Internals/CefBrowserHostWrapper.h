@@ -32,6 +32,8 @@ namespace CefSharp
                 this->!CefBrowserHostWrapper();
             }
 
+            CefRefPtr<CefClient> GetClient();
+
         public:
             virtual void StartDownload(String^ url);
             virtual void Print();

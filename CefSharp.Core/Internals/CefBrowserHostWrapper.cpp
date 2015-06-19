@@ -5,6 +5,12 @@
 #include "Stdafx.h"
 #include "CefBrowserHostWrapper.h"
 
+
+CefRefPtr<CefClient> CefBrowserHostWrapper::GetClient()
+{
+    return _browserHost->GetClient();
+}
+
 void CefBrowserHostWrapper::StartDownload(String^ url)
 {
     _browserHost->StartDownload(StringUtils::ToNative(url));

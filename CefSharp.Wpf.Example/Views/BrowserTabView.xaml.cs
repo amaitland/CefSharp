@@ -19,10 +19,11 @@ namespace CefSharp.Wpf.Example.Views
             browser.RequestHandler = new RequestHandler();
             browser.RegisterJsObject("bound", new BoundObject());
 
-            browser.Loaded += browser_Loaded;
-            browser.MenuHandler = new Handlers.MenuHandler();
-            browser.GeolocationHandler = new Handlers.GeolocationHandler();
+            browser.MenuHandler = new MenuHandler();
+            browser.GeolocationHandler = new GeolocationHandler();
             browser.DownloadHandler = new DownloadHandler();
+            browser.LifeSpanHandler = new LifespanHandler(Window.GetWindow(this));
+
             browser.PreviewTextInput += (sender, args) =>
             {
                 foreach (var character in args.Text)
@@ -60,11 +61,6 @@ namespace CefSharp.Wpf.Example.Views
             };
 
             CefExample.RegisterTestResources(browser);
-        }
-
-        void browser_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            browser.LifeSpanHandler = new LifespanHandler(Window.GetWindow(this));
         }
 
         private void OnTextBoxGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)

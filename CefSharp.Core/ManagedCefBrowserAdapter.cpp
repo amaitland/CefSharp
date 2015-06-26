@@ -294,7 +294,7 @@ Task<JavascriptResponse^>^ ManagedCefBrowserAdapter::EvaluateScriptAsync(int bro
         throw gcnew InvalidOperationException("To wait for javascript code set WcfEnabled true in CefSettings during initialization.");
     }
 
-    return _browserProcessServiceHost->EvaluateScriptAsync(browserId, frameId, script, timeout);
+    throw gcnew NotImplementedException("Removed from WCF - Replace with IPC");
 }
 
 void ManagedCefBrowserAdapter::CreateBrowser(BrowserSettings^ browserSettings, IntPtr sourceHandle, String^ address)

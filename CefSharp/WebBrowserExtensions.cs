@@ -545,10 +545,10 @@ namespace CefSharp
                 throw new ArgumentOutOfRangeException("timeout", "Timeout greater than Maximum allowable value of " + UInt32.MaxValue);
             }
 
-            //if (!CefSharp.Cef.WcfEnabled)
-            //{
-            //	throw new InvalidOperationException("To wait for javascript code set WcfEnabled true in CefSettings during initialization.");
-            //}
+            if (!CefSharpSettings.WcfEnabled)
+            {
+                throw new InvalidOperationException("To wait for javascript code set WcfEnabled true in CefSettings during initialization.");
+            }
 
             using (var frame = browser.GetMainFrame())
             {

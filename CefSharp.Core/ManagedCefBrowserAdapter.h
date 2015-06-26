@@ -109,7 +109,6 @@ namespace CefSharp
         void OnMouseButton(int x, int y, int mouseButtonType, bool mouseUp, int clickCount, CefEventFlags modifiers);
         void OnMouseWheel(int x, int y, int deltaX, int deltaY);
         virtual Task<JavascriptResponse^>^ EvaluateScriptAsync(int browserId, Int64 frameId, String^ script, Nullable<TimeSpan> timeout);
-        virtual Task<JavascriptResponse^>^ EvaluateScriptAsync(String^ script, Nullable<TimeSpan> timeout);
         void Resize(int width, int height);
         void NotifyMoveOrResizeStarted();
         void NotifyScreenInfoChanged();

@@ -299,35 +299,6 @@ Task<JavascriptResponse^>^ ManagedCefBrowserAdapter::EvaluateScriptAsync(int bro
     return _browserProcessServiceHost->EvaluateScriptAsync(browserId, frameId, script, timeout);
 }
 
-Task<JavascriptResponse^>^ ManagedCefBrowserAdapter::EvaluateScriptAsync(String^ script, Nullable<TimeSpan> timeout)
-{
-    if (timeout.HasValue && timeout.Value.TotalMilliseconds > UInt32::MaxValue)
-    {
-        throw gcnew ArgumentOutOfRangeException("timeout", "Timeout greater than Maximum allowable value of " + UInt32::MaxValue);
-    }
-
-    if (!_wcfEnabled)
-    {
-        throw gcnew InvalidOperationException("To wait for javascript code set WcfEnabled true in CefSettings during initialization.");
-    }
-
-    auto browser = _clientAdapter->GetCefBrowser();
-
-    if (_browserProcessServiceHost == nullptr || browser == nullptr)
-    {
-        return nullptr;
-    }
-
-    auto frame = browser->GetMainFrame();
-
-    if (frame == nullptr)
-    {
-        return nullptr;
-    }
-
-    return _browserProcessServiceHost->EvaluateScriptAsync(browser->GetIdentifier(), frame->GetIdentifier(), script, timeout);
-}
-
 void ManagedCefBrowserAdapter::CreateBrowser(BrowserSettings^ browserSettings, IntPtr sourceHandle, String^ address)
 {
     HWND hwnd = static_cast<HWND>(sourceHandle.ToPointer());

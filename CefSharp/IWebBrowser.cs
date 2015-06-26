@@ -61,15 +61,6 @@ namespace CefSharp
         void RegisterJsObject(string name, object objectToBind, bool camelCaseJavascriptNames = true);
 
         /// <summary>
-        /// Execute some Javascript code in the context of this WebBrowser, and return the result of the evaluation
-        /// in an Async fashion
-        /// </summary>
-        /// <param name="script">The Javascript code that should be executed.</param>
-        /// <param name="timeout">The timeout after which the Javascript code execution should be aborted.</param>
-        /// <returns>A Task that can be awaited to perform the script execution</returns>
-        Task<JavascriptResponse> EvaluateScriptAsync(string script, TimeSpan? timeout = null);
-
-        /// <summary>
         /// Implement <see cref="IDialogHandler"/> and assign to handle dialog events.
         /// </summary>
         IDialogHandler DialogHandler { get; set; }

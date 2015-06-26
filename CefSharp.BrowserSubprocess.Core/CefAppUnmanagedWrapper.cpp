@@ -68,6 +68,11 @@ namespace CefSharp
         }
     };
 
+    bool CefAppUnmanagedWrapper::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId sourceProcessId, CefRefPtr<CefProcessMessage> message)
+    {
+        return false;
+    }
+
     CefBrowserWrapper^ CefAppUnmanagedWrapper::FindBrowserWrapper(CefRefPtr<CefBrowser> browser, bool mustExist)
     {
         auto browserId = browser->GetIdentifier();

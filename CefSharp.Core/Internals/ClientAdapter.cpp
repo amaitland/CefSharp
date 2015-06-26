@@ -23,6 +23,11 @@ namespace CefSharp
 {
     namespace Internals
     {
+        bool ClientAdapter::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId sourceProcessId, CefRefPtr<CefProcessMessage> message)
+        {
+            return false;
+        }
+
         IBrowser^ ClientAdapter::GetBrowserWrapper(int browserId, bool isPopup)
         {
             if(isPopup)

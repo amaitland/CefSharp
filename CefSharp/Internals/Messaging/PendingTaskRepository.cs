@@ -14,19 +14,18 @@ namespace CefSharp.Internals.Messaging
 	/// <summary>
 	/// Class to store TaskCompletionSources indexed by a unique id.
 	/// </summary>
-	/// <typeparam name="TResult">The type of the result produced by the tasks held.</typeparam>
-	public sealed class PendingTaskRepository<TResult> : IDisposable
+	public sealed class PendingTaskRepository : IDisposable
 	{
-		private readonly ConcurrentDictionary<long, TaskCompletionSource<TResult>> pendingTasks =
-			new ConcurrentDictionary<long, TaskCompletionSource<TResult>>();
+		private readonly ConcurrentDictionary<long, TaskCompletionSource<JavascriptResponse>> pendingTasks =
+			new ConcurrentDictionary<long, TaskCompletionSource<JavascriptResponse>>();
 		private volatile bool disposed;
 		private long lastId;
 
-		public KeyValuePair<long, TaskCompletionSource<TResult>> CreatePendingTask(TimeSpan? timeout)
+		public KeyValuePair<long, TaskCompletionSource<JavascriptResponse>> CreatePendingTask(TimeSpan? timeout)
 		{
 			ThrowIfDisposed();
 
-			var completionSource = new TaskCompletionSource<TResult>();
+			var completionSource = new TaskCompletionSource<JavascriptResponse>();
 
 			var id = Interlocked.Increment(ref lastId);
 			if (pendingTasks.TryAdd(id, completionSource))
@@ -38,21 +37,21 @@ namespace CefSharp.Internals.Messaging
 					{
 						timer.Dispose();
 						RemovePendingTask(id);
-						((TaskCompletionSource<TResult>)state).TrySetCanceled();
+						((TaskCompletionSource<JavascriptResponse>)state).TrySetCanceled();
 					}, completionSource, timeout.Value, TimeSpan.FromMilliseconds(-1));
 				}
 
-				return new KeyValuePair<long, TaskCompletionSource<TResult>>(id, completionSource);
+				return new KeyValuePair<long, TaskCompletionSource<JavascriptResponse>>(id, completionSource);
 			}
 
 			throw new Exception("Unable to add TaskCompletionSource to ConcurrentDictionary");
 		}
 
-		public TaskCompletionSource<TResult> RemovePendingTask(long id)
+		public TaskCompletionSource<JavascriptResponse> RemovePendingTask(long id)
 		{
 			ThrowIfDisposed();
 
-			TaskCompletionSource<TResult> result;
+			TaskCompletionSource<JavascriptResponse> result;
 			pendingTasks.TryRemove(id, out result);
 			return result;
 		}

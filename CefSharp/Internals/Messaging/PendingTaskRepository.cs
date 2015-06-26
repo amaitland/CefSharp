@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,29 +22,30 @@ namespace CefSharp.Internals.Messaging
 		private volatile bool disposed;
 		private long lastId;
 
-		public long CreatePendingTask(out TaskCompletionSource<TResult> completionSource)
+		public KeyValuePair<long, TaskCompletionSource<TResult>> CreatePendingTask(TimeSpan? timeout)
 		{
 			ThrowIfDisposed();
 
-			completionSource = new TaskCompletionSource<TResult>();
-			return SaveCompletionSource(completionSource);
-		}
+			var completionSource = new TaskCompletionSource<TResult>();
 
-		public long CreatePendingTaskWithTimeout(out TaskCompletionSource<TResult> completionSource, TimeSpan timeout)
-		{
-			ThrowIfDisposed();
-
-			completionSource = new TaskCompletionSource<TResult>();
-			var id = SaveCompletionSource(completionSource);
-			Timer timer = null;
-			timer = new Timer(state =>
+			var id = Interlocked.Increment(ref lastId);
+			if (pendingTasks.TryAdd(id, completionSource))
 			{
-				timer.Dispose();
-				RemovePendingTask(id);
-				((TaskCompletionSource<TResult>)state).TrySetCanceled();
-			}, completionSource, timeout, TimeSpan.FromMilliseconds(-1));
+				if (timeout.HasValue)
+				{
+					Timer timer = null;
+					timer = new Timer(state =>
+					{
+						timer.Dispose();
+						RemovePendingTask(id);
+						((TaskCompletionSource<TResult>)state).TrySetCanceled();
+					}, completionSource, timeout.Value, TimeSpan.FromMilliseconds(-1));
+				}
 
-			return id;
+				return new KeyValuePair<long, TaskCompletionSource<TResult>>(id, completionSource);
+			}
+
+			throw new Exception("Unable to add TaskCompletionSource to ConcurrentDictionary");
 		}
 
 		public TaskCompletionSource<TResult> RemovePendingTask(long id)
@@ -76,13 +78,6 @@ namespace CefSharp.Internals.Messaging
 					pendingTasks.Clear();
 				}
 			}
-		}
-
-		private long SaveCompletionSource(TaskCompletionSource<TResult> completionSource)
-		{
-			var id = Interlocked.Increment(ref lastId);
-			pendingTasks.TryAdd(id, completionSource);
-			return id;
 		}
 
 		private void ThrowIfDisposed()

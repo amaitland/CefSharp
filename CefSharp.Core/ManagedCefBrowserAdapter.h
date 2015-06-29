@@ -78,8 +78,11 @@ namespace CefSharp
             delete _browserWrapper;
             _browserWrapper = nullptr;
 
-            _browserProcessServiceHost->Close();
-            _browserProcessServiceHost = nullptr;
+            if (CefSharpSettings::WcfEnabled)
+            {
+                _browserProcessServiceHost->Close();
+                _browserProcessServiceHost = nullptr;
+            }
 
             _webBrowserInternal = nullptr;
             _javaScriptObjectRepository = nullptr;
@@ -104,8 +107,6 @@ namespace CefSharp
         void OnMouseMove(int x, int y, bool mouseLeave, CefEventFlags modifiers);
         void OnMouseButton(int x, int y, int mouseButtonType, bool mouseUp, int clickCount, CefEventFlags modifiers);
         void OnMouseWheel(int x, int y, int deltaX, int deltaY);
-        virtual Task<JavascriptResponse^>^ EvaluateScriptAsync(int browserId, Int64 frameId, String^ script, Nullable<TimeSpan> timeout);
-        virtual Task<JavascriptResponse^>^ EvaluateScriptAsync(String^ script, Nullable<TimeSpan> timeout);
         void Resize(int width, int height);
         void NotifyMoveOrResizeStarted();
         void NotifyScreenInfoChanged();
@@ -161,5 +162,10 @@ namespace CefSharp
         /// </summary>
         /// <returns>Gets the current instance or null</returns>
         virtual IBrowser^ GetBrowser();
+
+        virtual property IJavascriptCallbackFactory^ JavascriptCallbackFactory
+        {
+            CefSharp::Internals::IJavascriptCallbackFactory^ get();
+        }
     };
 }

@@ -7,6 +7,8 @@
 #include "include/cef_app.h"
 #include "CefSettings.h"
 
+using namespace CefSharp::Internals;
+
 namespace CefSharp
 {
     private class CefSharpApp : public CefApp,
@@ -38,6 +40,14 @@ namespace CefSharp
             if (static_cast<Action^>(_onContextInitialized) != nullptr)
             {
                 _onContextInitialized->Invoke();
+            }
+        }
+
+        virtual void OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) OVERRIDE
+        {
+            if (CefSharpSettings::WcfEnabled)
+            {
+                command_line->AppendArgument(StringUtils::ToNative(CefSharpArguments::WcfEnabledArgument));
             }
         }
         

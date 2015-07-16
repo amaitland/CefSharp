@@ -75,6 +75,7 @@ namespace CefSharp
         /*--cef()--*/
         virtual IListValue^ Copy()
         {
+            throw gcnew NotImplementedException();
         }
 
         ///
@@ -93,7 +94,7 @@ namespace CefSharp
         /*--cef()--*/
         virtual UIntPtr GetSize()
         {
-            _listValue->GetSize();
+            return (UIntPtr)_listValue->GetSize();
         }
 
         ///
@@ -102,7 +103,7 @@ namespace CefSharp
         /*--cef()--*/
         virtual bool Clear()
         {
-            _listValue->Clear();
+            return _listValue->Clear();
         }
 
         ///
@@ -186,8 +187,8 @@ namespace CefSharp
         /*--cef(index_param=index)--*/
         virtual IDictionaryValue^ GetDictionary(int index)
         {
-            return nullptr;
-            _listValue->GetDictionary(index);
+            throw gcnew NotImplementedException();
+            //_listValue->GetDictionary(index);
             //return _listValue->GetDictionary(index);
         }
 

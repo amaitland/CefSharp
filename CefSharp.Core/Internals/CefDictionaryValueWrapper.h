@@ -97,7 +97,7 @@ namespace CefSharp
         /*--cef()--*/
         virtual bool Clear()
         {
-            _dictionaryValue->Clear();
+            return _dictionaryValue->Clear();
         }
 
         ///
@@ -209,7 +209,8 @@ namespace CefSharp
         /*--cef()--*/
         virtual IListValue^ GetList(String^ key)
         {
-            return gcnew CefListValueWrapper(_dictionaryValue->GetList(StringUtils::ToNative(key)));
+            //return gcnew CefListValueWrapper(_dictionaryValue->GetList(StringUtils::ToNative(key)));
+            return nullptr;
         }
 
         ///
@@ -304,8 +305,9 @@ namespace CefSharp
         /*--cef()--*/
         virtual bool SetList(String^ key, IListValue^ value)
         {
-            auto list = (CefListValueWrapper^)value;
-            return _dictionaryValue->SetList(StringUtils::ToNative(key), list->GetListValue().get());
+            //auto list = (CefListValueWrapper^)value;
+            //return _dictionaryValue->SetList(StringUtils::ToNative(key), list->GetListValue().get());
+            throw gcnew NotImplementedException();
         }
 
         MCefRefPtr<CefDictionaryValue> GetDictionaryValue()

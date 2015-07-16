@@ -31,6 +31,11 @@ namespace CefSharp
             this->!CefListValueWrapper();
         }
 
+        operator CefRefPtr<CefListValue>()
+        {
+            return _listValue.get();
+        }
+
         ///
         // Returns true if this object is valid. Do not call any other methods if this
         // method returns false.
@@ -295,12 +300,7 @@ namespace CefSharp
         virtual bool SetList(int index, IListValue^ value)
         {
             auto list = (CefListValueWrapper^)value;
-            return _listValue->SetList(index, list->GetListValue().get());
-        }
-
-        MCefRefPtr<CefListValue> GetListValue()
-        {
-            return _listValue;
+            return _listValue->SetList(index, list);
         }
     };
 }

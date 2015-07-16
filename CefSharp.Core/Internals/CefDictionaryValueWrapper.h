@@ -31,6 +31,11 @@ namespace CefSharp
             this->!CefDictionaryValueWrapper();
         }
 
+        explicit operator CefRefPtr<CefDictionaryValue>()
+        {
+            return _dictionaryValue.get();
+        }
+
         ///
         // Returns true if this object is valid. Do not call any other methods if this
         // method returns false.
@@ -291,7 +296,7 @@ namespace CefSharp
         virtual bool SetDictionary(String^ key, IDictionaryValue^ value)
         {
             auto dictionary = (CefDictionaryValueWrapper^)value;
-            return _dictionaryValue->SetDictionary(StringUtils::ToNative(key), dictionary->GetDictionaryValue().get());
+            return _dictionaryValue->SetDictionary(StringUtils::ToNative(key), (CefRefPtr<CefDictionaryValue>)dictionary);
         }
 
         ///
@@ -308,11 +313,6 @@ namespace CefSharp
             //auto list = (CefListValueWrapper^)value;
             //return _dictionaryValue->SetList(StringUtils::ToNative(key), list->GetListValue().get());
             throw gcnew NotImplementedException();
-        }
-
-        MCefRefPtr<CefDictionaryValue> GetDictionaryValue()
-        {
-            return _dictionaryValue;
         }
     };
 }

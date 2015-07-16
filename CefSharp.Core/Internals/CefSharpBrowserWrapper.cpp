@@ -241,7 +241,7 @@ bool CefSharpBrowserWrapper::SendProcessMessage(ProcessId targetProcess, IProces
 
     auto messageWrapper = (CefProcessMessageWrapper^)message;
 
-    return _browser->SendProcessMessage((CefProcessId)targetProcess, messageWrapper->GetProcessMessage().get());
+    return _browser->SendProcessMessage((CefProcessId)targetProcess, (CefRefPtr<CefProcessMessage>)messageWrapper);
 }
 
 void CefSharpBrowserWrapper::ThrowIfDisposed()

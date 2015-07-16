@@ -34,6 +34,11 @@ namespace CefSharp
             this->!CefProcessMessageWrapper();
         }
 
+        operator CefRefPtr<CefProcessMessage>()
+        {
+            return _processMessage.get();
+        }
+
         ///
         // Returns the Process Message Name
         ///
@@ -83,11 +88,6 @@ namespace CefSharp
 
                 return _listValue;
             }
-        }
-
-        MCefRefPtr<CefProcessMessage> GetProcessMessage()
-        {
-            return _processMessage;
         }
     };
 }

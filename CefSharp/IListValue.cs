@@ -174,6 +174,6 @@ namespace CefSharp
         // reference will be invalidated.
         ///
         /*--cef(index_param=index)--*/
-        bool SetList(int index, IList<IListValue> value);
+        bool SetList(int index, IListValue value);
     }
 }

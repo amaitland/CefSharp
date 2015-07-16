@@ -70,11 +70,25 @@ namespace CefSharp
         }
 
         ///
-        // Returns a writable copy of this object.
+        // Returns a writable copy of this object. If |exclude_empty_children| is true
+        // any empty dictionaries or lists will be excluded from the copy.
         ///
         /*--cef()--*/
-        virtual IDictionaryValue^ Copy()
+        virtual IDictionaryValue^ Copy(bool excludeEmptyChildren)
         {
+            return nullptr;
+        }
+
+        ///
+        // Returns the number of values.
+        ///
+        /*--cef()--*/
+        virtual property UIntPtr Size
+        {
+            UIntPtr get()
+            {
+                return (UIntPtr)_dictionaryValue->GetSize();
+            }
         }
 
         ///
@@ -87,63 +101,82 @@ namespace CefSharp
         }
 
         ///
-        // Removes the value at the specified index.
+        // Returns true if the current dictionary has a value for the given key.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
+        virtual bool HasKey(String^ key)
+        {
+            return _dictionaryValue->HasKey(StringUtils::ToNative(key));
+        }
+
+        ///
+        // Reads all keys for this dictionary into the specified vector.
+        ///
+        /*--cef()--*/
+        virtual bool GetKeys(IList<String^>^ keys)
+        {
+            return false;
+        }
+
+        ///
+        // Removes the value at the specified key. Returns true is the value was
+        // removed successfully.
+        ///
+        /*--cef()--*/
         virtual bool Remove(String^ key)
         {
             return _dictionaryValue->Remove(StringUtils::ToNative(key));
         }
 
         ///
-        // Returns the value type at the specified index.
+        // Returns the value type for the specified key.
         ///
-        /*--cef(default_retval=VTYPE_INVALID,index_param=index)--*/
-        virtual CefSharp::Internals::CefValueType GetType(String^ key)
+        /*--cef(default_retval=VTYPE_INVALID)--*/
+        virtual CefSharp::CefValueType GetType(String^ key)
         {
-            return _dictionaryValue->GetType(StringUtils::ToNative(key));
+            return (CefSharp::CefValueType)_dictionaryValue->GetType(StringUtils::ToNative(key));
         }
 
         ///
-        // Returns the value at the specified index as type bool.
+        // Returns the value at the specified key as type bool.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual bool GetBool(String^ key)
         {
             return _dictionaryValue->GetBool(StringUtils::ToNative(key));
         }
 
         ///
-        // Returns the value at the specified index as type int.
+        // Returns the value at the specified key as type int.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual int GetInt(String^ key)
         {
             return _dictionaryValue->GetInt(StringUtils::ToNative(key));
         }
 
         ///
-        // Returns the value at the specified index as type double.
+        // Returns the value at the specified key as type double.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual double GetDouble(String^ key)
         {
             return _dictionaryValue->GetDouble(StringUtils::ToNative(key));
         }
 
         ///
-        // Returns the value at the specified index as type string.
+        // Returns the value at the specified key as type string.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual String^ GetString(String^ key)
         {
             return StringUtils::ToClr(_dictionaryValue->GetString(StringUtils::ToNative(key)));
         }
 
         ///
-        // Returns the value at the specified index as type binary.
+        // Returns the value at the specified key as type binary.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual array<Byte>^ GetBinary(String^ key)
         {
             auto binary = _dictionaryValue->GetBinary(StringUtils::ToNative(key));
@@ -162,82 +195,81 @@ namespace CefSharp
         }
 
         ///
-        // Returns the value at the specified index as type dictionary.
+        // Returns the value at the specified key as type dictionary.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual IDictionaryValue^ GetDictionary(String^ key)
         {
             return gcnew CefDictionaryValueWrapper(_dictionaryValue->GetDictionary(StringUtils::ToNative(key)));
         }
 
         ///
-        // Returns the value at the specified index as type list.
+        // Returns the value at the specified key as type list.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual IListValue^ GetList(String^ key)
         {
             return gcnew CefListValueWrapper(_dictionaryValue->GetList(StringUtils::ToNative(key)));
         }
 
         ///
-        // Sets the value at the specified index as type null. Returns true if the
+        // Sets the value at the specified key as type null. Returns true if the
         // value was set successfully.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual bool SetNull(String^ key)
         {
             return _dictionaryValue->SetNull(StringUtils::ToNative(key));
         }
 
         ///
-        // Sets the value at the specified index as type bool. Returns true if the
+        // Sets the value at the specified key as type bool. Returns true if the
         // value was set successfully.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual bool SetBool(String^ key, bool value)
         {
             return _dictionaryValue->SetBool(StringUtils::ToNative(key), value);
         }
 
         ///
-        // Sets the value at the specified index as type int. Returns true if the
+        // Sets the value at the specified key as type int. Returns true if the
         // value was set successfully.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual bool SetInt(String^ key, int value)
         {
             return _dictionaryValue->SetInt(StringUtils::ToNative(key), value);
         }
 
         ///
-        // Sets the value at the specified index as type double. Returns true if the
+        // Sets the value at the specified key as type double. Returns true if the
         // value was set successfully.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual bool SetDouble(String^ key, double value)
         {
             return _dictionaryValue->SetDouble(StringUtils::ToNative(key), value);
         }
 
         ///
-        // Sets the value at the specified index as type string. Returns true if the
+        // Sets the value at the specified key as type string. Returns true if the
         // value was set successfully.
         ///
-        /*--cef(optional_param=value,index_param=index)--*/
-        virtual bool SetString(String^ key, string value)
+        /*--cef(optional_param=value)--*/
+        virtual bool SetString(String^ key, String^ value)
         {
-            return _dictionaryValue->SetString(StringUtils::ToNative(key), value);
+            return _dictionaryValue->SetString(StringUtils::ToNative(key), StringUtils::ToNative(value));
         }
 
         ///
-        // Sets the value at the specified index as type binary. Returns true if the
-        // value was set successfully. After calling this method the |value| object
-        // will no longer be valid. If |value| is currently owned by another object
+        // Sets the value at the specified key as type binary. Returns true if the
+        // value was set successfully. If |value| is currently owned by another object
         // then the value will be copied and the |value| reference will not change.
         // Otherwise, ownership will be transferred to this object and the |value|
         // reference will be invalidated.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual bool SetBinary(String^ key, array<Byte>^ value)
         {
             pin_ptr<Byte> src = &value[0];
@@ -247,14 +279,14 @@ namespace CefSharp
         }
 
         ///
-        // Sets the value at the specified index as type dict. Returns true if the
+        // Sets the value at the specified key as type dict. Returns true if the
         // value was set successfully. After calling this method the |value| object
         // will no longer be valid. If |value| is currently owned by another object
         // then the value will be copied and the |value| reference will not change.
         // Otherwise, ownership will be transferred to this object and the |value|
         // reference will be invalidated.
         ///
-        /*--cef(index_param=index)--*/
+        /*--cef()--*/
         virtual bool SetDictionary(String^ key, IDictionaryValue^ value)
         {
             auto dictionary = (CefDictionaryValueWrapper^)value;
@@ -262,15 +294,15 @@ namespace CefSharp
         }
 
         ///
-        // Sets the value at the specified index as type list. Returns true if the
+        // Sets the value at the specified key as type list. Returns true if the
         // value was set successfully. After calling this method the |value| object
         // will no longer be valid. If |value| is currently owned by another object
         // then the value will be copied and the |value| reference will not change.
         // Otherwise, ownership will be transferred to this object and the |value|
         // reference will be invalidated.
         ///
-        /*--cef(index_param=index)--*/
-        virtual bool SetList(String^ key, IList<IListValue^>^ value)
+        /*--cef()--*/
+        virtual bool SetList(String^ key, IListValue^ value)
         {
             auto list = (CefListValueWrapper^)value;
             return _dictionaryValue->SetList(StringUtils::ToNative(key), list->GetListValue().get());

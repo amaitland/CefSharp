@@ -4,6 +4,7 @@
 
 #include "Stdafx.h"
 #include "JavascriptCallbackProxy.h"
+#include "CefProcessMessageWrapper.h"
 #include "Messaging/Messages.h"
 #include "Serialization/Primitives.h"
 #include "Serialization/V8Serialization.h"
@@ -27,7 +28,7 @@ namespace CefSharp
 
             auto doneCallback = _pendingTasks->CreatePendingTask(Nullable<TimeSpan>());
             auto callbackMessage = CreateCallMessage(doneCallback.Key, parameters);
-            browser->SendProcessMessage(CefProcessId::PID_RENDERER, callbackMessage);
+            browser->SendProcessMessage(ProcessId::Renderer, gcnew CefProcessMessageWrapper(callbackMessage));
 
             return doneCallback.Value->Task;
         }

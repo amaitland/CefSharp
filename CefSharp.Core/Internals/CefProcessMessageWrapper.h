@@ -84,5 +84,10 @@ namespace CefSharp
                 return _listValue;
             }
         }
+
+        MCefRefPtr<CefProcessMessage> GetProcessMessage()
+        {
+            return _processMessage;
+        }
     };
 }

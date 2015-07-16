@@ -40,7 +40,7 @@ namespace CefSharp
         // Returns the number of values.
         ///
         /*--cef()--*/
-        IntPtr Size { get; }
+        UIntPtr Size { get; }
 
         ///
         // Removes all values. Returns true on success.
@@ -58,7 +58,7 @@ namespace CefSharp
         // Reads all keys for this dictionary into the specified vector.
         ///
         /*--cef()--*/
-        bool GetKeys(out IList<string> keys);
+        //bool GetKeys(out IList<string> keys);
 
         ///
         // Removes the value at the specified key. Returns true is the value was

@@ -8,6 +8,7 @@
 #include "include/cef_app.h"
 
 #include "CefSharpBrowserWrapper.h"
+#include "CefProcessMessageWrapper.h"
 
 using namespace System;
 using namespace System::Threading::Tasks;
@@ -47,7 +48,7 @@ namespace CefSharp
                 auto browser = GetBrowser();
                 if (browser != nullptr && !browser->IsDisposed)
                 {
-                    browser->SendProcessMessage(CefProcessId::PID_RENDERER, CreateDestroyMessage());
+                    browser->SendProcessMessage(ProcessId::Renderer, gcnew CefProcessMessageWrapper(CreateDestroyMessage()));
                 }
                 _disposed = true;
             }

@@ -118,9 +118,9 @@ namespace CefSharp
         // Returns the value type at the specified index.
         ///
         /*--cef(default_retval=VTYPE_INVALID,index_param=index)--*/
-        virtual CefSharp::Internals::CefValueType GetType(int index)
+        virtual CefSharp::CefValueType GetType(int index)
         {
-            return _listValue->GetType(index);
+            return (CefSharp::CefValueType)_listValue->GetType(index);
         }
 
         ///
@@ -245,9 +245,9 @@ namespace CefSharp
         // value was set successfully.
         ///
         /*--cef(optional_param=value,index_param=index)--*/
-        virtual bool SetString(int index, string value)
+        virtual bool SetString(int index, String^ value)
         {
-            return _listValue->SetString(index, value);
+            return _listValue->SetString(index, StringUtils::ToNative(value));
         }
 
         ///
@@ -291,7 +291,7 @@ namespace CefSharp
         // reference will be invalidated.
         ///
         /*--cef(index_param=index)--*/
-        virtual bool SetList(int index, IList<IListValue^>^ value)
+        virtual bool SetList(int index, IListValue^ value)
         {
             auto list = (CefListValueWrapper^)value;
             return _listValue->SetList(index, list->GetListValue().get());

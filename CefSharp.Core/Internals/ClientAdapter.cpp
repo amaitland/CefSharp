@@ -19,6 +19,7 @@
 #include "CefJSDialogCallbackWrapper.h"
 #include "CefRequestCallbackWrapper.h"
 #include "CefWindowInfoWrapper.h"
+#include "CefProcessMessageWrapper.h"
 #include "Serialization\Primitives.h"
 #include "Serialization\V8Serialization.h"
 #include "Messaging\Messages.h"
@@ -863,7 +864,7 @@ namespace CefSharp
 
             auto browserWrapper = static_cast<CefSharpBrowserWrapper^>(GetBrowserWrapper(browserId, isBrowserPopup));
 
-            browserWrapper->SendProcessMessage(CefProcessId::PID_RENDERER, message);
+            browserWrapper->SendProcessMessage(ProcessId::Renderer, gcnew CefProcessMessageWrapper(message));
 
             return idAndComplectionSource.Value->Task;
         }

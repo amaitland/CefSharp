@@ -6,6 +6,7 @@
 
 #include "Internals/CefFrameWrapper.h"
 #include "Internals/CefSharpBrowserWrapper.h"
+#include "Internals\CefProcessMessageWrapper.h"
 #include "CefBrowserHostWrapper.h"
 
 ///
@@ -234,10 +235,13 @@ List<String^>^ CefSharpBrowserWrapper::GetFrameNames()
 // message was sent successfully.
 ///
 /*--cef()--*/
-bool CefSharpBrowserWrapper::SendProcessMessage(CefProcessId targetProcess, CefRefPtr<CefProcessMessage> message)
+bool CefSharpBrowserWrapper::SendProcessMessage(ProcessId targetProcess, IProcessMessage^ message)
 {
     ThrowIfDisposed();
-    return _browser->SendProcessMessage(targetProcess, message);
+
+    auto messageWrapper = (CefProcessMessageWrapper^)message;
+
+    return _browser->SendProcessMessage((CefProcessId)targetProcess, messageWrapper->GetProcessMessage().get());
 }
 
 void CefSharpBrowserWrapper::ThrowIfDisposed()

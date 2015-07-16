@@ -91,11 +91,12 @@
     <Compile Include="CefDirtyRect.cs" />
     <Compile Include="CefFileDialogMode.cs" />
     <Compile Include="CefJsDialogType.cs" />
-    <Compile Include="Internals\IDictionaryValue.cs" />
-    <Compile Include="Internals\ProcessId.cs" />
-    <Compile Include="Internals\CefValueType.cs" />
-    <Compile Include="Internals\IListValue.cs" />
-    <Compile Include="Internals\IProcessMessage.cs" />
+    <Compile Include="IDictionaryValue.cs" />
+    <Compile Include="Internals\MessageHandlerBrowserSide.cs" />
+    <Compile Include="ProcessId.cs" />
+    <Compile Include="CefValueType.cs" />
+    <Compile Include="IListValue.cs" />
+    <Compile Include="IProcessMessage.cs" />
     <Compile Include="IPostData.cs" />
     <Compile Include="IPostDataElement.cs" />
     <Compile Include="MouseButtonType.cs" />

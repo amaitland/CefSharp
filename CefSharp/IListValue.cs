@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CefSharp.Internals
+namespace CefSharp
 {
     public interface IListValue : IDisposable
     {

@@ -4,7 +4,7 @@
 
 using System;
 
-namespace CefSharp.Internals
+namespace CefSharp
 {
     public interface IProcessMessage : IDisposable
     {

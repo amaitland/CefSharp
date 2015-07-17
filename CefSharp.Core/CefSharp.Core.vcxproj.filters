@@ -65,9 +65,6 @@
     <ClCompile Include="Internals\Serialization\Primitives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Internals\JavascriptCallbackProxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vcclr_local.h">
@@ -203,12 +200,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Internals\CefPostDataElementWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Internals\JavascriptCallbackProxy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Internals\JavascriptCallbackFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Internals\CefListValueWrapper.h">

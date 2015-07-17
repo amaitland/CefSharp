@@ -39,10 +39,7 @@ namespace CefSharp
             gcroot<Dictionary<int, IBrowser^>^> _popupBrowsers;
             gcroot<String^> _tooltip;
             gcroot<IBrowserAdapter^> _browserAdapter;
-            //contains in-progress eval script tasks
-            gcroot<PendingTaskRepository<JavascriptResponse^>^> _pendingTaskRepository;
-            //contains js callback factories for each browser
-            gcroot<Dictionary<int, IJavascriptCallbackFactory^>^> _javascriptCallbackFactories;
+            gcroot<MessageHandlerBrowserSide^> _messageHandler;
 
             void ThrowUnknownPopupBrowser(String^ context)
             {
@@ -55,9 +52,8 @@ namespace CefSharp
             ClientAdapter(IWebBrowserInternal^ browserControl, IBrowserAdapter^ browserAdapter) :
                 _browserControl(browserControl), 
                 _popupBrowsers(gcnew Dictionary<int, IBrowser^>()),
-                _pendingTaskRepository(gcnew PendingTaskRepository<JavascriptResponse^>()),
-                _javascriptCallbackFactories(gcnew Dictionary<int, IJavascriptCallbackFactory^>()),
-                _browserAdapter(browserAdapter)
+                _browserAdapter(browserAdapter),
+                _messageHandler(gcnew MessageHandlerBrowserSide(_browserAdapter))
             {
                 
             }
@@ -67,7 +63,7 @@ namespace CefSharp
                 CloseAllPopups(true);
 
                 //this will dispose the repository and cancel all pending tasks
-                delete _pendingTaskRepository;
+                delete _messageHandler;
 
                 _browserControl = nullptr;
                 _browserHwnd = nullptr;
@@ -79,7 +75,6 @@ namespace CefSharp
 
             HWND GetBrowserHwnd() { return _browserHwnd; }
             CefRefPtr<CefBrowser> GetCefBrowser() { return _cefBrowser; }
-            PendingTaskRepository<JavascriptResponse^>^ GetPendingTaskRepository();
             void CloseAllPopups(bool forceClose);
 
             // CefClient
@@ -96,7 +91,6 @@ namespace CefSharp
             virtual DECL CefRefPtr<CefDragHandler> GetDragHandler() OVERRIDE { return this; }
             virtual DECL CefRefPtr<CefGeolocationHandler> GetGeolocationHandler() OVERRIDE { return this; }
             virtual DECL bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) OVERRIDE;
-
 
             // CefLifeSpanHandler
             virtual DECL bool OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,

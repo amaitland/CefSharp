@@ -33,10 +33,7 @@ void ManagedCefBrowserAdapter::OnAfterBrowserCreated(int browserId)
     auto browser = _clientAdapter->GetCefBrowser();
     if (browser != nullptr)
     {
-        //the js callback factory needs the browser instance to pass it to the js callback implementations for messaging purposes
-        auto cefSharpBrowserWrapper = gcnew CefSharpBrowserWrapper(browser);
-        _browserWrapper = cefSharpBrowserWrapper;
-        _javascriptCallbackFactory->BrowserWrapper = gcnew WeakReference(cefSharpBrowserWrapper);
+        _browserWrapper = gcnew CefSharpBrowserWrapper(browser);
     }
 
     if (CefSharpSettings::WcfEnabled)
@@ -338,5 +335,5 @@ IBrowser^ ManagedCefBrowserAdapter::GetBrowser()
 
 IJavascriptCallbackFactory^ ManagedCefBrowserAdapter::JavascriptCallbackFactory::get()
 {
-    return _javascriptCallbackFactory;
+    throw gcnew NotImplementedException();
 }

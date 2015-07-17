@@ -3,19 +3,25 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CefSharp.Internals
 {
-    public class MessageHandlerBrowserSide
+    public class MessageHandlerBrowserSide : IDisposable
     {
+        //contains in-progress eval script tasks
+        private readonly PendingTaskRepository<JavascriptResponse> pendingTaskRepository;
+        //contains js callback factories for each browser
+        //Dictionary<int, IJavascriptCallbackFactory^>^ _javascriptCallbackFactories;
         private IBrowserAdapter browserAdapter;
-        private IJavascriptCallbackFactory javascriptCallbackFactory;
+        public IJavascriptCallbackFactory JavascriptCallbackFactory { get; private set; }
 
-        public MessageHandlerBrowserSide(IBrowserAdapter browserAdapter, IJavascriptCallbackFactory javascriptCallbackFactory)
+        public MessageHandlerBrowserSide(IBrowserAdapter browserAdapter)
         {
             this.browserAdapter = browserAdapter;
-            this.javascriptCallbackFactory = javascriptCallbackFactory;
+            JavascriptCallbackFactory = new JavascriptCallbackFactory(pendingTaskRepository);
+            this.pendingTaskRepository = new PendingTaskRepository<JavascriptResponse>();
         }
 
         public bool OnProcessMessageReceived(IBrowser browser, ProcessId sourceProcess, IProcessMessage message)
@@ -78,6 +84,11 @@ namespace CefSharp.Internals
             return idAndComplectionSource.Value->Task;
              */
             return null;
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

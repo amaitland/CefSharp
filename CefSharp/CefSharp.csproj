@@ -92,6 +92,8 @@
     <Compile Include="CefFileDialogMode.cs" />
     <Compile Include="CefJsDialogType.cs" />
     <Compile Include="IDictionaryValue.cs" />
+    <Compile Include="Internals\JavascriptCallbackFactory.cs" />
+    <Compile Include="Internals\JavascriptCallbackProxy.cs" />
     <Compile Include="Internals\MessageHandlerBrowserSide.cs" />
     <Compile Include="ProcessId.cs" />
     <Compile Include="CefValueType.cs" />

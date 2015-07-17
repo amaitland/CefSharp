@@ -52,11 +52,6 @@ namespace CefSharp
             }
         }
 
-        static IProcessMessage^ CreateProcessMessage(String^ name)
-        {
-            return gcnew CefProcessMessageWrapper(CefProcessMessage::Create(StringUtils::ToNative(name)));
-        }
-
     public:
         /// <summary>
         /// Called on the browser process UI thread immediately after the CEF context has been initialized. 

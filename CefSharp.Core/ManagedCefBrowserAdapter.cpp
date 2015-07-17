@@ -293,7 +293,7 @@ void ManagedCefBrowserAdapter::OnDragTargetDragEnter(CefDragDataWrapper^ dragDat
     if (browser != nullptr)
     {
         dragData->ResetFileContents(); // Recommended by documentation to reset before calling DragEnter
-        browser->GetHost()->DragTargetDragEnter(*dragData->InternalDragData, GetCefMouseEvent(mouseEvent), (CefBrowserHost::DragOperationsMask) allowedOperations);
+        browser->GetHost()->DragTargetDragEnter((CefRefPtr<CefDragData>)dragData, GetCefMouseEvent(mouseEvent), (CefBrowserHost::DragOperationsMask) allowedOperations);
     }
 }
 

@@ -44,6 +44,11 @@ namespace CefSharp
                 this->!CefDragDataWrapper();
             }
 
+            explicit operator CefRefPtr<CefDragData>()
+            {
+                return _wrappedDragData.get();
+            }
+
         public:
             virtual property bool IsReadOnly;
             virtual property String^ FileName;
@@ -59,14 +64,6 @@ namespace CefSharp
             {
                 CefRefPtr<CefDragData> cefDragData = CefDragData::Create();
                 return gcnew CefDragDataWrapper(cefDragData);
-            }
-
-            virtual property CefRefPtr<CefDragData>* InternalDragData
-            {
-                CefRefPtr<CefDragData>* get() 
-                { 
-                    return new CefRefPtr<CefDragData>(_wrappedDragData.get()); 
-                }
             }
 
             //TODO: Vector is a pointer, so can potentially be updated (items may be possibly removed)

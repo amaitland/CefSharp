@@ -10,6 +10,9 @@ namespace CefSharp.Internals
 {
     public class MessageHandlerBrowserSide : IDisposable
     {
+        //TODO: Find proper home for this
+        public static IManagedWrapperFactory WrapperFactory { get; set; }
+
         //contains in-progress eval script tasks
         private readonly PendingTaskRepository<JavascriptResponse> pendingTaskRepository;
         //contains js callback factories for each browser
@@ -70,7 +73,7 @@ namespace CefSharp.Internals
             //create a new taskcompletionsource
             var idAndComplectionSource = pendingTaskRepository.CreatePendingTask(timeout);
 
-            var message = ManagedWrapperFactory.CreateProcessMessage(Messages.EvaluateJavascriptRequest);
+            var message = WrapperFactory.CreateProcessMessage(Messages.EvaluateJavascriptRequest);
 
             var argList = message.ArgumentList;
             argList.SetInt64(0, frameId);

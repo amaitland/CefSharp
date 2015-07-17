@@ -2,12 +2,10 @@
 //
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-using System;
-
 namespace CefSharp.Internals
 {
-	public static class ManagedWrapperFactory
+	public interface IManagedWrapperFactory
 	{
-		public static Func<string, IProcessMessage> CreateProcessMessage { get; set; }
+		IProcessMessage CreateProcessMessage(string name);
 	}
 }

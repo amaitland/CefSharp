@@ -21,6 +21,8 @@
 #include "SchemeHandlerFactoryWrapper.h"
 #include "Internals/CefTaskScheduler.h"
 #include "CookieAsyncWrapper.h"
+#include "Internals\ManagedWrapperFactory.h"
+#include "Internals\CefProcessMessageWrapper.h"
 
 using namespace System::Collections::Generic; 
 using namespace System::Linq;
@@ -48,6 +50,11 @@ namespace CefSharp
             {
                 Cef::Shutdown();
             }
+        }
+
+        static IProcessMessage^ CreateProcessMessage(String^ name)
+        {
+            return gcnew CefProcessMessageWrapper(CefProcessMessage::Create(StringUtils::ToNative(name)));
         }
 
     public:
@@ -188,6 +195,8 @@ namespace CefSharp
             {
                 AppDomain::CurrentDomain->ProcessExit += gcnew EventHandler(ParentProcessExitHandler);
             }
+
+            MessageHandlerBrowserSide::WrapperFactory = gcnew ManagedWrapperFactory();
 
             return success;
         }

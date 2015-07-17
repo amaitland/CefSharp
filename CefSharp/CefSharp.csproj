@@ -92,9 +92,9 @@
     <Compile Include="CefFileDialogMode.cs" />
     <Compile Include="CefJsDialogType.cs" />
     <Compile Include="IDictionaryValue.cs" />
+    <Compile Include="Internals\IManagedWrapperFactory.cs" />
     <Compile Include="Internals\JavascriptCallbackFactory.cs" />
     <Compile Include="Internals\JavascriptCallbackProxy.cs" />
-    <Compile Include="Internals\ManagedWrapperFactory.cs" />
     <Compile Include="Internals\MessageHandlerBrowserSide.cs" />
     <Compile Include="Internals\Messages.cs" />
     <Compile Include="Internals\PrimitiveType.cs" />

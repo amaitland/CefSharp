@@ -257,8 +257,8 @@ namespace CefSharp
         /*--cef(index_param=index)--*/
         virtual bool SetInt64(int index, int64 value)
         {
-			unsigned char mem[1 + sizeof(int64)];
-            mem[0] = static_cast<unsigned char>(PrimitiveType::INT64);
+            unsigned char mem[1 + sizeof(int64)];
+            mem[0] = static_cast<unsigned char>(PrimitiveType::Int64);
             memcpy(reinterpret_cast<void*>(mem + 1), &value, sizeof(int64));
 
             auto binaryValue = CefBinaryValue::Create(mem, sizeof(mem));

@@ -8,18 +8,18 @@ namespace CefSharp.Internals
 {
     public class JavascriptCallbackFactory : IJavascriptCallbackFactory
     {
-        private PendingTaskRepository<JavascriptResponse> pendingTasks;
+        private readonly PendingTaskRepository<JavascriptResponse> pendingTasks;
+        private readonly WeakReference browser;
 
-        public JavascriptCallbackFactory(PendingTaskRepository<JavascriptResponse> pendingTasks)
+        public JavascriptCallbackFactory(PendingTaskRepository<JavascriptResponse> pendingTasks, IBrowser browser)
         {
             this.pendingTasks = pendingTasks;
+            this.browser = new WeakReference(browser);
         }
-
-        public WeakReference BrowserWrapper { get; set; }
 
         public IJavascriptCallback Create(JavascriptCallback callback)
         {
-            return new JavascriptCallbackProxy(callback, pendingTasks, BrowserWrapper);
+            return new JavascriptCallbackProxy(callback, pendingTasks, browser);
         }
     }
 }

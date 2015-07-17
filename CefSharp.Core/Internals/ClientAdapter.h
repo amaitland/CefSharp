@@ -53,7 +53,7 @@ namespace CefSharp
                 _browserControl(browserControl), 
                 _popupBrowsers(gcnew Dictionary<int, IBrowser^>()),
                 _browserAdapter(browserAdapter),
-                _messageHandler(gcnew MessageHandlerBrowserSide(_browserAdapter))
+                _messageHandler(gcnew MessageHandlerBrowserSide())
             {
                 
             }

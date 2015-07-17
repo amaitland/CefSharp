@@ -15,16 +15,10 @@ namespace CefSharp.Internals
 
         //contains in-progress eval script tasks
         private readonly PendingTaskRepository<JavascriptResponse> pendingTaskRepository;
-        //contains js callback factories for each browser
-        //Dictionary<int, IJavascriptCallbackFactory^>^ _javascriptCallbackFactories;
-        private IBrowserAdapter browserAdapter;
-        public IJavascriptCallbackFactory JavascriptCallbackFactory { get; private set; }
 
-        public MessageHandlerBrowserSide(IBrowserAdapter browserAdapter)
+        public MessageHandlerBrowserSide()
         {
-            this.browserAdapter = browserAdapter;
-            JavascriptCallbackFactory = new JavascriptCallbackFactory(pendingTaskRepository);
-            this.pendingTaskRepository = new PendingTaskRepository<JavascriptResponse>();
+            pendingTaskRepository = new PendingTaskRepository<JavascriptResponse>();
         }
 
         public bool OnProcessMessageReceived(IBrowser browser, ProcessId sourceProcess, IProcessMessage message)
@@ -37,9 +31,6 @@ namespace CefSharp.Internals
                 var success = argList.GetBool(0);
                 var callbackId = argList.GetInt64(1);
 
-                //IJavascriptCallbackFactory callbackFactory;
-                //_javascriptCallbackFactories->TryGetValue(browser->GetIdentifier(), callbackFactory);
-
                 var pendingTask = pendingTaskRepository.RemovePendingTask(callbackId);
                 if (pendingTask != null)
                 {
@@ -50,7 +41,7 @@ namespace CefSharp.Internals
 
                     if (success)
                     {
-                        response.Result = DeserializeV8Object(argList, 2, null);
+                        response.Result = DeserializeV8Object(argList, 2, new JavascriptCallbackFactory(pendingTaskRepository, browser));
                     }
                     else
                     {

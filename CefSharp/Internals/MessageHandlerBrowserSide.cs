@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CefSharp.Internals
 {
-    public class MessageHandlerBrowserSide : IDisposable
+    public class MessageHandlerBrowserSide : DisposableResource
     {
         //TODO: Find proper home for this
         public static IManagedWrapperFactory WrapperFactory { get; set; }
@@ -74,11 +74,12 @@ namespace CefSharp.Internals
             return idAndComplectionSource.Value.Task;
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
+        protected override void DoDispose(bool isDisposing)
+		{
+			//TODO: Implement
+ 			base.DoDispose(isDisposing);
+		}
+        
         //TODO: Turn this into an extension method
         private object DeserializeV8Object(IListValue list, int index, IJavascriptCallbackFactory javascriptCallbackFactory)
         {

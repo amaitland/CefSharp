@@ -171,7 +171,7 @@ namespace CefSharp
             CefMainArgs main_args;
             CefRefPtr<CefSharpApp> app(new CefSharpApp(cefSettings, OnContextInitialized));
 
-            auto success = CefInitialize(main_args, *(cefSettings->_cefSettings), app.get(), NULL);
+            auto success = CefInitialize(main_args, *(cefSettings->_cefSettings), app, NULL);
 
             //Register SchemeHandlerFactories - must be called after CefInitialize
             for each (CefCustomScheme^ cefCustomScheme in cefSettings->CefCustomSchemes)

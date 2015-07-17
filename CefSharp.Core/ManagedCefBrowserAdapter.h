@@ -115,10 +115,5 @@ namespace CefSharp
         /// </summary>
         /// <returns>Gets the current instance or null</returns>
         virtual IBrowser^ GetBrowser();
-
-        virtual property IJavascriptCallbackFactory^ JavascriptCallbackFactory
-        {
-            CefSharp::Internals::IJavascriptCallbackFactory^ get();
-        }
     };
 }

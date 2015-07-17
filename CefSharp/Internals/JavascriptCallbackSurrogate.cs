@@ -12,12 +12,12 @@ namespace CefSharp.Internals
 {
     internal sealed class JavascriptCallbackSurrogate : IDataContractSurrogate
     {
-        private readonly IJavascriptCallbackFactory callbackFactory;
- 
-        public JavascriptCallbackSurrogate(IJavascriptCallbackFactory callbackFactory)
-         {
-            this.callbackFactory = callbackFactory;
-         }
+        private readonly WeakReference browserAdapater;
+
+        public JavascriptCallbackSurrogate(WeakReference browserAdapater)
+        {
+            this.browserAdapater = browserAdapater;
+        }
 
         public Type GetDataContractType(Type type)
         {
@@ -39,7 +39,8 @@ namespace CefSharp.Internals
             var dto = obj as JavascriptCallback;
             if (dto != null)
             {
-                result = callbackFactory.Create(dto);
+                throw new NotImplementedException();
+                //result = callbackFactory.Create(dto);
             }
             return result;
         }

@@ -332,8 +332,3 @@ IBrowser^ ManagedCefBrowserAdapter::GetBrowser()
 {
     return _browserWrapper;
 }
-
-IJavascriptCallbackFactory^ ManagedCefBrowserAdapter::JavascriptCallbackFactory::get()
-{
-    throw gcnew NotImplementedException();
-}

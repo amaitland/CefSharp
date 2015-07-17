@@ -37,7 +37,7 @@ namespace CefSharp.Internals
             );
 
             endPoint.Contract.ProtectionLevel = ProtectionLevel.None;
-            endPoint.Behaviors.Add(new JavascriptCallbackEndpointBehavior(browserAdapter.JavascriptCallbackFactory));
+            endPoint.Behaviors.Add(new JavascriptCallbackEndpointBehavior(browserAdapter));
         }
 
         public void SetOperationContext(OperationContext operationContext)

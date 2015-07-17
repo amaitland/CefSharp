@@ -18,12 +18,11 @@ namespace CefSharp.Internals
             ReflectionUtils.GetMethodName<IBrowserProcess>(p => p.CallMethod(0, null, null)),
         };
 
-        private readonly IJavascriptCallbackFactory callbackFactory;
+        private readonly WeakReference browserAdapater;
 
-
-        public JavascriptCallbackEndpointBehavior(IJavascriptCallbackFactory callbackFactory)
+        public JavascriptCallbackEndpointBehavior(IBrowserAdapter browserAdapater)
         {
-            this.callbackFactory = callbackFactory;
+            this.browserAdapater = new WeakReference(browserAdapater);
         }
 
         public void Validate(ServiceEndpoint endpoint)
@@ -38,7 +37,7 @@ namespace CefSharp.Internals
         {
             foreach (var operation in endpoint.Contract.Operations.Where(o => Methods.Contains(o.Name)))
             {
-                operation.Behaviors.Find<DataContractSerializerOperationBehavior>().DataContractSurrogate = new JavascriptCallbackSurrogate(callbackFactory);
+                operation.Behaviors.Find<DataContractSerializerOperationBehavior>().DataContractSurrogate = new JavascriptCallbackSurrogate(browserAdapater);
             }
         }
 

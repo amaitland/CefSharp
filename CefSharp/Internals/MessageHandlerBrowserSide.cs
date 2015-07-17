@@ -67,23 +67,19 @@ namespace CefSharp.Internals
 
         public Task<JavascriptResponse> EvaluateScriptAsync(IBrowser browser, Int64 frameId, String script, TimeSpan? timeout)
         {
-            /*
-             * //create a new taskcompletionsource
-            auto idAndComplectionSource = _pendingTaskRepository->CreatePendingTask(timeout);
+            //create a new taskcompletionsource
+            var idAndComplectionSource = pendingTaskRepository.CreatePendingTask(timeout);
 
-            auto message = CefProcessMessage::Create(kEvaluateJavascriptRequest);
-            auto argList = message->GetArgumentList();
-            SetInt64(frameId, argList, 0);
-            SetInt64(idAndComplectionSource.Key, argList, 1);
-            argList->SetString(2, StringUtils::ToNative(script));
+            var message = ManagedWrapperFactory.CreateProcessMessage(Messages.EvaluateJavascriptRequest);
 
-            
+            var argList = message.ArgumentList;
+            argList.SetInt64(0, frameId);
+            argList.SetInt64(1, idAndComplectionSource.Key);
+            argList.SetString(2, script);
 
-            browserWrapper->SendProcessMessage(CefProcessId::PID_RENDERER, message);
+            browser.SendProcessMessage(ProcessId.Renderer, message);
 
-            return idAndComplectionSource.Value->Task;
-             */
-            return null;
+            return idAndComplectionSource.Value.Task;
         }
 
         public void Dispose()

@@ -15,13 +15,6 @@ namespace CefSharp
     {
         namespace Serialization
         {
-            enum class PrimitiveType : unsigned char
-            {
-                INT64,
-                CEFTIME,
-                JSCALLBACK
-            };
-
             template<typename TList, typename TIndex>
             bool IsType(PrimitiveType type, CefRefPtr<TList> list, TIndex index)
             {
@@ -40,7 +33,7 @@ namespace CefSharp
             void SetInt64(const int64 &value, CefRefPtr<TList> list, TIndex index)
             {
                 unsigned char mem[1 + sizeof(int64)];
-                mem[0] = static_cast<unsigned char>(PrimitiveType::INT64);
+                mem[0] = static_cast<unsigned char>(PrimitiveType::Int64);
                 memcpy(reinterpret_cast<void*>(mem + 1), &value, sizeof(int64));
 
                 auto binaryValue = CefBinaryValue::Create(mem, sizeof(mem));
@@ -61,7 +54,7 @@ namespace CefSharp
             template<typename TList, typename TIndex>
             bool IsInt64(CefRefPtr<TList> list, TIndex index)
             {
-                return IsType(PrimitiveType::INT64, list, index);
+                return IsType(PrimitiveType::Int64, list, index);
             }
 
             template<typename TList, typename TIndex>
@@ -69,7 +62,7 @@ namespace CefSharp
             {
                 auto doubleT = value.GetDoubleT();
                 unsigned char mem[1 + sizeof(double)];
-                mem[0] = static_cast<unsigned char>(PrimitiveType::CEFTIME);
+                mem[0] = static_cast<unsigned char>(PrimitiveType::CefTime);
                 memcpy(reinterpret_cast<void*>(mem + 1), &doubleT, sizeof(double));
 
                 auto binaryValue = CefBinaryValue::Create(mem, sizeof(mem));
@@ -90,7 +83,7 @@ namespace CefSharp
             template<typename TList, typename TIndex>
             bool IsCefTime(CefRefPtr<TList> list, TIndex index)
             {
-                return IsType(PrimitiveType::CEFTIME, list, index);
+                return IsType(PrimitiveType::CefTime, list, index);
             }
             template<typename TList, typename TIndex>
             void SetJsCallback(JavascriptCallback^ value, CefRefPtr<TList> list, TIndex index)
@@ -99,7 +92,7 @@ namespace CefSharp
                 auto browserId = value->BrowserId;
 
                 unsigned char mem[1 + sizeof(int) + sizeof(int64)];
-                mem[0] = static_cast<unsigned char>(PrimitiveType::JSCALLBACK);
+                mem[0] = static_cast<unsigned char>(PrimitiveType::JsCallback);
                 memcpy(reinterpret_cast<void*>(mem + 1), &browserId, sizeof(int));
                 memcpy(reinterpret_cast<void*>(mem + 1 + sizeof(int)), &id, sizeof(int64));
 
@@ -127,7 +120,7 @@ namespace CefSharp
             template<typename TList, typename TIndex>
             bool IsJsCallback(CefRefPtr<TList> list, TIndex index)
             {
-                return IsType(PrimitiveType::JSCALLBACK, list, index);
+                return IsType(PrimitiveType::JsCallback, list, index);
             }
 
             template void SetInt64(const int64 &value, CefRefPtr<CefListValue> list, int index);

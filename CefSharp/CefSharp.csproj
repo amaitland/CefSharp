@@ -94,7 +94,10 @@
     <Compile Include="IDictionaryValue.cs" />
     <Compile Include="Internals\JavascriptCallbackFactory.cs" />
     <Compile Include="Internals\JavascriptCallbackProxy.cs" />
+    <Compile Include="Internals\ManagedWrapperFactory.cs" />
     <Compile Include="Internals\MessageHandlerBrowserSide.cs" />
+    <Compile Include="Internals\Messages.cs" />
+    <Compile Include="Internals\PrimitiveType.cs" />
     <Compile Include="ProcessId.cs" />
     <Compile Include="CefValueType.cs" />
     <Compile Include="IListValue.cs" />

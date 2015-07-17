@@ -3,7 +3,6 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.using System;
 
 using System;
-using System.Collections.Generic;
 
 namespace CefSharp
 {
@@ -79,6 +78,12 @@ namespace CefSharp
         int GetInt(int index);
 
         ///
+        // Returns the value at the specified index as type int64.
+        ///
+        /*--cef(index_param=index)--*/
+        Int64 GetInt64(int index);
+
+        ///
         // Returns the value at the specified index as type double.
         ///
         /*--cef(index_param=index)--*/
@@ -128,6 +133,13 @@ namespace CefSharp
         ///
         /*--cef(index_param=index)--*/
         bool SetInt(int index, int value);
+
+        ///
+        // Sets the value at the specified index as type int. Returns true if the
+        // value was set successfully.
+        ///
+        /*--cef(index_param=index)--*/
+        bool SetInt64(int index, Int64 value);
 
         ///
         // Sets the value at the specified index as type double. Returns true if the

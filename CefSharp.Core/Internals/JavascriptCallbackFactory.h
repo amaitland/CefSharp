@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "JavascriptCallbackProxy.h"
+
 using namespace System;
 
 namespace CefSharp
@@ -22,7 +24,10 @@ namespace CefSharp
 
             property WeakReference^ BrowserWrapper;
 
-            virtual IJavascriptCallback^ Create(JavascriptCallback^ callback);
+            virtual IJavascriptCallback^ Create(JavascriptCallback^ callback)
+            {
+                return gcnew JavascriptCallbackProxy(callback, _pendingTasks, BrowserWrapper);
+            }
         };
     }
 }

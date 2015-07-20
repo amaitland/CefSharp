@@ -331,5 +331,14 @@ namespace CefSharp
             auto list = (CefListValueWrapper^)value;
             return _listValue->SetList(index, list);
         }
+
+        virtual IListValue^ CreateListAtIndex(int index)
+        {
+            auto list = CefListValue::Create();
+
+            _listValue->SetList(index, list);
+
+            return gcnew CefListValueWrapper(list);
+        }
     };
 }

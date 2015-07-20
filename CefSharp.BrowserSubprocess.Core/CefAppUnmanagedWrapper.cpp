@@ -10,7 +10,7 @@
 #include "JavascriptRootObjectWrapper.h"
 #include "Serialization\V8Serialization.h"
 #include "..\CefSharp.Core\Internals\CefProcessMessageWrapper.h"
-#include "..\CefSharp.Core\Internals\Serialization\Primitives.h"
+#include "Serialization\Primitives.h"
 
 using namespace System;
 using namespace System::Diagnostics;

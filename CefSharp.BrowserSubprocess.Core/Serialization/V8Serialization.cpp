@@ -5,7 +5,7 @@
 #include "Stdafx.h"
 #include "V8Serialization.h"
 #include "JavascriptCallbackRegistry.h"
-#include "../CefSharp.Core/Internals/Serialization/Primitives.h"
+#include "Serialization\Primitives.h"
 
 #include <deque>
 

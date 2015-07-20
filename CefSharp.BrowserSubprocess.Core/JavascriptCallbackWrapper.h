@@ -12,15 +12,14 @@ namespace CefSharp
 {
     namespace Internals
     {
+        //TODO: Restructure as I really dislike this
+        ref class JavascriptCallbackRegistry;
+
         private ref class JavascriptCallbackWrapper
         {
         private:
             MCefRefPtr<CefV8Value> _value;
             MCefRefPtr<CefV8Context> _context;
-
-        internal:
-            CefRefPtr<CefV8Value> GetValue();
-            CefRefPtr<CefV8Context> GetContext();
 
         public:
             JavascriptCallbackWrapper(CefRefPtr<CefV8Value> value, CefRefPtr<CefV8Context> context)
@@ -38,6 +37,8 @@ namespace CefSharp
             {
                 this->!JavascriptCallbackWrapper();
             }
+
+            IProcessMessage^ Execute(IProcessMessage^ request, JavascriptCallbackRegistry^ callbackRegistry);
         };
     }
 }

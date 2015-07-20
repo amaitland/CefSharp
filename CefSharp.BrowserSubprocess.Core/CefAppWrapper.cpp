@@ -6,6 +6,7 @@
 #include "Stdafx.h"
 
 #include "CefAppWrapper.h"
+#include ".\..\CefSharp.Core\Internals\CefProcessMessageWrapper.h"
 
 using namespace System;
 using namespace System::Diagnostics;
@@ -20,5 +21,10 @@ namespace CefSharp
         CefMainArgs cefMainArgs((HINSTANCE)hInstance.ToPointer());
 
         return CefExecuteProcess(cefMainArgs, (CefApp*)_cefApp.get(), NULL);
+    }
+
+    IProcessMessage^ CefAppWrapper::CreateProcessMessage(String^ name)
+    {
+        return gcnew CefProcessMessageWrapper(CefProcessMessage::Create(StringUtils::ToNative(name)));
     }
 }

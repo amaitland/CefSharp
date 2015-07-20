@@ -48,8 +48,10 @@ namespace CefSharp
 
         property TaskFactory^ RenderThreadTaskFactory;
 
-        virtual void OnBrowserCreated(CefBrowserWrapper^ cefBrowserWrapper) abstract;
-        virtual void OnBrowserDestroyed(CefBrowserWrapper^ cefBrowserWrapper) abstract;
+        virtual void OnBrowserCreated(CefBrowserWrapper^ browser) abstract;
+        virtual void OnBrowserDestroyed(CefBrowserWrapper^ browser) abstract;
         virtual bool OnProcessMessageReceived(CefBrowserWrapper^ browser, ProcessId sourceProcessId, IProcessMessage^ message) abstract;
+
+        IProcessMessage^ CreateProcessMessage(String^ name);
     };
 }

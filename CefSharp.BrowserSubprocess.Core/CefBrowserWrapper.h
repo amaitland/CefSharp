@@ -59,6 +59,11 @@ namespace CefSharp
             }
         }
 
+        operator CefRefPtr<CefBrowser>()
+        {
+            return _browser.get();
+        }
+
         property int BrowserId;
         property bool IsPopup;
 
@@ -78,5 +83,7 @@ namespace CefSharp
         property IBrowserProcess^ BrowserProcess;
 
         bool SendProcessMessage(ProcessId targetProcess, IProcessMessage^ message);
+
+        IProcessMessage^ EvalScriptInFrame(IProcessMessage^ request);
     };
 }

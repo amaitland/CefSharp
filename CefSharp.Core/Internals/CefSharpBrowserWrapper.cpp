@@ -235,13 +235,13 @@ List<String^>^ CefSharpBrowserWrapper::GetFrameNames()
 // message was sent successfully.
 ///
 /*--cef()--*/
-bool CefSharpBrowserWrapper::SendProcessMessage(ProcessId targetProcess, IProcessMessage^ message)
+bool CefSharpBrowserWrapper::SendProcessMessage(IProcessMessage^ message)
 {
     ThrowIfDisposed();
 
     auto messageWrapper = (CefProcessMessageWrapper^)message;
 
-    return _browser->SendProcessMessage((CefProcessId)targetProcess, (CefRefPtr<CefProcessMessage>)messageWrapper);
+    return _browser->SendProcessMessage(CefProcessId::PID_RENDERER, (CefRefPtr<CefProcessMessage>)messageWrapper);
 }
 
 void CefSharpBrowserWrapper::ThrowIfDisposed()

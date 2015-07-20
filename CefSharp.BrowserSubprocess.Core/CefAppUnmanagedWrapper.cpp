@@ -87,6 +87,6 @@ namespace CefSharp
     {
         auto wrapper = FindBrowserWrapper(browser->GetIdentifier(), false);
        
-        return _onProcessMessageReceived->Invoke(wrapper, (ProcessId)sourceProcessId, gcnew CefProcessMessageWrapper(message));
+        return _onProcessMessageReceived->Invoke(wrapper, gcnew CefProcessMessageWrapper(message));
     };
 }

@@ -21,7 +21,7 @@ namespace CefSharp.Internals
             pendingTaskRepository = new PendingTaskRepository<JavascriptResponse>();
         }
 
-        public bool OnProcessMessageReceived(IBrowser browser, ProcessId sourceProcess, IProcessMessage message)
+        public bool OnProcessMessageReceived(IBrowser browser, IProcessMessage message)
         {
             var handled = false;
             var name = message.Name;
@@ -69,7 +69,7 @@ namespace CefSharp.Internals
             argList.SetInt64(1, idAndComplectionSource.Key);
             argList.SetString(2, script);
 
-            browser.SendProcessMessage(ProcessId.Renderer, message);
+            browser.SendProcessMessage(message);
 
             return idAndComplectionSource.Value.Task;
         }

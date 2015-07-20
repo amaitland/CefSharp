@@ -27,7 +27,7 @@ namespace CefSharp
         {
             auto onBrowserCreated = gcnew Action<CefBrowserWrapper^>(this, &CefAppWrapper::OnBrowserCreated);
             auto onBrowserDestroyed = gcnew Action<CefBrowserWrapper^>(this, &CefAppWrapper::OnBrowserDestroyed);
-            auto onProcessMessageReceived = gcnew Func<CefBrowserWrapper^, ProcessId, IProcessMessage^, bool>(this, &CefAppWrapper::OnProcessMessageReceived);
+            auto onProcessMessageReceived = gcnew Func<CefBrowserWrapper^, IProcessMessage^, bool>(this, &CefAppWrapper::OnProcessMessageReceived);
             _cefApp = new CefAppUnmanagedWrapper(onBrowserCreated, onBrowserDestroyed, onProcessMessageReceived);
 
             RenderThreadTaskFactory = gcnew TaskFactory(gcnew CefTaskScheduler(TID_RENDERER));
@@ -50,7 +50,7 @@ namespace CefSharp
 
         virtual void OnBrowserCreated(CefBrowserWrapper^ browser) abstract;
         virtual void OnBrowserDestroyed(CefBrowserWrapper^ browser) abstract;
-        virtual bool OnProcessMessageReceived(CefBrowserWrapper^ browser, ProcessId sourceProcessId, IProcessMessage^ message) abstract;
+        virtual bool OnProcessMessageReceived(CefBrowserWrapper^ browser, IProcessMessage^ message) abstract;
 
         IProcessMessage^ CreateProcessMessage(String^ name);
     };

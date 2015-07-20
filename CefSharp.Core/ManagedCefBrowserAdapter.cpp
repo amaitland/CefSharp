@@ -48,16 +48,14 @@ void ManagedCefBrowserAdapter::OnAfterBrowserCreated(int browserId)
         }
     }
 
-	auto message = MessageHandlerBrowserSide::WrapperFactory::CreateProcessMessage(Messages::RegisterJavascriptObjectsRequest);
+    /*auto message = MessageHandlerBrowserSide::WrapperFactory::CreateProcessMessage(Messages::RegisterJavascriptObjectsRequest);
 
     var argList = message.ArgumentList;
 
     auto argumentList = message->ArgumentList;
-    Serialization::SerializeJsRootObject(_javaScriptObjectRepository->RootObject, argumentList);
+    Serialization::SerializeJsRootObject(_javaScriptObjectRepository->RootObject, argumentList);*/
 
-	
-
-    browser->SendProcessMessage(CefProcessId::PID_RENDERER, message);
+    //browser->SendProcessMessage(CefProcessId::PID_RENDERER, message);
     
     if (_webBrowserInternal != nullptr)
     {

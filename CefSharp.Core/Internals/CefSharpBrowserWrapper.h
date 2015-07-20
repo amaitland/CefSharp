@@ -196,7 +196,7 @@ namespace CefSharp
             // message was sent successfully.
             ///
             /*--cef()--*/
-            virtual bool SendProcessMessage(ProcessId targetProcess, IProcessMessage^ message);
+            virtual bool SendProcessMessage(IProcessMessage^ message);
 
             property bool IsDisposed
             {

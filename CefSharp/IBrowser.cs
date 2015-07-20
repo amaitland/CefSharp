@@ -145,6 +145,6 @@ namespace CefSharp
         // message was sent successfully.
         //
         /*--cef()--*/
-        bool SendProcessMessage(ProcessId targetProcess, IProcessMessage message);
+        bool SendProcessMessage(IProcessMessage message);
     }
 }

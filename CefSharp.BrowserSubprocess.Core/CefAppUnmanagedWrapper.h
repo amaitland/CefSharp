@@ -21,11 +21,11 @@ namespace CefSharp
     private:
         gcroot<Action<CefBrowserWrapper^>^> _onBrowserCreated;
         gcroot<Action<CefBrowserWrapper^>^> _onBrowserDestroyed;
-        gcroot<Func<CefBrowserWrapper^, ProcessId, IProcessMessage^, bool>^> _onProcessMessageReceived;
+        gcroot<Func<CefBrowserWrapper^, IProcessMessage^, bool>^> _onProcessMessageReceived;
         gcroot<Dictionary<int, CefBrowserWrapper^>^> _browserWrappers;
     public:
         CefAppUnmanagedWrapper(Action<CefBrowserWrapper^>^ onBrowserCreated, Action<CefBrowserWrapper^>^ onBrowserDestoryed,
-                                Func<CefBrowserWrapper^, ProcessId, IProcessMessage^, bool>^ onProcessMessageReceived)
+                                Func<CefBrowserWrapper^, IProcessMessage^, bool>^ onProcessMessageReceived)
         {
             _onBrowserCreated = onBrowserCreated;
             _onBrowserDestroyed = onBrowserDestoryed;

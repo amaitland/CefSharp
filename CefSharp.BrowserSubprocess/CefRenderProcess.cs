@@ -123,7 +123,7 @@ namespace CefSharp.BrowserSubprocess
             browser.JavascriptRootObject = null;
         }
 
-        public override bool OnProcessMessageReceived(CefBrowserWrapper browser, ProcessId sourceProcessId, IProcessMessage message)
+        public override bool OnProcessMessageReceived(CefBrowserWrapper browser, IProcessMessage message)
         {
             var name = message.Name;
             var argList = message.ArgumentList;
@@ -163,7 +163,7 @@ namespace CefSharp.BrowserSubprocess
                 responseArgList.SetBool(0, false);
                 responseArgList.SetInt64(1, callbackId);
                 responseArgList.SetString(2, errorMessage);
-                browser.SendProcessMessage(sourceProcessId, response);
+                browser.SendProcessMessage(response);
 
                 return true;
             }
@@ -218,7 +218,7 @@ namespace CefSharp.BrowserSubprocess
                 {
                     responseArgList.SetString(2, errorMessage);
                 }
-                browser.SendProcessMessage(sourceProcessId, response);
+                browser.SendProcessMessage(response);
 
                 return true;
             }
@@ -274,7 +274,7 @@ namespace CefSharp.BrowserSubprocess
                 responseArgList.SetInt64(1, callbackId);
                 responseArgList.SetString(2, errorMessage);
 
-                browser.SendProcessMessage(sourceProcessId, response);
+                browser.SendProcessMessage(response);
 
                 return true;
             }

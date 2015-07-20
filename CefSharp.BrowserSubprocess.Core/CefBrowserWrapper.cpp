@@ -29,11 +29,11 @@ namespace CefSharp
         return _callbackRegistry;
     }
 
-    bool CefBrowserWrapper::SendProcessMessage(ProcessId targetProcess, IProcessMessage^ message)
+    bool CefBrowserWrapper::SendProcessMessage(IProcessMessage^ message)
     {
         auto messageWrapper = (CefProcessMessageWrapper^)message;
 
-        return _browser->SendProcessMessage((CefProcessId)targetProcess, (CefRefPtr<CefProcessMessage>)messageWrapper);
+        return _browser->SendProcessMessage(CefProcessId::PID_BROWSER, (CefRefPtr<CefProcessMessage>)messageWrapper);
     }
 
     CefFrameWrapper^ CefBrowserWrapper::GetFrame(int64 frameId)

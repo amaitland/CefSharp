@@ -99,7 +99,6 @@
     <Compile Include="Internals\Messages.cs" />
     <Compile Include="Internals\MessagingExtensions.cs" />
     <Compile Include="Internals\PrimitiveType.cs" />
-    <Compile Include="ProcessId.cs" />
     <Compile Include="CefValueType.cs" />
     <Compile Include="IListValue.cs" />
     <Compile Include="IProcessMessage.cs" />

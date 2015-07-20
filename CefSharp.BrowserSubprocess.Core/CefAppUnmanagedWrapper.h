@@ -38,6 +38,7 @@ namespace CefSharp
             delete _browserWrappers;
             delete _onBrowserCreated;
             delete _onBrowserDestroyed;
+            delete _onProcessMessageReceived;
         }
 
         CefBrowserWrapper^ FindBrowserWrapper(int browserId, bool mustExist);

@@ -48,14 +48,14 @@ void ManagedCefBrowserAdapter::OnAfterBrowserCreated(int browserId)
         }
     }
 
-    /*auto message = MessageHandlerBrowserSide::WrapperFactory::CreateProcessMessage(Messages::RegisterJavascriptObjectsRequest);
+    if (_javaScriptObjectRepository->HasObjects)
+    {
+        auto message = CefProcessMessage::Create(StringUtils::ToNative(Messages::RegisterJavascriptObjectsRequest));
+        auto messageWrapper = gcnew CefProcessMessageWrapper(message);
+        MessagingExtensions::SerializeJsRootObject(messageWrapper->ArgumentList, _javaScriptObjectRepository->RootObject);
 
-    var argList = message.ArgumentList;
-
-    auto argumentList = message->ArgumentList;
-    Serialization::SerializeJsRootObject(_javaScriptObjectRepository->RootObject, argumentList);*/
-
-    //browser->SendProcessMessage(CefProcessId::PID_RENDERER, message);
+        browser->SendProcessMessage(CefProcessId::PID_RENDERER, message);
+    }
     
     if (_webBrowserInternal != nullptr)
     {
@@ -275,11 +275,6 @@ void ManagedCefBrowserAdapter::NotifyScreenInfoChanged()
 
 void ManagedCefBrowserAdapter::RegisterJsObject(String^ name, Object^ object, bool lowerCaseJavascriptNames)
 {
-    if (!CefSharpSettings::WcfEnabled)
-    {
-        throw gcnew InvalidOperationException("To enable synchronous JS bindings set WcfEnabled true in CefSettings during initialization.");
-    }
-
     _javaScriptObjectRepository->Register(name, object, lowerCaseJavascriptNames);
 }
 

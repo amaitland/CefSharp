@@ -43,13 +43,13 @@ namespace CefSharp.Internals
                 val.SetBool(i++, property.IsReadOnly);
                 if (property.IsComplexType)
                 {
-                    if (property.JsObject != null)
+                    if (property.JsObject == null)
                     {
-                        val.SerializeJsObject(property.JsObject, i++);
+                        val.SetNull(i++);
                     }
                     else
                     {
-                        val.SetNull(i++);
+                        val.SerializeJsObject(property.JsObject, i++);
                     }
                 }
             }

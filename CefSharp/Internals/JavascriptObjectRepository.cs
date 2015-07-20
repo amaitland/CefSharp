@@ -45,6 +45,11 @@ namespace CefSharp.Internals
             RootObject = new JavascriptRootObject();
         }
 
+        public bool HasObjects
+        {
+            get { return objects.Count > 0; }
+        }
+
         private JavascriptObject CreateJavascriptObject(bool camelCaseJavascriptNames)
         {
             var id = Interlocked.Increment(ref lastId);

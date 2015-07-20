@@ -15,10 +15,7 @@ namespace CefSharp.Wpf.Example.Views
             InitializeComponent();
 
             browser.RequestHandler = new RequestHandler();
-            if (CefSharpSettings.WcfEnabled)
-            {
-                browser.RegisterJsObject("bound", new BoundObject());
-            }
+            browser.RegisterJsObject("bound", new BoundObject());
 
             browser.MenuHandler = new Handlers.MenuHandler();
             browser.GeolocationHandler = new Handlers.GeolocationHandler();
@@ -54,7 +51,7 @@ namespace CefSharp.Wpf.Example.Views
 
                 // Display a load error message.
                 var errorBody = string.Format("<html><body bgcolor=\"white\"><h2>Failed to load URL {0} with error {1} ({2}).</h2></body></html>",
-                                              args.FailedUrl, args.ErrorText, args.ErrorCode);
+                    args.FailedUrl, args.ErrorText, args.ErrorCode);
 
                 args.Frame.LoadStringForUrl(errorBody, args.FailedUrl);
             };

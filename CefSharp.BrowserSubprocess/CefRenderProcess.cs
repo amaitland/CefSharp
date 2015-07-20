@@ -3,9 +3,10 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
-using CefSharp.Internals;
 using System.Collections.Generic;
 using System.ServiceModel;
+using CefSharp.Internals;
+using CefSharp.BrowserSubprocess.Messaging;
 
 namespace CefSharp.BrowserSubprocess
 {
@@ -124,7 +125,6 @@ namespace CefSharp.BrowserSubprocess
 
         public override bool OnProcessMessageReceived(CefBrowserWrapper browser, ProcessId sourceProcessId, IProcessMessage message)
         {
-            var handled = false;
             var name = message.Name;
             var argList = message.ArgumentList;
 
@@ -168,84 +168,75 @@ namespace CefSharp.BrowserSubprocess
                 return true;
             }
 
-            //these messages are roughly handled the same way
-            if (name == Messages.EvaluateJavascriptRequest || name == Messages.JavascriptCallbackRequest)
+            if (name == Messages.EvaluateJavascriptRequest)
             {
-                var success = false;
-                //CefRefPtr<CefV8Value> result;
-                var errorMessage = "";
-                IProcessMessage response;
-                //both messages have the callbackid stored at index 1
+                var frameId = argList.GetInt64(0);
                 var callbackId = argList.GetInt64(1);
+                var script = argList.GetString(2);
+                var success = false;
 
-                if (name == Messages.EvaluateJavascriptRequest)
+                var response = CreateProcessMessage(Messages.EvaluateJavascriptResponse);
+                var responseArgList = response.ArgumentList;
+
+                var frame = browser.GetFrame(frameId);
+                string errorMessage;
+                if (frame != null)
                 {
-                    var frameId = argList.GetInt64(0);
-                    var script = argList.GetString(2);
+                    var context = frame.GetV8Context();
 
-                    response = CreateProcessMessage(Messages.EvaluateJavascriptResponse);
+                    if (context == null)
+                    {
+                        errorMessage = "Unable to Enter Context";
+                    }
+                    else
+                    {
+                        CefV8ValueWrapper result;
+                        success = context.Eval(script, out result, out errorMessage);
 
-                    //var frame = browser.GetFrame(frameId);
-                    //if (frame.get())
-                    //{
-                    //	var context = frame.GetV8Context();
-
-                    //	if (context.get() && context.Enter())
-                    //	{
-                    //		try
-                    //		{
-                    //			CefRefPtr<CefV8Exception> exception;
-                    //			success = context.Eval(script, result, exception);
-
-                    //			//we need to do this here to be able to store the v8context
-                    //			if (success)
-                    //			{
-                    //				var responseArgList = response.GetArgumentList();
-                    //				SerializeV8Object(result, responseArgList, 2, browserWrapper.CallbackRegistry);
-                    //			}
-                    //			else
-                    //			{
-                    //				errorMessage = exception.GetMessage();
-                    //			}
-                    //		}
-                    //		finally
-                    //		{
-                    //			context.Exit();
-                    //		}
-                    //	}
-                    //	else
-                    //	{
-                    //		errorMessage = "Unable to Enter Context";
-                    //	}
-                    //}
-                    //else
-                    //{
-                    //	errorMessage = "Unable to Get Frame matching Id";
-                    //}
+                        //we need to do this here to be able to store the v8context
+                        if (success)
+                        {
+                            result.SerializeV8Object(responseArgList, 2, browser.CallbackRegistry, context);
+                        }
+                    }
                 }
                 else
                 {
-                    var jsCallbackId = argList.GetInt64(0);
-                    
-                    var callbackRegistry = browser.CallbackRegistry;
-                    var callbackWrapper = callbackRegistry.FindWrapper(jsCallbackId);
-
-                    response = callbackWrapper.Execute(message, callbackRegistry);
+                    errorMessage = "Unable to Get Frame matching Id";
                 }
                 
+                responseArgList.SetBool(0, success);
+                responseArgList.SetInt64(1, callbackId);
+                if (!success)
+                {
+                    responseArgList.SetString(2, errorMessage);
+                }
                 browser.SendProcessMessage(sourceProcessId, response);
 
-                handled = true;
+                return true;
+            }
+            else if (name == Messages.JavascriptCallbackRequest)
+            {
+                var jsCallbackId = argList.GetInt64(0);
+
+                var callbackRegistry = browser.CallbackRegistry;
+                var callbackWrapper = callbackRegistry.FindWrapper(jsCallbackId);
+
+                var response = callbackWrapper.Execute(message, callbackRegistry);
+
+                browser.SendProcessMessage(sourceProcessId, response);
+
+                return true;
             }
             else if (name == Messages.JavascriptCallbackDestroyRequest)
             {
                 var jsCallbackId = argList.GetInt64(0);
                 browser.CallbackRegistry.Deregister(jsCallbackId);
 
-                handled = true;
+                return true;
             }
 
-            return handled;
+            return false;
         }
     }
 }

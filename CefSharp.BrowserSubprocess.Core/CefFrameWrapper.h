@@ -7,6 +7,7 @@
 #include "include/cef_frame.h"
 
 #include "Stdafx.h"
+#include "CefV8ContextWrapper.h"
 
 using namespace CefSharp::Internals;
 
@@ -36,6 +37,17 @@ namespace CefSharp
         operator CefRefPtr<CefFrame>()
         {
             return _frame.get();
+        }
+
+        CefV8ContextWrapper^ GetV8Context()
+        {
+            auto context = _frame->GetV8Context();
+            if(context.get())
+            {
+                return gcnew CefV8ContextWrapper(context);
+            }
+
+            return nullptr;
         }
     };
 }

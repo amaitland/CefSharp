@@ -8,6 +8,9 @@
 
 #include "Stdafx.h"
 
+#include "CefV8ValueWrapper.h"
+#include "CefV8ExceptionWrapper.h"
+
 using namespace CefSharp::Internals;
 
 namespace CefSharp
@@ -43,10 +46,41 @@ namespace CefSharp
             return _context->Enter();
         }
 
-        bool Eval(String^ script)
+        bool Exit()
         {
-            //_context->Eval(
-            return false;
+            return _context->Exit();
+        }
+
+        bool Eval(String^ script, [Runtime::InteropServices::Out] CefV8ValueWrapper^ %value, [Runtime::InteropServices::Out] String^ %exception)
+        {
+            CefRefPtr<CefV8Value> retVal;
+            CefRefPtr<CefV8Exception> retException;
+            bool success = false;
+
+            if (_context.get() && _context->Enter())
+            {
+                try
+                {
+                    success = _context->Eval(StringUtils::ToNative(script), retVal, retException);
+
+                    if(!success)
+                    {
+                        exception = StringUtils::ToClr(retException->GetMessage());
+                    }
+                }
+                finally
+                {
+                    _context->Exit();
+                }
+            }
+            else
+            {
+                exception = "Unable to Enter Context";
+            }
+
+            value = gcnew CefV8ValueWrapper(retVal);
+
+            return success;
         }
     };
 }

@@ -11,6 +11,7 @@
 #include "TypeUtils.h"
 #include "Stdafx.h"
 #include "JavascriptRootObjectWrapper.h"
+#include "CefFrameWrapper.h"
 
 using namespace CefSharp::Internals;
 using namespace System;
@@ -84,6 +85,6 @@ namespace CefSharp
 
         bool SendProcessMessage(ProcessId targetProcess, IProcessMessage^ message);
 
-        IProcessMessage^ EvalScriptInFrame(IProcessMessage^ request);
+        CefFrameWrapper^ GetFrame(int64 frameId);
     };
 }

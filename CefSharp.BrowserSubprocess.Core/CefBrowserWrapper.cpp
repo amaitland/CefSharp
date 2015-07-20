@@ -33,6 +33,6 @@ namespace CefSharp
     {
         auto messageWrapper = (CefProcessMessageWrapper^)message;
 
-        return _cefBrowser->SendProcessMessage((CefProcessId)targetProcess, (CefRefPtr<CefProcessMessage>)messageWrapper);
+        return _browser->SendProcessMessage((CefProcessId)targetProcess, (CefRefPtr<CefProcessMessage>)messageWrapper);
     }
 }

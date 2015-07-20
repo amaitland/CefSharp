@@ -210,65 +210,6 @@ namespace CefSharp.BrowserSubprocess.Messaging
             return new CefV8ValueWrapper();
         }
 
-        public static JavascriptRootObject DeserializeJsRootObject(this IListValue list)
-        {
-            var result = new JavascriptRootObject();
-            var memberCount = (int)list.GetSize();
-
-            for (var i = 0; i < memberCount; i++)
-            {
-                result.MemberObjects.Add(DeserializeJsObject(list, i));
-            }
-
-            return result;
-        }
-
-        public static JavascriptObject DeserializeJsObject(this IListValue list, int index)
-        {
-            var result = new JavascriptObject();
-            var subList = list.GetList(index);
-            var i = 0;
-
-            result.Id = subList.GetInt64(i++);
-            result.Name = subList.GetString(i++);
-            result.JavascriptName = subList.GetString(i++);
-
-            var methodCount = subList.GetInt(i++);
-            for (var j = 0; j < methodCount; j++)
-            {
-                var method = new JavascriptMethod();
-                method.Id = subList.GetInt64(i++);
-                method.JavascriptName = subList.GetString(i++);
-                method.ManagedName = subList.GetString(i++);
-                method.ParameterCount = subList.GetInt(i++);
-
-                result.Methods.Add(method);
-            }
-
-            var propertyCount = subList.GetInt(i++);
-            for (var j = 0; j < propertyCount; j++)
-            {
-                var prop = new JavascriptProperty();
-                prop.Id = subList.GetInt64(i++);
-                prop.JavascriptName = subList.GetString(i++);
-                prop.ManagedName = subList.GetString(i++);
-                prop.IsComplexType = subList.GetBool(i++);
-                prop.IsReadOnly = subList.GetBool(i++);
-                if (prop.IsComplexType)
-                {
-                    var type = subList.GetType(i);
-                    if (type == CefValueType.List)
-                    {
-                        prop.JsObject = DeserializeJsObject(subList, i++);
-                    }
-                }
-
-                result.Properties.Add(prop);
-            }
-
-            return result;
-        }
-
         /*
          * template<typename TList, typename TIndex>
             bool IsType(PrimitiveType type, CefRefPtr<TList> list, TIndex index)

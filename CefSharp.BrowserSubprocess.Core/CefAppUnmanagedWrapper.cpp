@@ -9,6 +9,7 @@
 #include "CefAppUnmanagedWrapper.h"
 #include "JavascriptRootObjectWrapper.h"
 #include "Serialization\V8Serialization.h"
+#include "..\CefSharp.Core\Internals\CefProcessMessageWrapper.h"
 #include "..\CefSharp.Core\Internals\Serialization\Primitives.h"
 
 using namespace System;
@@ -87,6 +88,15 @@ namespace CefSharp
 
     bool CefAppUnmanagedWrapper::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId sourceProcessId, CefRefPtr<CefProcessMessage> message)
     {
+        auto wrapper = FindBrowserWrapper(browser->GetIdentifier(), false);
+
+        if (wrapper == nullptr)
+        {
+            return false;
+        }
+        
+        return _onProcessMessageReceived->Invoke(wrapper, (ProcessId)sourceProcessId, gcnew CefProcessMessageWrapper(message));
+        
         auto handled = false;
         auto name = message->GetName();
         auto argList = message->GetArgumentList();

@@ -44,5 +44,10 @@ namespace CefSharp.BrowserSubprocess
         {
             
         }
+
+        public override bool OnProcessMessageReceived(CefBrowserWrapper browser, ProcessId sourceProcessId, IProcessMessage message)
+        {
+            return false;
+        }
     }
 }

@@ -118,9 +118,15 @@ namespace CefSharp
         // Reads all keys for this dictionary into the specified vector.
         ///
         /*--cef()--*/
-        virtual bool GetKeys(IList<String^>^ keys)
+        virtual bool GetKeys(IList<String^>^ %keys)
         {
-            return false;
+            std::vector<CefString> nativeKeys;
+
+            auto result = _dictionaryValue->GetKeys(nativeKeys);
+
+            keys = StringUtils::ToClr(nativeKeys);
+
+            return result;
         }
 
         ///

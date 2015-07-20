@@ -68,9 +68,6 @@
     <ClInclude Include="..\CefSharp.Core\Internals\ReportUnhandledExceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Serialization\V8Serialization.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\CefSharp.Core\Internals\CefDictionaryValueWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\CefSharp.Core\Internals\CefProcessMessageWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Serialization\Primitives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CefFrameWrapper.h">
@@ -134,15 +128,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JavascriptCallbackRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JavascriptCallbackWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Serialization\V8Serialization.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Serialization\Primitives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

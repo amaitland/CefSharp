@@ -8,14 +8,11 @@
 #include "CefBrowserWrapper.h"
 #include "CefAppUnmanagedWrapper.h"
 #include "JavascriptRootObjectWrapper.h"
-#include "Serialization\V8Serialization.h"
 #include "..\CefSharp.Core\Internals\CefProcessMessageWrapper.h"
-#include "Serialization\Primitives.h"
 
 using namespace System;
 using namespace System::Diagnostics;
 using namespace System::Collections::Generic;
-using namespace CefSharp::Internals::Serialization;
 
 namespace CefSharp
 {

@@ -176,10 +176,8 @@
     <ClInclude Include="JavascriptPropertyWrapper.h" />
     <ClInclude Include="JavascriptPropertyHandler.h" />
     <ClInclude Include="JavascriptRootObjectWrapper.h" />
-    <ClInclude Include="Serialization\Primitives.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="TypeUtils.h" />
-    <ClInclude Include="Serialization\V8Serialization.h" />
     <ClInclude Include="vcclr_local.h" />
   </ItemGroup>
   <ItemGroup>
@@ -189,13 +187,11 @@
     <ClCompile Include="CefAppWrapper.cpp" />
     <ClCompile Include="CefBrowserWrapper.cpp" />
     <ClCompile Include="JavascriptCallbackRegistry.cpp" />
-    <ClCompile Include="JavascriptCallbackWrapper.cpp" />
     <ClCompile Include="JavascriptMethodHandler.cpp" />
     <ClCompile Include="JavascriptMethodWrapper.cpp" />
     <ClCompile Include="JavascriptObjectWrapper.cpp" />
     <ClCompile Include="JavascriptPropertyWrapper.cpp" />
     <ClCompile Include="JavascriptRootObjectWrapper.cpp" />
-    <ClCompile Include="Serialization\Primitives.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -203,7 +199,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TypeUtils.cpp" />
-    <ClCompile Include="Serialization\V8Serialization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CefSharp\CefSharp.csproj">

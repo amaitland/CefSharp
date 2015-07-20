@@ -58,7 +58,7 @@ namespace CefSharp
         // Reads all keys for this dictionary into the specified vector.
         ///
         /*--cef()--*/
-        //bool GetKeys(out IList<string> keys);
+        bool GetKeys(out IList<string> keys);
 
         ///
         // Removes the value at the specified key. Returns true is the value was

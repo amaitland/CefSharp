@@ -6,9 +6,7 @@
 #include "Stdafx.h"
 
 #include "CefBrowserWrapper.h"
-#include "Serialization/V8Serialization.h"
 #include ".\..\CefSharp.Core\Internals\CefProcessMessageWrapper.h"
-#include "Serialization\Primitives.h"
 
 namespace CefSharp
 {

@@ -11,45 +11,45 @@ namespace CefSharp.Internals
             var memberObjects = value.MemberObjects;
             for (var i = 0; i < memberObjects.Count; i++)
             {
-                list.SerializeJsObject(memberObjects[i],  i);
+                var subList = list.CreateListAtIndex(i);
+                subList.SerializeJsObject(memberObjects[i]);
             }
         }
 
-        public static void SerializeJsObject(this IListValue list, JavascriptObject value, int index)
+        public static void SerializeJsObject(this IListValue list, JavascriptObject value)
         {
-            var subList = list.CreateListAtIndex(index);
-
             var i = 0;
-            subList.SetInt64(i++, value.Id);
-            subList.SetString(i++, value.Name);
-            subList.SetString(i++, value.JavascriptName);
+            list.SetInt64(i++, value.Id);
+            list.SetString(i++, value.Name);
+            list.SetString(i++, value.JavascriptName);
 
-            subList.SetInt(i++, value.Methods.Count);
+            list.SetInt(i++, value.Methods.Count);
             foreach(var method in value.Methods)
             {
-                subList.SetInt64(i++, method.Id);
-                subList.SetString(i++, method.JavascriptName);
-                subList.SetString(i++, method.ManagedName);
-                subList.SetInt(i++, method.ParameterCount);
+                list.SetInt64(i++, method.Id);
+                list.SetString(i++, method.JavascriptName);
+                list.SetString(i++, method.ManagedName);
+                list.SetInt(i++, method.ParameterCount);
             }
 
-            subList.SetInt(i++, value.Properties.Count);
+            list.SetInt(i++, value.Properties.Count);
             foreach(var property in value.Properties)
             {
-                subList.SetInt64(i++, property.Id);
-                subList.SetString(i++, property.JavascriptName);
-                subList.SetString(i++, property.ManagedName);
-                subList.SetBool(i++, property.IsComplexType);
-                subList.SetBool(i++, property.IsReadOnly);
+                list.SetInt64(i++, property.Id);
+                list.SetString(i++, property.JavascriptName);
+                list.SetString(i++, property.ManagedName);
+                list.SetBool(i++, property.IsComplexType);
+                list.SetBool(i++, property.IsReadOnly);
                 if (property.IsComplexType)
                 {
                     if (property.JsObject == null)
                     {
-                        subList.SetNull(i++);
+                        list.SetNull(i++);
                     }
                     else
                     {
-                        subList.SerializeJsObject(property.JsObject, i++);
+                        var subList = list.CreateListAtIndex(i++);
+                        subList.SerializeJsObject(property.JsObject);
                     }
                 }
             }
@@ -62,49 +62,51 @@ namespace CefSharp.Internals
 
             for (var i = 0; i < memberCount; i++)
             {
-                result.MemberObjects.Add(list.DeserializeJsObject(i));
+                var subList = list.GetList(i);
+                var jsObject = subList.DeserializeJsObject();
+                result.MemberObjects.Add(jsObject);
             }
 
             return result;
         }
 
-        public static JavascriptObject DeserializeJsObject(this IListValue list, int index)
+        public static JavascriptObject DeserializeJsObject(this IListValue list)
         {
             var result = new JavascriptObject();
-            var subList = list.GetList(index);
             var i = 0;
 
-            result.Id = subList.GetInt64(i++);
-            result.Name = subList.GetString(i++);
-            result.JavascriptName = subList.GetString(i++);
+            result.Id = list.GetInt64(i++);
+            result.Name = list.GetString(i++);
+            result.JavascriptName = list.GetString(i++);
 
-            var methodCount = subList.GetInt(i++);
+            var methodCount = list.GetInt(i++);
             for (var j = 0; j < methodCount; j++)
             {
                 var method = new JavascriptMethod();
-                method.Id = subList.GetInt64(i++);
-                method.JavascriptName = subList.GetString(i++);
-                method.ManagedName = subList.GetString(i++);
-                method.ParameterCount = subList.GetInt(i++);
+                method.Id = list.GetInt64(i++);
+                method.JavascriptName = list.GetString(i++);
+                method.ManagedName = list.GetString(i++);
+                method.ParameterCount = list.GetInt(i++);
 
                 result.Methods.Add(method);
             }
 
-            var propertyCount = subList.GetInt(i++);
+            var propertyCount = list.GetInt(i++);
             for (var j = 0; j < propertyCount; j++)
             {
                 var prop = new JavascriptProperty();
-                prop.Id = subList.GetInt64(i++);
-                prop.JavascriptName = subList.GetString(i++);
-                prop.ManagedName = subList.GetString(i++);
-                prop.IsComplexType = subList.GetBool(i++);
-                prop.IsReadOnly = subList.GetBool(i++);
+                prop.Id = list.GetInt64(i++);
+                prop.JavascriptName = list.GetString(i++);
+                prop.ManagedName = list.GetString(i++);
+                prop.IsComplexType = list.GetBool(i++);
+                prop.IsReadOnly = list.GetBool(i++);
                 if (prop.IsComplexType)
                 {
-                    var type = subList.GetType(i);
+                    var type = list.GetType(i);
                     if (type == CefValueType.List)
                     {
-                        prop.JsObject = subList.DeserializeJsObject(i++);
+                        var subList = list.GetList(i);
+                        prop.JsObject = subList.DeserializeJsObject();
                     }
                 }
 

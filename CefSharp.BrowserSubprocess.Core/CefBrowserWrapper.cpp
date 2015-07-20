@@ -6,6 +6,7 @@
 #include "Stdafx.h"
 
 #include "CefBrowserWrapper.h"
+#include ".\..\CefSharp.Core\Internals\CefProcessMessageWrapper.h"
 
 namespace CefSharp
 {
@@ -26,5 +27,12 @@ namespace CefSharp
     JavascriptCallbackRegistry^ CefBrowserWrapper::CallbackRegistry::get()
     {
         return _callbackRegistry;
+    }
+
+    bool CefBrowserWrapper::SendProcessMessage(ProcessId targetProcess, IProcessMessage^ message)
+    {
+        auto messageWrapper = (CefProcessMessageWrapper^)message;
+
+        return _cefBrowser->SendProcessMessage((CefProcessId)targetProcess, (CefRefPtr<CefProcessMessage>)messageWrapper);
     }
 }

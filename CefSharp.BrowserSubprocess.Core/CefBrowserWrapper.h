@@ -76,5 +76,7 @@ namespace CefSharp
 
         // The WCF proxy to the parent process.
         property IBrowserProcess^ BrowserProcess;
+
+        bool SendProcessMessage(ProcessId targetProcess, IProcessMessage^ message);
     };
 }

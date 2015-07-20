@@ -35,12 +35,12 @@ namespace CefSharp.BrowserSubprocess
             ParentProcessId = int.Parse(parentProcessId);
         }
 
-        public override void OnBrowserCreated(CefBrowserWrapper cefBrowserWrapper)
+        public override void OnBrowserCreated(CefBrowserWrapper browser)
         {
             
         }
 
-        public override void OnBrowserDestroyed(CefBrowserWrapper cefBrowserWrapper)
+        public override void OnBrowserDestroyed(CefBrowserWrapper browser)
         {
             
         }

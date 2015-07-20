@@ -6,6 +6,9 @@
 
 #include "include\cef_v8.h"
 
+#include "CefV8ValueWrapper.h"
+#include "CefV8ContextWrapper.h"
+
 using namespace CefSharp::Internals;
 
 namespace CefSharp
@@ -35,14 +38,14 @@ namespace CefSharp
                 this->!JavascriptCallbackWrapper();
             }
 
-            CefRefPtr<CefV8Value> GetValue()
+            CefV8ValueWrapper^ GetValue()
             {
-                return _value.get();
+                return gcnew CefV8ValueWrapper(_value.get());
             }
 
-            CefRefPtr<CefV8Context> GetContext()
+            CefV8ContextWrapper^ GetContext()
             {
-                return _context.get();
+                return gcnew CefV8ContextWrapper(_context.get());
             }
         };
     }

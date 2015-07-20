@@ -218,73 +218,56 @@ namespace CefSharp.BrowserSubprocess
             else if (name == Messages.JavascriptCallbackRequest)
             {
                 var jsCallbackId = argList.GetInt64(0);
+                var callbackId = argList.GetInt64(1);
 
                 var callbackRegistry = browser.CallbackRegistry;
                 var callbackWrapper = callbackRegistry.FindWrapper(jsCallbackId);
 
-				var parameterList = argList.GetList(2);
+                var parameterList = argList.GetList(2);
+                var parameterListSize = (int)parameterList.GetSize();
 
+                var paramList = new List<CefV8ValueWrapper>();
+                for (var i = 0; i < parameterListSize; i++)
+                {
+                    paramList.Add(parameterList.DeserializeV8Object(i));
+                }
 
+                var response = CreateProcessMessage(Messages.JavascriptCallbackResponse);
+                var responseArgList = response.ArgumentList;
 
-				//CefV8ValueList params;
-				//for (CefV8ValueList::size_type i = 0; i < parameterList->GetSize(); i++)
-				//{
-				//	params.push_back(DeserializeV8Object(parameterList, static_cast<int>(i)));
-				//}
+                var context = callbackWrapper.GetContext();
+                var value = callbackWrapper.GetValue();
+                string errorMessage;
+                var success = false;
 
-				//response = CefProcessMessage::Create(StringUtils::ToNative(Messages::JavascriptCallbackResponse));
+                if (context != null && context.Enter())
+                {
+                    try
+                    {
+                        CefV8ValueWrapper result;
+                        success = value.ExecuteFunction(paramList, out result, out errorMessage);
 
-				//auto callbackRegistry = browserWrapper->CallbackRegistry;
-				//auto callbackWrapper = callbackRegistry->FindWrapper(jsCallbackId);
-				//auto context = callbackWrapper->GetContext();
-				//auto value = callbackWrapper->GetValue();
+                        //we need to do this here to be able to store the v8context
+                        if (success)
+                        {
+                            result.SerializeV8Object(responseArgList, 2, callbackRegistry, context);
+                        }
+                    }
+                    finally
+                    {
+                        context.Exit();
+                    }
+                }
+                else
+                {
+                    errorMessage = "Unable to Enter Context";
+                }
                 
-				//if (context.get() && context->Enter())
-				//{
-				//	try
-				//	{
-				//		result = value->ExecuteFunction(nullptr, params);
-				//		success = result.get() != nullptr;
-                        
-				//		//we need to do this here to be able to store the v8context
-				//		if (success)
-				//		{
-				//			auto responseArgList = response->GetArgumentList();
-				//			SerializeV8Object(result, responseArgList, 2, browserWrapper->CallbackRegistry);
-				//		}
-				//		else
-				//		{
-				//			auto exception = value->GetException();
-				//			if(exception.get())
-				//			{
-				//				errorMessage = exception->GetMessage();
-				//			}
-				//		}
-				//	}
-				//	finally
-				//	{
-				//		context->Exit();
-				//	}
-				//}
-				//else
-				//{
-				//	errorMessage = "Unable to Enter Context";			
-				//}                
+                responseArgList.SetBool(0, success);
+                responseArgList.SetInt64(1, callbackId);
+                responseArgList.SetString(2, errorMessage);
 
-				//{
-				//	auto responseArgList = response->GetArgumentList();
-				//	responseArgList->SetBool(0, success);
-				//	SetInt64(callbackId, responseArgList, 1);
-				//	if (!success)
-				//	{
-				//		responseArgList->SetString(2, errorMessage);
-				//	}
-				//	browser->SendProcessMessage(sourceProcessId, response);
-				//}
-
-                //var response = callbackWrapper.Execute(message, callbackRegistry);
-
-                //browser.SendProcessMessage(sourceProcessId, response);
+                browser.SendProcessMessage(sourceProcessId, response);
 
                 return true;
             }

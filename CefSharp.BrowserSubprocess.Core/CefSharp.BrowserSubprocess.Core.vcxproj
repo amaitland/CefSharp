@@ -153,6 +153,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CefSharp.Core\Internals\CefDictionaryValueWrapper.h" />
+    <ClInclude Include="..\CefSharp.Core\Internals\CefListValueWrapper.h" />
+    <ClInclude Include="..\CefSharp.Core\Internals\CefProcessMessageWrapper.h" />
     <ClInclude Include="..\CefSharp.Core\Internals\MCefRefPtr.h" />
     <ClInclude Include="..\CefSharp.Core\Internals\ReportUnhandledExceptions.h" />
     <ClInclude Include="..\CefSharp.Core\Internals\Serialization\Primitives.h" />

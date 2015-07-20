@@ -74,6 +74,15 @@
     <ClInclude Include="Serialization\V8Serialization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\CefSharp.Core\Internals\CefDictionaryValueWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CefSharp.Core\Internals\CefListValueWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CefSharp.Core\Internals\CefProcessMessageWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">

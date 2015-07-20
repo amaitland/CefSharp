@@ -190,9 +190,6 @@
     <ClInclude Include="Internals\Serialization\Primitives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Internals\Messaging\Messages.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Internals\CefWindowInfoWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>

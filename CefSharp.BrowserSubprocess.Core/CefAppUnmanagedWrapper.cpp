@@ -9,13 +9,11 @@
 #include "CefAppUnmanagedWrapper.h"
 #include "JavascriptRootObjectWrapper.h"
 #include "Serialization\V8Serialization.h"
-#include "..\CefSharp.Core\Internals\Messaging\Messages.h"
 #include "..\CefSharp.Core\Internals\Serialization\Primitives.h"
 
 using namespace System;
 using namespace System::Diagnostics;
 using namespace System::Collections::Generic;
-using namespace CefSharp::Internals::Messaging;
 using namespace CefSharp::Internals::Serialization;
 
 namespace CefSharp
@@ -98,7 +96,7 @@ namespace CefSharp
         //Error handling for missing/closed browser
         if (browserWrapper == nullptr)
         {
-            if (name == kJavascriptCallbackDestroyRequest)
+            if (name == StringUtils::ToNative(Messages::JavascriptCallbackDestroyRequest))
             {
                 //If we can't find the browser wrapper then we'll just
                 //ignore this as it's likely already been disposed of
@@ -106,13 +104,13 @@ namespace CefSharp
             }
 
             CefString responseName;
-            if (name == kEvaluateJavascriptRequest)
+            if (name == StringUtils::ToNative(Messages::EvaluateJavascriptRequest))
             {
-                responseName = kEvaluateJavascriptResponse;
+                responseName = StringUtils::ToNative(Messages::EvaluateJavascriptResponse);
             }
-            else if (name == kJavascriptCallbackRequest)
+            else if (name == StringUtils::ToNative(Messages::JavascriptCallbackRequest))
             {
-                responseName = kJavascriptCallbackResponse;
+                responseName = StringUtils::ToNative(Messages::JavascriptCallbackResponse);
             }
             else
             {
@@ -136,7 +134,8 @@ namespace CefSharp
         }
     
         //these messages are roughly handled the same way
-        if (name == kEvaluateJavascriptRequest || name == kJavascriptCallbackRequest)
+        if (name == StringUtils::ToNative(Messages::EvaluateJavascriptRequest)
+         || name == StringUtils::ToNative(Messages::JavascriptCallbackRequest))
         {
             bool success;
             CefRefPtr<CefV8Value> result;
@@ -145,12 +144,12 @@ namespace CefSharp
             //both messages have the callbackid stored at index 1
             int64 callbackId = GetInt64(argList, 1);
 
-            if (name == kEvaluateJavascriptRequest)
+            if (name == StringUtils::ToNative(Messages::EvaluateJavascriptRequest))
             {
                 auto frameId = GetInt64(argList, 0);
                 auto script = argList->GetString(2);
 
-                response = CefProcessMessage::Create(kEvaluateJavascriptResponse);
+                response = CefProcessMessage::Create(StringUtils::ToNative(Messages::EvaluateJavascriptResponse));
 
                 auto frame = browser->GetFrame(frameId);
                 if (frame.get())
@@ -200,7 +199,7 @@ namespace CefSharp
                     params.push_back(DeserializeV8Object(parameterList, static_cast<int>(i)));
                 }
 
-                response = CefProcessMessage::Create(kJavascriptCallbackResponse);
+                response = CefProcessMessage::Create(StringUtils::ToNative(Messages::JavascriptCallbackResponse));
 
                 auto callbackRegistry = browserWrapper->CallbackRegistry;
                 auto callbackWrapper = callbackRegistry->FindWrapper(jsCallbackId);
@@ -254,7 +253,7 @@ namespace CefSharp
 
             handled = true;
         }
-        else if (name == kJavascriptCallbackDestroyRequest)
+        else if (name == StringUtils::ToNative(Messages::JavascriptCallbackDestroyRequest))
         {
             auto jsCallbackId = GetInt64(argList, 0);
             browserWrapper->CallbackRegistry->Deregister(jsCallbackId);

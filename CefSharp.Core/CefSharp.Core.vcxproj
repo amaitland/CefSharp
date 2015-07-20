@@ -274,7 +274,6 @@
     <ClInclude Include="Internals\CefJSDialogCallbackWrapper.h" />
     <ClInclude Include="Internals\ManagedWrapperFactory.h" />
     <ClInclude Include="Internals\MCefRefPtr.h" />
-    <ClInclude Include="Internals\Messaging\Messages.h" />
     <ClInclude Include="Internals\PluginVisitor.h" />
     <ClInclude Include="Internals\RenderClientAdapter.h" />
     <ClInclude Include="Internals\ReportUnhandledExceptions.h" />

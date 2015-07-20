@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace CefSharp.Internals
 {
@@ -29,7 +30,6 @@ namespace CefSharp.Internals
     public class JavascriptObjectRepository : DisposableResource
     {
         private static long lastId;
-        private static readonly object Lock = new object();
 
         // A hash from assigned object ids to the objects,
         // this is done to speed up finding the object in O(1) time
@@ -47,11 +47,8 @@ namespace CefSharp.Internals
 
         private JavascriptObject CreateJavascriptObject(bool camelCaseJavascriptNames)
         {
-            long id;
-            lock (Lock)
-            {
-                id = lastId++;
-            }
+            var id = Interlocked.Increment(ref lastId);
+
             var result = new JavascriptObject { Id = id, CamelCaseJavascriptNames = camelCaseJavascriptNames };
             objects[id] = result;
 

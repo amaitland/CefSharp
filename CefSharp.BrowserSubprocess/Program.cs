@@ -38,7 +38,7 @@ namespace CefSharp.BrowserSubprocess
             {
                 case "renderer":
                 {
-                    return wcfEnabled ? new CefRenderProcess(args) : new CefSubProcess(args);
+                    return new CefRenderProcess(args, wcfEnabled);
                 }
                 case "gpu-process":
                 {

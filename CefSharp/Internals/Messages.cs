@@ -16,5 +16,7 @@ namespace CefSharp.Internals
 		public const string JavascriptCallbackDestroyRequest = "JavascriptCallbackDestroyRequest";
 		//Message containing the result of a given js function call
 		public const string JavascriptCallbackResponse = "JavascriptCallbackDoneResponse";
+
+		public const string RegisterJavascriptObjectsRequest = "RegisterJavascriptObjectsRequest";
 	}
 }

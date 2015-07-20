@@ -168,6 +168,13 @@ namespace CefSharp.BrowserSubprocess
                 return true;
             }
 
+            if (name == Messages.RegisterJavascriptObjectsRequest)
+            {
+                browser.JavascriptRootObject = argList.DeserializeJsRootObject();
+
+                return true;
+            }
+
             if (name == Messages.EvaluateJavascriptRequest)
             {
                 var frameId = argList.GetInt64(0);

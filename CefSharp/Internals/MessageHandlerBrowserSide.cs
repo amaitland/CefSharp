@@ -75,10 +75,10 @@ namespace CefSharp.Internals
         }
 
         protected override void DoDispose(bool isDisposing)
-		{
-			//TODO: Implement
- 			base.DoDispose(isDisposing);
-		}
+        {
+            //TODO: Implement
+            base.DoDispose(isDisposing);
+        }
         
         //TODO: Turn this into an extension method
         private object DeserializeV8Object(IListValue list, int index, IJavascriptCallbackFactory javascriptCallbackFactory)

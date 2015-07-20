@@ -187,5 +187,7 @@ namespace CefSharp
         ///
         /*--cef(index_param=index)--*/
         bool SetList(int index, IListValue value);
+
+        IListValue CreateListAtIndex(int index);
     }
 }

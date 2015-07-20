@@ -20,10 +20,6 @@
 #include "CefRequestCallbackWrapper.h"
 #include "CefWindowInfoWrapper.h"
 #include "CefProcessMessageWrapper.h"
-#include "Serialization\Primitives.h"
-#include "Serialization\V8Serialization.h"
-
-using namespace CefSharp::Internals::Serialization;
 
 namespace CefSharp
 {

@@ -91,14 +91,35 @@ namespace CefSharp.BrowserSubprocess
                 return true;
             }
 
-			if (name == Messages.CallMethodResponse)
-			{
-				var callbackId = argList.GetInt64(0, 1);
+            if (name == Messages.CallMethodResponse)
+            {
+                var callbackId = argList.GetInt64(0, 1);
+                var success = argList.GetBool(2);
 
-				//browser.BrowserProcess
+                var handler = (RenderProcessMessageHandler)browser.BrowserProcess;
 
-				return true;
-			}
+                var pendingTask = handler.TaskRepository.RemovePendingTask(callbackId);
+                if (pendingTask != null)
+                {
+                    var response = new BrowserProcessResponse
+                    {
+                        Success = success
+                    };
+
+                    if (success)
+                    {
+                        response.Result = argList.DeserializeV8Object(3);
+                    }
+                    else
+                    {
+                        response.Message = argList.GetString(3);
+                    }
+
+                    pendingTask.SetResult(response);
+                }
+
+                return true;
+            }
 
             if (name == Messages.RegisterJavascriptObjectsRequest)
             {

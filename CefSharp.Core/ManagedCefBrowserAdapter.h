@@ -28,7 +28,6 @@ namespace CefSharp
     public ref class ManagedCefBrowserAdapter : public IBrowserAdapter
     {
         MCefRefPtr<ClientAdapter> _clientAdapter;
-        BrowserProcessServiceHost^ _browserProcessServiceHost;
         IWebBrowserInternal^ _webBrowserInternal;
         JavascriptObjectRepository^ _javaScriptObjectRepository;
         IBrowser^ _browserWrapper;
@@ -76,12 +75,6 @@ namespace CefSharp
 
             delete _browserWrapper;
             _browserWrapper = nullptr;
-
-            if (CefSharpSettings::WcfEnabled)
-            {
-                _browserProcessServiceHost->Close();
-                _browserProcessServiceHost = nullptr;
-            }
 
             _webBrowserInternal = nullptr;
             _javaScriptObjectRepository = nullptr;

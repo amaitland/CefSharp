@@ -3,11 +3,9 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
-using System.Runtime.Serialization;
 
 namespace CefSharp.Internals
 {
-    [DataContract]
     public class JavascriptMethod
     {
         /// <summary>
@@ -18,19 +16,16 @@ namespace CefSharp.Internals
         /// <summary>
         /// Identifies the <see cref="JavascriptMethod" /> for BrowserProcess to RenderProcess communication
         /// </summary>
-        [DataMember]
         public long Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the managed property.
         /// </summary>
-        [DataMember]
         public string ManagedName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the property in the JavaScript runtime.
         /// </summary>
-        [DataMember]
         public string JavascriptName { get; set; }
 
         /// <summary>

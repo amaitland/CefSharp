@@ -45,10 +45,7 @@ namespace CefSharp
 
         virtual void OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) OVERRIDE
         {
-            if (CefSharpSettings::WcfEnabled)
-            {
-                command_line->AppendArgument(StringUtils::ToNative(CefSharpArguments::WcfEnabledArgument));
-            }
+            
         }
         
         virtual void OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) OVERRIDE

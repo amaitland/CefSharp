@@ -3,7 +3,6 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
-using System.Runtime.Serialization;
 
 namespace CefSharp
 {
@@ -12,7 +11,6 @@ namespace CefSharp
     /// <summary>
     /// Provides base class functionality for implementing the Dispose Pattern.
     /// </summary>
-    [DataContract]
     public abstract class DisposableResource : IDisposable
     {
         ~DisposableResource()

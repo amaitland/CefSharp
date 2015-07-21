@@ -13,19 +13,15 @@ namespace CefSharp.Internals
     /// and mapping information to how the object/method/proprerty
     /// will be exposed to JavaScript.
     /// </summary>
-    [DataContract]
     public class JavascriptObject //: DynamicObject maybe later
     {
         /// <summary>
         /// Identifies the <see cref="JavascriptObject" /> for BrowserProcess to RenderProcess communication
         /// </summary>
-        [DataMember]
         public long Id { get; set; }
 
-        [DataMember]
         public string Name { get; set; }
 
-        [DataMember]
         public string JavascriptName { get; set; }
 
         /// <summary>
@@ -36,13 +32,11 @@ namespace CefSharp.Internals
         /// <summary>
         /// Gets the methods of the <see cref="JavascriptObject" />.
         /// </summary>
-        [DataMember]
         public List<JavascriptMethod> Methods { get; private set; }
 
         /// <summary>
         /// Gets the properties of the <see cref="JavascriptObject" />.
         /// </summary>
-        [DataMember]
         public List<JavascriptProperty> Properties { get; private set; }
 
         /// <summary>

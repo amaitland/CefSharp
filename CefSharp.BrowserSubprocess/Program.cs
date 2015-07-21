@@ -30,7 +30,6 @@ namespace CefSharp.BrowserSubprocess
         {
             const string typePrefix = "--type=";
             var typeArgument = args.SingleOrDefault(arg => arg.StartsWith(typePrefix));
-            var wcfEnabled = args.Any(a => a.StartsWith(CefSharpArguments.WcfEnabledArgument));
 
             var type = typeArgument.Substring(typePrefix.Length);
 
@@ -38,7 +37,7 @@ namespace CefSharp.BrowserSubprocess
             {
                 case "renderer":
                 {
-                    return new CefRenderProcess(args, wcfEnabled);
+                    return new CefRenderProcess(args);
                 }
                 case "gpu-process":
                 {

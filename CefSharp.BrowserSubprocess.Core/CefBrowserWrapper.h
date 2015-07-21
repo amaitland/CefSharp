@@ -15,7 +15,6 @@
 
 using namespace CefSharp::Internals;
 using namespace System;
-using namespace System::ServiceModel;
 using namespace System::Threading;
 using namespace System::Threading::Tasks;
 
@@ -53,9 +52,6 @@ namespace CefSharp
 
         property int BrowserId;
         property bool IsPopup;
-
-        // This allows us to create the WCF proxies back to our parent process.
-        property ChannelFactory<IBrowserProcess^>^ ChannelFactory;
 
         // The serialized registered object data waiting to be used.
         property JavascriptRootObject^ JavascriptRootObject;

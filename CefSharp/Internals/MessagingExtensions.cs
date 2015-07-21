@@ -9,10 +9,15 @@ namespace CefSharp.Internals
         public static void SerializeJsRootObject(this IListValue list, JavascriptRootObject value)
         {
             var memberObjects = value.MemberObjects;
+
+            list.SetInt(0, memberObjects.Count);
+
             for (var i = 0; i < memberObjects.Count; i++)
             {
-                var subList = list.CreateListAtIndex(i);
+                var subList = list.CreateList();
                 subList.SerializeJsObject(memberObjects[i]);
+
+                list.SetList(i + 1, subList);
             }
         }
 
@@ -48,8 +53,10 @@ namespace CefSharp.Internals
                     }
                     else
                     {
-                        var subList = list.CreateListAtIndex(i++);
+                        var subList = list.CreateList();
                         subList.SerializeJsObject(property.JsObject);
+
+                        list.SetList(i++, subList);
                     }
                 }
             }
@@ -58,13 +65,17 @@ namespace CefSharp.Internals
         public static JavascriptRootObject DeserializeJsRootObject(this IListValue list)
         {
             var result = new JavascriptRootObject();
-            var memberCount = (int)list.GetSize();
+            var memberCount = list.GetInt(0);
 
             for (var i = 0; i < memberCount; i++)
             {
-                var subList = list.GetList(i);
-                var jsObject = subList.DeserializeJsObject();
-                result.MemberObjects.Add(jsObject);
+                var type = list.GetType(i + 1);
+                if (type == CefValueType.List)
+                {
+                    var subList = list.GetList(i + 1);
+                    var jsObject = subList.DeserializeJsObject();
+                    result.MemberObjects.Add(jsObject);
+                }
             }
 
             return result;

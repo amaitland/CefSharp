@@ -19,14 +19,14 @@ namespace CefSharp.Internals
         public static void SerializeJsObject(this IListValue list, JavascriptObject value)
         {
             var i = 0;
-            list.SetInt64(i++, value.Id);
+            list.SetInt64(i++, i++, value.Id);
             list.SetString(i++, value.Name);
             list.SetString(i++, value.JavascriptName);
 
             list.SetInt(i++, value.Methods.Count);
             foreach(var method in value.Methods)
             {
-                list.SetInt64(i++, method.Id);
+                list.SetInt64(i++, i++, method.Id);
                 list.SetString(i++, method.JavascriptName);
                 list.SetString(i++, method.ManagedName);
                 list.SetInt(i++, method.ParameterCount);
@@ -35,7 +35,7 @@ namespace CefSharp.Internals
             list.SetInt(i++, value.Properties.Count);
             foreach(var property in value.Properties)
             {
-                list.SetInt64(i++, property.Id);
+                list.SetInt64(i++, i++, property.Id);
                 list.SetString(i++, property.JavascriptName);
                 list.SetString(i++, property.ManagedName);
                 list.SetBool(i++, property.IsComplexType);
@@ -75,7 +75,7 @@ namespace CefSharp.Internals
             var result = new JavascriptObject();
             var i = 0;
 
-            result.Id = list.GetInt64(i++);
+            result.Id = list.GetInt64(i++, i++);
             result.Name = list.GetString(i++);
             result.JavascriptName = list.GetString(i++);
 
@@ -83,7 +83,7 @@ namespace CefSharp.Internals
             for (var j = 0; j < methodCount; j++)
             {
                 var method = new JavascriptMethod();
-                method.Id = list.GetInt64(i++);
+                method.Id = list.GetInt64(i++, i++);
                 method.JavascriptName = list.GetString(i++);
                 method.ManagedName = list.GetString(i++);
                 method.ParameterCount = list.GetInt(i++);
@@ -95,7 +95,7 @@ namespace CefSharp.Internals
             for (var j = 0; j < propertyCount; j++)
             {
                 var prop = new JavascriptProperty();
-                prop.Id = list.GetInt64(i++);
+                prop.Id = list.GetInt64(i++, i++);
                 prop.JavascriptName = list.GetString(i++);
                 prop.ManagedName = list.GetString(i++);
                 prop.IsComplexType = list.GetBool(i++);

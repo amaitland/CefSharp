@@ -29,7 +29,7 @@ namespace CefSharp.Internals
             {
                 var argList = message.ArgumentList;
                 var success = argList.GetBool(0);
-                var callbackId = argList.GetInt64(1);
+                var callbackId = argList.GetInt64(1, 2);
 
                 var pendingTask = pendingTaskRepository.RemovePendingTask(callbackId);
                 if (pendingTask != null)
@@ -41,11 +41,11 @@ namespace CefSharp.Internals
 
                     if (success)
                     {
-                        response.Result = DeserializeV8Object(argList, 2, new JavascriptCallbackFactory(pendingTaskRepository, browser));
+                        response.Result = DeserializeV8Object(argList, 3, new JavascriptCallbackFactory(pendingTaskRepository, browser));
                     }
                     else
                     {
-                        response.Message = argList.GetString(2);
+                        response.Message = argList.GetString(3);
                     }
 
                     pendingTask.SetResult(response);
@@ -65,9 +65,9 @@ namespace CefSharp.Internals
             var message = WrapperFactory.CreateProcessMessage(Messages.EvaluateJavascriptRequest);
 
             var argList = message.ArgumentList;
-            argList.SetInt64(0, frameId);
-            argList.SetInt64(1, idAndComplectionSource.Key);
-            argList.SetString(2, script);
+            argList.SetInt64(0, 1, frameId);
+            argList.SetInt64(2, 3, idAndComplectionSource.Key);
+            argList.SetString(4, script);
 
             browser.SendProcessMessage(message);
 

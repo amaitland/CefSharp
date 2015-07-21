@@ -81,7 +81,7 @@ namespace CefSharp
         // Returns the value at the specified index as type int64.
         ///
         /*--cef(index_param=index)--*/
-        Int64 GetInt64(int index);
+        Int64 GetInt64(int indexLow, int indexHigh);
 
         ///
         // Returns the value at the specified index as type double.
@@ -139,7 +139,7 @@ namespace CefSharp
         // value was set successfully.
         ///
         /*--cef(index_param=index)--*/
-        bool SetInt64(int index, Int64 value);
+        bool SetInt64(int indexLow, int indexHigh, Int64 value);
 
         ///
         // Sets the value at the specified index as type double. Returns true if the

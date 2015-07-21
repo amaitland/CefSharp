@@ -151,14 +151,9 @@ namespace CefSharp
         // Returns the value at the specified index as type int.
         ///
         /*--cef(index_param=index)--*/
-        virtual int64 GetInt64(int index)
+        virtual int64 GetInt64(int indexLow, int indexHigh)
         {
-            int64 result;
-
-            auto binaryValue = _listValue->GetBinary(index);
-            binaryValue->GetData(&result, sizeof(int64), 1);
-
-            return result;
+            return CefInt64Set(_listValue->GetInt(indexLow), _listValue->GetInt(indexHigh));
         }
 
         ///
@@ -255,14 +250,12 @@ namespace CefSharp
         // value was set successfully.
         ///
         /*--cef(index_param=index)--*/
-        virtual bool SetInt64(int index, int64 value)
+        virtual bool SetInt64(int indexLow, int indexHigh, int64 value)
         {
-            unsigned char mem[1 + sizeof(int64)];
-            mem[0] = static_cast<unsigned char>(PrimitiveType::Int64);
-            memcpy(reinterpret_cast<void*>(mem + 1), &value, sizeof(int64));
+            auto lowSet = _listValue->SetInt(indexLow, CefInt64GetLow(value));
+            auto highSet = _listValue->SetInt(indexHigh, CefInt64GetHigh(value));
 
-            auto binaryValue = CefBinaryValue::Create(mem, sizeof(mem));
-            return _listValue->SetBinary(index, binaryValue);
+            return lowSet && highSet;
         }
 
         ///

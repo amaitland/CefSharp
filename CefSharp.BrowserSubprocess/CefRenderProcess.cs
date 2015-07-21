@@ -147,15 +147,15 @@ namespace CefSharp.BrowserSubprocess
                     throw new Exception("Unsupported message type");
                 }
 
-                var callbackId = argList.GetInt64(1);
+                var callbackId = argList.GetInt64(1, 2);
                 var response = CreateProcessMessage(responseName);
                 var responseArgList = response.ArgumentList;
                 var errorMessage = String.Format("Request BrowserId : {0} not found it's likely the browser is already closed", browser.BrowserId);
 
                 //success: false
                 responseArgList.SetBool(0, false);
-                responseArgList.SetInt64(1, callbackId);
-                responseArgList.SetString(2, errorMessage);
+                responseArgList.SetInt64(1, 2, callbackId);
+                responseArgList.SetString(3, errorMessage);
                 browser.SendProcessMessage(response);
 
                 return true;
@@ -170,9 +170,9 @@ namespace CefSharp.BrowserSubprocess
 
             if (name == Messages.EvaluateJavascriptRequest)
             {
-                var frameId = argList.GetInt64(0);
-                var callbackId = argList.GetInt64(1);
-                var script = argList.GetString(2);
+                var frameId = argList.GetInt64(0, 1);
+                var callbackId = argList.GetInt64(2, 3);
+                var script = argList.GetString(4);
                 var success = false;
 
                 var response = CreateProcessMessage(Messages.EvaluateJavascriptResponse);
@@ -206,10 +206,10 @@ namespace CefSharp.BrowserSubprocess
                 }
                 
                 responseArgList.SetBool(0, success);
-                responseArgList.SetInt64(1, callbackId);
+                responseArgList.SetInt64(1, 2, callbackId);
                 if (!success)
                 {
-                    responseArgList.SetString(2, errorMessage);
+                    responseArgList.SetString(3, errorMessage);
                 }
                 browser.SendProcessMessage(response);
 
@@ -217,13 +217,13 @@ namespace CefSharp.BrowserSubprocess
             }
             else if (name == Messages.JavascriptCallbackRequest)
             {
-                var jsCallbackId = argList.GetInt64(0);
-                var callbackId = argList.GetInt64(1);
+                var jsCallbackId = argList.GetInt64(0, 1);
+                var callbackId = argList.GetInt64(2, 3);
 
                 var callbackRegistry = browser.CallbackRegistry;
                 var callbackWrapper = callbackRegistry.FindWrapper(jsCallbackId);
 
-                var parameterList = argList.GetList(2);
+                var parameterList = argList.GetList(4);
                 var parameterListSize = (int)parameterList.GetSize();
 
                 var paramList = new List<CefV8ValueWrapper>();
@@ -264,8 +264,8 @@ namespace CefSharp.BrowserSubprocess
                 }
                 
                 responseArgList.SetBool(0, success);
-                responseArgList.SetInt64(1, callbackId);
-                responseArgList.SetString(2, errorMessage);
+                responseArgList.SetInt64(1, 2, callbackId);
+                responseArgList.SetString(3, errorMessage);
 
                 browser.SendProcessMessage(response);
 
@@ -273,7 +273,7 @@ namespace CefSharp.BrowserSubprocess
             }
             else if (name == Messages.JavascriptCallbackDestroyRequest)
             {
-                var jsCallbackId = argList.GetInt64(0);
+                var jsCallbackId = argList.GetInt64(0, 1);
                 browser.CallbackRegistry.Deregister(jsCallbackId);
 
                 return true;

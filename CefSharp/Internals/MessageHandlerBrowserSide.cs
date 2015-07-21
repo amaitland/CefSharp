@@ -92,6 +92,8 @@ namespace CefSharp.Internals
                 }
 
                 browser.SendProcessMessage(message);
+
+                handled = true;
             }
 
             return handled;

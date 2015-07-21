@@ -196,7 +196,7 @@ namespace CefSharp.BrowserSubprocess
                         //we need to do this here to be able to store the v8context
                         if (success)
                         {
-                            result.SerializeV8Object(responseArgList, 2, browser.CallbackRegistry, context);
+                            result.SerializeV8Object(responseArgList, 3, browser.CallbackRegistry, context);
                         }
                     }
                 }
@@ -250,7 +250,7 @@ namespace CefSharp.BrowserSubprocess
                         //we need to do this here to be able to store the v8context
                         if (success)
                         {
-                            result.SerializeV8Object(responseArgList, 2, callbackRegistry, context);
+                            result.SerializeV8Object(responseArgList, 3, callbackRegistry, context);
                         }
                     }
                     finally
@@ -265,7 +265,10 @@ namespace CefSharp.BrowserSubprocess
                 
                 responseArgList.SetBool(0, success);
                 responseArgList.SetInt64(1, 2, callbackId);
-                responseArgList.SetString(3, errorMessage);
+                if (!success)
+                {
+                    responseArgList.SetString(3, errorMessage);
+                }
 
                 browser.SendProcessMessage(response);
 

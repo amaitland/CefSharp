@@ -32,7 +32,6 @@ namespace CefSharp
         {
             _browser = browser;
             BrowserId = browser->GetIdentifier();
-            IsPopup = browser->IsPopup();
         }
         
         !CefBrowserWrapper()
@@ -51,7 +50,6 @@ namespace CefSharp
         }
 
         property int BrowserId;
-        property bool IsPopup;
 
         // The serialized registered object data waiting to be used.
         property JavascriptRootObject^ JavascriptRootObject;

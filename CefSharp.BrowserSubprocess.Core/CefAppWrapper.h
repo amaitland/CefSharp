@@ -51,7 +51,5 @@ namespace CefSharp
         virtual void OnBrowserCreated(CefBrowserWrapper^ browser) abstract;
         virtual void OnBrowserDestroyed(CefBrowserWrapper^ browser) abstract;
         virtual bool OnProcessMessageReceived(CefBrowserWrapper^ browser, IProcessMessage^ message) abstract;
-
-        IProcessMessage^ CreateProcessMessage(String^ name);
     };
 }

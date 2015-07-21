@@ -12,5 +12,6 @@ namespace CefSharp
         bool IsReadOnly { get; }
         bool IsValid { get; }
         IListValue ArgumentList { get; }
+        IProcessMessage CreateResponse(string name);
     }
 }

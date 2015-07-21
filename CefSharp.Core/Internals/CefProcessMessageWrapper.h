@@ -89,5 +89,10 @@ namespace CefSharp
                 return _listValue;
             }
         }
+
+        virtual IProcessMessage^ CreateResponse(String^ name)
+        {
+            return gcnew CefProcessMessageWrapper(CefProcessMessage::Create(StringUtils::ToNative(name)));
+        }
     };
 }

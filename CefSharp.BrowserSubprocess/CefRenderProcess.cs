@@ -148,7 +148,7 @@ namespace CefSharp.BrowserSubprocess
                 }
 
                 var callbackId = argList.GetInt64(1, 2);
-                var response = CreateProcessMessage(responseName);
+                var response = message.CreateResponse(responseName);
                 var responseArgList = response.ArgumentList;
                 var errorMessage = String.Format("Request BrowserId : {0} not found it's likely the browser is already closed", browser.BrowserId);
 
@@ -175,7 +175,7 @@ namespace CefSharp.BrowserSubprocess
                 var script = argList.GetString(4);
                 var success = false;
 
-                var response = CreateProcessMessage(Messages.EvaluateJavascriptResponse);
+                var response = message.CreateResponse(Messages.EvaluateJavascriptResponse);
                 var responseArgList = response.ArgumentList;
 
                 var frame = browser.GetFrame(frameId);
@@ -232,7 +232,7 @@ namespace CefSharp.BrowserSubprocess
                     paramList.Add(parameterList.DeserializeV8Object(i));
                 }
 
-                var response = CreateProcessMessage(Messages.JavascriptCallbackResponse);
+                var response = message.CreateResponse(Messages.JavascriptCallbackResponse);
                 var responseArgList = response.ArgumentList;
 
                 var context = callbackWrapper.GetContext();

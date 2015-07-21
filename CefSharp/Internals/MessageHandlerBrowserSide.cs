@@ -78,18 +78,21 @@ namespace CefSharp.Internals
                 string exception;
                 var success = objectRepository.TryCallMethod(objectId, methodName, parameters.ToArray(), out result, out exception);
 
-				var response = message.CreateResponse(Messages.CallMethodResponse);
-	            var responseArgList = response.ArgumentList;
-				responseArgList.SetInt64(0, 1, callBackId);
-				responseArgList.SetBool(2, success);
-	            if (success)
-	            {
-		            responseArgList.SetString(3, exception);
-	            }
-	            else
-	            {
-		            //responseArgList.SetList
-	            }
+                var response = message.CreateResponse(Messages.CallMethodResponse);
+                var responseArgList = response.ArgumentList;
+                responseArgList.SetInt64(0, 1, callBackId);
+                responseArgList.SetBool(2, success);
+                if (success)
+                {
+                    responseArgList.SetString(3, exception);
+                }
+                else
+                {
+                    MessagingExtensions.SerializeObject(3, responseArgList, result);
+                    //responseArgList.SetList
+                }
+
+                browser.SendProcessMessage(message);
             }
 
             return handled;

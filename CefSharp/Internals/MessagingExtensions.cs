@@ -218,5 +218,147 @@ namespace CefSharp.Internals
 
             throw new NotImplementedException();
         }
+
+        public static bool SerializeObject(int index, IListValue list, object obj)
+        {
+            if(obj == null)
+            {
+                list.SetNull(index);
+
+                return true;
+            }
+
+            var type = obj.GetType();
+
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            if (underlyingType != null)
+            {
+                type = underlyingType;
+            }
+
+            if (type == typeof(bool))
+            {
+                list.SetBool(index, (bool)obj);
+
+                return true;
+            }
+
+            if (type == typeof(int))
+            {
+                list.SetInt(index, (int)obj);
+
+                return true;
+            }
+
+            if (type == typeof(string))
+            {
+                list.SetString(index, (string)obj);
+
+                return true;
+            }
+            
+            //if (type == Double::typeid)
+            //{
+            //	return CefV8Value::CreateDouble(safe_cast<double>(obj));
+            //}
+            //if (type == Decimal::typeid)
+            //{
+            //	return CefV8Value::CreateDouble(Convert::ToDouble(obj));
+            //}
+            //if (type == SByte::typeid)
+            //{
+            //	return CefV8Value::CreateInt(Convert::ToInt32(obj));
+            //}
+            //if (type == Int16::typeid)
+            //{
+            //	return CefV8Value::CreateInt(Convert::ToInt32(obj));
+            //}
+            //if (type == Int64::typeid)
+            //{
+            //	return CefV8Value::CreateDouble(Convert::ToDouble(obj));
+            //}
+            //if (type == Byte::typeid)
+            //{
+            //	return CefV8Value::CreateInt(Convert::ToInt32(obj));
+            //}
+            //if (type == UInt16::typeid)
+            //{
+            //	return CefV8Value::CreateInt(Convert::ToInt32(obj));
+            //}
+            //if (type == UInt32::typeid)
+            //{
+            //	return CefV8Value::CreateDouble(Convert::ToDouble(obj));
+            //}
+            //if (type == UInt64::typeid)
+            //{
+            //	return CefV8Value::CreateDouble(Convert::ToDouble(obj));
+            //}
+            //if (type == Single::typeid)
+            //{
+            //	return CefV8Value::CreateDouble(Convert::ToDouble(obj));
+            //}
+            //if (type == Char::typeid)
+            //{
+            //	return CefV8Value::CreateInt(Convert::ToInt32(obj));
+            //}
+            //if (type == DateTime::typeid)
+            //{
+            //	return CefV8Value::CreateDate(TypeUtils::ConvertDateTimeToCefTime(safe_cast<DateTime>(obj)));
+            //}
+            //if (type->IsArray)
+            //{
+            //	Array^ managedArray = (Array^)obj;
+            //	CefRefPtr<CefV8Value> cefArray = CefV8Value::CreateArray(managedArray->Length);
+
+            //	for (int i = 0; i < managedArray->Length; i++)
+            //	{
+            //		Object^ arrObj;
+
+            //		arrObj = managedArray->GetValue(i);
+
+            //		if (arrObj != nullptr)
+            //		{
+            //			CefRefPtr<CefV8Value> cefObj = TypeUtils::ConvertToCef(arrObj, arrObj->GetType());
+
+            //			cefArray->SetValue(i, cefObj);
+            //		}
+            //		else
+            //		{
+            //			cefArray->SetValue(i, CefV8Value::CreateNull());
+            //		}
+            //	}
+
+            //	return cefArray;
+            //}
+            //if (type->IsValueType && !type->IsPrimitive && !type->IsEnum)
+            //{
+            //	cli::array<System::Reflection::FieldInfo^>^ fields = type->GetFields();
+            //	CefRefPtr<CefV8Value> cefArray = CefV8Value::CreateArray(fields->Length);
+
+            //	for (int i = 0; i < fields->Length; i++)
+            //	{
+            //		String^ fieldName = fields[i]->Name;
+
+            //		CefString strFieldName = StringUtils::ToNative(safe_cast<String^>(fieldName));
+
+            //		Object^ fieldVal = fields[i]->GetValue(obj);
+
+            //		if (fieldVal != nullptr)
+            //		{
+            //			CefRefPtr<CefV8Value> cefVal = TypeUtils::ConvertToCef(fieldVal, fieldVal->GetType());
+
+            //			cefArray->SetValue(strFieldName, cefVal, V8_PROPERTY_ATTRIBUTE_NONE);
+            //		}
+            //		else
+            //		{
+            //			cefArray->SetValue(strFieldName, CefV8Value::CreateNull(), V8_PROPERTY_ATTRIBUTE_NONE);
+            //		}
+            //	}
+
+            //	return cefArray;
+            //}
+            ////TODO: What exception type?
+            throw new NotImplementedException(string.Format("Cannot convert '{0}' object from CLR to CEF.", type.FullName));
+        }
     }
 }

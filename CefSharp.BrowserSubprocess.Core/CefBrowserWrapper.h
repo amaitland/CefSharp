@@ -61,6 +61,8 @@ namespace CefSharp
 
         bool SendProcessMessage(IProcessMessage^ message);
 
+        IProcessMessage^ CreateProcessMessage(String^ name);
+
         CefFrameWrapper^ GetFrame(int64 frameId);
     };
 }

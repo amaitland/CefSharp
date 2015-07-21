@@ -263,7 +263,7 @@ void ManagedCefBrowserAdapter::NotifyScreenInfoChanged()
 
 void ManagedCefBrowserAdapter::RegisterJsObject(String^ name, Object^ object, bool lowerCaseJavascriptNames)
 {
-    _javaScriptObjectRepository->Register(name, object, lowerCaseJavascriptNames);
+    _messageHandler->RegisterJsObject(name, object, lowerCaseJavascriptNames);
 }
 
 CefMouseEvent ManagedCefBrowserAdapter::GetCefMouseEvent(MouseEvent^ mouseEvent)
@@ -323,4 +323,14 @@ void ManagedCefBrowserAdapter::OnDragTargetDragDrop(MouseEvent^ mouseEvent)
 IBrowser^ ManagedCefBrowserAdapter::GetBrowser()
 {
     return _browserWrapper;
+}
+
+bool ManagedCefBrowserAdapter::OnProcessMessageReceived(IBrowser^ browser, IProcessMessage^ message)
+{
+    return _messageHandler->OnProcessMessageReceived(browser, message);
+}
+
+Task<JavascriptResponse^>^ ManagedCefBrowserAdapter::EvaluateScriptAsync(IBrowser^ browser, int64 frameId, String^ script, Nullable<TimeSpan> timeout)
+{
+    return _messageHandler->EvaluateScriptAsync(browser, frameId, script, timeout);
 }

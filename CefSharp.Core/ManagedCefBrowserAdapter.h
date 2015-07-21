@@ -30,8 +30,9 @@ namespace CefSharp
         MCefRefPtr<ClientAdapter> _clientAdapter;
         IWebBrowserInternal^ _webBrowserInternal;
         JavascriptObjectRepository^ _javaScriptObjectRepository;
+        MessageHandlerBrowserSide^ _messageHandler;
         IBrowser^ _browserWrapper;
-        bool _isDisposed;
+        bool _isDisposed;		
 
     private:
         // Private keyboard functions:
@@ -59,6 +60,7 @@ namespace CefSharp
 
             _webBrowserInternal = webBrowserInternal;
             _javaScriptObjectRepository = gcnew JavascriptObjectRepository();
+            _messageHandler = gcnew MessageHandlerBrowserSide();
         }
 
         !ManagedCefBrowserAdapter()
@@ -75,6 +77,9 @@ namespace CefSharp
 
             delete _browserWrapper;
             _browserWrapper = nullptr;
+
+            delete _messageHandler;
+            _messageHandler = nullptr;
 
             _webBrowserInternal = nullptr;
             _javaScriptObjectRepository = nullptr;
@@ -108,5 +113,8 @@ namespace CefSharp
         /// </summary>
         /// <returns>Gets the current instance or null</returns>
         virtual IBrowser^ GetBrowser();
+
+        virtual bool OnProcessMessageReceived(IBrowser^ browser, IProcessMessage^ message);
+        virtual Task<JavascriptResponse^>^ EvaluateScriptAsync(IBrowser^ browser, int64 frameId, String^ script, Nullable<TimeSpan> timeout);
     };
 }

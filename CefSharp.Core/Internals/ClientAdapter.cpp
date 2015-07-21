@@ -809,14 +809,14 @@ namespace CefSharp
             auto browserWrapper = GetBrowserWrapper(browser->GetIdentifier(), browser->IsPopup());
             CefProcessMessageWrapper messageWrapper(message);
 
-            return _messageHandler->OnProcessMessageReceived(browserWrapper, %messageWrapper);
+            return _browserAdapter->OnProcessMessageReceived(browserWrapper, %messageWrapper);
         }
 
         Task<JavascriptResponse^>^ ClientAdapter::EvaluateScriptAsync(int browserId, bool isBrowserPopup, int64 frameId, String^ script, Nullable<TimeSpan> timeout)
         {
             auto browserWrapper = static_cast<CefSharpBrowserWrapper^>(GetBrowserWrapper(browserId, isBrowserPopup));
 
-            return _messageHandler->EvaluateScriptAsync(browserWrapper, frameId, script, timeout);
+            return _browserAdapter->EvaluateScriptAsync(browserWrapper, frameId, script, timeout);
         }
     }
 }

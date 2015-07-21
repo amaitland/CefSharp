@@ -13,11 +13,11 @@ namespace CefSharp.BrowserSubprocess.Messaging
 	{
 		private readonly WeakReference browserWeakReference;
 
-		public PendingTaskRepository<BrowserProcessResponse> PendingTaskRepository { get; private set; }
+		public PendingTaskRepository<BrowserProcessResponse> TaskRepository { get; private set; }
 
 		public RenderProcessMessageHandler(CefBrowserWrapper browser)
 		{
-			PendingTaskRepository = new PendingTaskRepository<BrowserProcessResponse>();
+			TaskRepository = new PendingTaskRepository<BrowserProcessResponse>();
 			browserWeakReference = new WeakReference(browser);
 		}
 
@@ -27,7 +27,25 @@ namespace CefSharp.BrowserSubprocess.Messaging
 
 			if (browser != null)
 			{
+				var idAndComplectionSource = TaskRepository.CreatePendingTask();
 
+				var message = browser.CreateProcessMessage(Messages.CallMethodRequest);
+
+				var i = 0;
+				var argList = message.ArgumentList;
+				argList.SetInt64(i++, i++, idAndComplectionSource.Key);
+				argList.SetInt64(i++, i++, objectId);
+				argList.SetString(i++, name);
+				argList.SetInt(i++, parameters.Count);
+				foreach(var param in parameters)
+				{
+					//TODO: Populate callback repoisitory and v8Context
+					param.SerializeV8Object(argList, i++, null, null);
+				}
+
+				browser.SendProcessMessage(message);
+
+				return idAndComplectionSource.Value.Task;
 			}
 			return null;
 		}

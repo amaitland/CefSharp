@@ -14,10 +14,12 @@ namespace CefSharp.Internals
 
         //contains in-progress eval script tasks
         private readonly PendingTaskRepository<JavascriptResponse> pendingTaskRepository;
+        private readonly JavascriptObjectRepository objectRepository;
 
         public MessageHandlerBrowserSide()
         {
             pendingTaskRepository = new PendingTaskRepository<JavascriptResponse>();
+            objectRepository = new JavascriptObjectRepository();
         }
 
         public bool OnProcessMessageReceived(IBrowser browser, IProcessMessage message)
@@ -53,6 +55,21 @@ namespace CefSharp.Internals
                 handled = true;
             }
 
+            if (name == Messages.CallMethodRequest)
+            {
+                var i = 0;
+                var argList = message.ArgumentList;
+                var callBackId = argList.GetInt64(i++, i++);
+                var objectId = argList.GetInt64(i++, i++);
+                var methodName = argList.GetString(i++);
+                var paramCount = argList.GetInt(i++);
+
+                for (var j = i; j < paramCount + i; j++)
+                {
+                    var result = argList.DeserializeV8Object(j, new JavascriptCallbackFactory(pendingTaskRepository, browser));
+                }
+            }
+
             return handled;
         }
 
@@ -71,6 +88,11 @@ namespace CefSharp.Internals
             browser.SendProcessMessage(message);
 
             return idAndComplectionSource.Value.Task;
+        }
+
+        public void RegisterJsObject(string name, object obj, bool camelCaseJavascriptNames)
+        {
+            objectRepository.Register(name, obj, camelCaseJavascriptNames);
         }
 
         protected override void DoDispose(bool isDisposing)

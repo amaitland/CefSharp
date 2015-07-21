@@ -17,6 +17,12 @@ namespace CefSharp
         return _browser->SendProcessMessage(CefProcessId::PID_BROWSER, (CefRefPtr<CefProcessMessage>)messageWrapper);
     }
 
+    IProcessMessage^ CefBrowserWrapper::CreateProcessMessage(String^ name)
+    {
+        auto message = CefProcessMessage::Create(StringUtils::ToNative(name));
+        return gcnew CefProcessMessageWrapper(message);
+    }
+
     CefFrameWrapper^ CefBrowserWrapper::GetFrame(int64 frameId)
     {
         auto frame = _browser->GetFrame(frameId);

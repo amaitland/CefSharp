@@ -18,5 +18,8 @@ namespace CefSharp.Internals
 		public const string JavascriptCallbackResponse = "JavascriptCallbackDoneResponse";
 
 		public const string RegisterJavascriptObjectsRequest = "RegisterJavascriptObjectsRequest";
+
+		public const string CallMethodRequest = "CallMethodRequest";
+		public const string CallMethodResponse = "CallMethodResponse";
 	}
 }

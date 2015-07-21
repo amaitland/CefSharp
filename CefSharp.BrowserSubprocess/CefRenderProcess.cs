@@ -34,6 +34,8 @@ namespace CefSharp.BrowserSubprocess
         public override void OnBrowserCreated(CefBrowserWrapper browser)
         {
             browsers.Add(browser);
+
+            browser.BrowserProcess = new RenderProcessMessageHandler(browser);
         }
 
         public override void OnBrowserDestroyed(CefBrowserWrapper browser)
@@ -88,6 +90,15 @@ namespace CefSharp.BrowserSubprocess
 
                 return true;
             }
+
+			if (name == Messages.CallMethodResponse)
+			{
+				var callbackId = argList.GetInt64(0, 1);
+
+				//browser.BrowserProcess
+
+				return true;
+			}
 
             if (name == Messages.RegisterJavascriptObjectsRequest)
             {

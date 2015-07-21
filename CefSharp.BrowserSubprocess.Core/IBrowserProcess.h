@@ -8,6 +8,8 @@
 #include "CefV8ValueWrapper.h"
 #include "BrowserProcessResponse.h"
 
+using namespace CefSharp::Internals;
+
 using namespace System::Collections::Generic;
 using namespace System::Threading::Tasks;
 
@@ -18,5 +20,10 @@ namespace CefSharp
         Task<BrowserProcessResponse^>^ CallMethodAsync(int64 objectId, String^ name, IList<CefV8ValueWrapper^>^ parameters);
         Task<BrowserProcessResponse^>^ GetPropertyAsync(int64 objectId, String^ name);
         Task<BrowserProcessResponse^>^ SetPropertyAsync(int64 objectId, String^ name, Object^ value);
+
+        property PendingTaskRepository<BrowserProcessResponse^>^ TaskRepository 
+        {
+            PendingTaskRepository<BrowserProcessResponse^>^ get();
+        }
     };
 }

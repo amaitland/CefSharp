@@ -39,7 +39,6 @@ namespace CefSharp
             gcroot<Dictionary<int, IBrowser^>^> _popupBrowsers;
             gcroot<String^> _tooltip;
             gcroot<IBrowserAdapter^> _browserAdapter;
-            gcroot<MessageHandlerBrowserSide^> _messageHandler;
 
             void ThrowUnknownPopupBrowser(String^ context)
             {
@@ -52,8 +51,7 @@ namespace CefSharp
             ClientAdapter(IWebBrowserInternal^ browserControl, IBrowserAdapter^ browserAdapter) :
                 _browserControl(browserControl), 
                 _popupBrowsers(gcnew Dictionary<int, IBrowser^>()),
-                _browserAdapter(browserAdapter),
-                _messageHandler(gcnew MessageHandlerBrowserSide())
+                _browserAdapter(browserAdapter)
             {
                 
             }
@@ -61,9 +59,6 @@ namespace CefSharp
             ~ClientAdapter()
             {
                 CloseAllPopups(true);
-
-                //this will dispose the repository and cancel all pending tasks
-                delete _messageHandler;
 
                 _browserControl = nullptr;
                 _browserHwnd = nullptr;

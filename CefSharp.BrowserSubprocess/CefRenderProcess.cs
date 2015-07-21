@@ -196,7 +196,8 @@ namespace CefSharp.BrowserSubprocess
                         //we need to do this here to be able to store the v8context
                         if (success)
                         {
-                            result.SerializeV8Object(responseArgList, 3, browser.CallbackRegistry, context);
+                            var rootObjectWrapper = browser.JavascriptRootObjectWrapper;
+                            result.SerializeV8Object(responseArgList, 3, rootObjectWrapper.CallbackRegistry, context);
                         }
                     }
                 }
@@ -220,7 +221,7 @@ namespace CefSharp.BrowserSubprocess
                 var jsCallbackId = argList.GetInt64(0, 1);
                 var callbackId = argList.GetInt64(2, 3);
 
-                var callbackRegistry = browser.CallbackRegistry;
+                var callbackRegistry = browser.JavascriptRootObjectWrapper.CallbackRegistry;
                 var callbackWrapper = callbackRegistry.FindWrapper(jsCallbackId);
 
                 var parameterList = argList.GetList(4);
@@ -277,7 +278,7 @@ namespace CefSharp.BrowserSubprocess
             else if (name == Messages.JavascriptCallbackDestroyRequest)
             {
                 var jsCallbackId = argList.GetInt64(0, 1);
-                browser.CallbackRegistry.Deregister(jsCallbackId);
+                browser.JavascriptRootObjectWrapper.CallbackRegistry.Deregister(jsCallbackId);
 
                 return true;
             }

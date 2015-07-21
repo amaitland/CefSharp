@@ -27,14 +27,6 @@ namespace CefSharp
     {
     private:
         MCefRefPtr<CefBrowser> _browser;
-        JavascriptCallbackRegistry^ _callbackRegistry;
-        JavascriptRootObjectWrapper^ _javascriptRootObjectWrapper;
-
-    internal:
-        property JavascriptCallbackRegistry^ CallbackRegistry
-        {
-            CefSharp::Internals::JavascriptCallbackRegistry^ get();
-        }
 
     public:
         CefBrowserWrapper(CefRefPtr<CefBrowser> browser)
@@ -42,7 +34,6 @@ namespace CefSharp
             _browser = browser;
             BrowserId = browser->GetIdentifier();
             IsPopup = browser->IsPopup();
-            _callbackRegistry = gcnew JavascriptCallbackRegistry(BrowserId);
         }
         
         !CefBrowserWrapper()
@@ -53,11 +44,6 @@ namespace CefSharp
         ~CefBrowserWrapper()
         {
             this->!CefBrowserWrapper();
-            if (_callbackRegistry != nullptr)
-            {
-                delete _callbackRegistry;
-                _callbackRegistry = nullptr;
-            }
         }
 
         operator CefRefPtr<CefBrowser>()
@@ -74,11 +60,7 @@ namespace CefSharp
         // The serialized registered object data waiting to be used.
         property JavascriptRootObject^ JavascriptRootObject;
 
-        property JavascriptRootObjectWrapper^ JavascriptRootObjectWrapper 
-        {
-            CefSharp::JavascriptRootObjectWrapper^ get();
-            void set(CefSharp::JavascriptRootObjectWrapper^ value);
-        };
+        property JavascriptRootObjectWrapper^ JavascriptRootObjectWrapper;
 
         // The WCF proxy to the parent process.
         property IBrowserProcess^ BrowserProcess;

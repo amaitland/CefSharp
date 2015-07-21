@@ -12,7 +12,7 @@ using namespace System;
 
 namespace CefSharp
 {
-    void JavascriptPropertyWrapper::Bind(CefRefPtr<CefV8Value> v8Value)
+    void JavascriptPropertyWrapper::Bind(CefRefPtr<CefV8Value> v8Value, JavascriptCallbackRegistry^ callbackRegistry)
     {
         auto propertyName = StringUtils::ToNative(_javascriptProperty->JavascriptName);
         auto clrPropertyName = _javascriptProperty->JavascriptName;
@@ -20,7 +20,7 @@ namespace CefSharp
         if (_javascriptProperty->IsComplexType)
         {
             auto javascriptObjectWrapper = gcnew JavascriptObjectWrapper(_javascriptProperty->JsObject, _browserProcess);
-            javascriptObjectWrapper->Bind(v8Value);
+            javascriptObjectWrapper->Bind(v8Value, callbackRegistry);
 
             _javascriptObjectWrapper = javascriptObjectWrapper;
         }

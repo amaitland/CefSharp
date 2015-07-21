@@ -7,6 +7,8 @@
 #include "Stdafx.h"
 #include "include/cef_v8.h"
 
+#include "JavascriptCallbackRegistry.h"
+
 using namespace CefSharp::Internals;
 
 namespace CefSharp
@@ -38,6 +40,6 @@ namespace CefSharp
             _javascriptProperty = nullptr;
         }
 
-        void Bind(CefRefPtr<CefV8Value> v8Value);
+        void Bind(CefRefPtr<CefV8Value> v8Value, JavascriptCallbackRegistry^ callbackRegistry);
     };
 }

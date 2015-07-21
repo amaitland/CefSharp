@@ -12,7 +12,7 @@ using namespace CefSharp::Internals;
 
 namespace CefSharp
 {
-    void JavascriptObjectWrapper::Bind(CefRefPtr<CefV8Value> v8Value)
+    void JavascriptObjectWrapper::Bind(CefRefPtr<CefV8Value> v8Value, JavascriptCallbackRegistry^ callbackRegistry)
     {
         //Create property handler for get and set of Properties of this object
         _jsPropertyHandler = new JavascriptPropertyHandler(
@@ -27,7 +27,7 @@ namespace CefSharp
 
         for each (JavascriptMethod^ method in Enumerable::OfType<JavascriptMethod^>(_object->Methods))
         {
-            auto wrappedMethod = gcnew JavascriptMethodWrapper(method, _object->Id, _browserProcess, CallbackRegistry);
+            auto wrappedMethod = gcnew JavascriptMethodWrapper(method, _object->Id, _browserProcess, callbackRegistry);
             wrappedMethod->Bind(javascriptObject);
 
             _wrappedMethods->Add(wrappedMethod);
@@ -36,7 +36,7 @@ namespace CefSharp
         for each (JavascriptProperty^ prop in Enumerable::OfType<JavascriptProperty^>(_object->Properties))
         {
             auto wrappedproperty = gcnew JavascriptPropertyWrapper(prop, _object->Id, _browserProcess);
-            wrappedproperty->Bind(javascriptObject);
+            wrappedproperty->Bind(javascriptObject, callbackRegistry);
 
             _wrappedProperties->Add(wrappedproperty);
         }

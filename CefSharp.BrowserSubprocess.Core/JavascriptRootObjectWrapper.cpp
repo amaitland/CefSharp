@@ -15,10 +15,14 @@ namespace CefSharp
         for each (JavascriptObject^ obj in Enumerable::OfType<JavascriptObject^>(memberObjects))
         {
             auto wrapperObject = gcnew JavascriptObjectWrapper(obj, _browserProcess);
-            wrapperObject->CallbackRegistry = CallbackRegistry;
-            wrapperObject->Bind(v8Value);
+            wrapperObject->Bind(v8Value, _callbackRegistry);
 
             _wrappedObjects->Add(wrapperObject);
         }
+    }
+
+    JavascriptCallbackRegistry^ JavascriptRootObjectWrapper::CallbackRegistry::get()
+    {
+        return _callbackRegistry;
     }
 }

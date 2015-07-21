@@ -10,25 +10,6 @@
 
 namespace CefSharp
 {
-    JavascriptRootObjectWrapper^ CefBrowserWrapper::JavascriptRootObjectWrapper::get()
-    {
-        return _javascriptRootObjectWrapper;
-    }
-
-    void CefBrowserWrapper::JavascriptRootObjectWrapper::set(CefSharp::JavascriptRootObjectWrapper^ value)
-    {
-        _javascriptRootObjectWrapper = value;
-        if (_javascriptRootObjectWrapper != nullptr)
-        {
-            _javascriptRootObjectWrapper->CallbackRegistry = _callbackRegistry;
-        }
-    }
-
-    JavascriptCallbackRegistry^ CefBrowserWrapper::CallbackRegistry::get()
-    {
-        return _callbackRegistry;
-    }
-
     bool CefBrowserWrapper::SendProcessMessage(IProcessMessage^ message)
     {
         auto messageWrapper = (CefProcessMessageWrapper^)message;

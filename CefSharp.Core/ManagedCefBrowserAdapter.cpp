@@ -254,9 +254,9 @@ void ManagedCefBrowserAdapter::NotifyScreenInfoChanged()
     }
 }
 
-void ManagedCefBrowserAdapter::RegisterJsObject(String^ name, Object^ object, bool lowerCaseJavascriptNames)
+void ManagedCefBrowserAdapter::RegisterJsObject(String^ name, Object^ object, bool camelCaseJavascriptNames)
 {
-    _messageHandler->RegisterJsObject(name, object, lowerCaseJavascriptNames);
+    _messageHandler->RegisterJsObject(name, object, camelCaseJavascriptNames);
 }
 
 CefMouseEvent ManagedCefBrowserAdapter::GetCefMouseEvent(MouseEvent^ mouseEvent)

@@ -70,10 +70,12 @@ namespace CefSharp.Wpf.Example.ViewModels
             set { Set(ref showSidebar, value); }
         }
 
-        public ICommand GoCommand { get; set; }
-        public ICommand HomeCommand { get; set; }
-        public ICommand ExecuteJavaScriptCommand { get; set; }
-        public ICommand EvaluateJavaScriptCommand { get; set; }
+        public ICommand GoCommand { get; private set; }
+        public ICommand HomeCommand { get; private set; }
+        public ICommand ShowDevToolsCommand { get; private set; }
+        public ICommand CloseDevToolsCommand { get; private set; }
+        public ICommand ExecuteJavaScriptCommand { get; private set; }
+        public ICommand EvaluateJavaScriptCommand { get; private set; }
 
         public BrowserTabViewModel(string address)
         {
@@ -82,6 +84,8 @@ namespace CefSharp.Wpf.Example.ViewModels
 
             GoCommand = new RelayCommand(Go, () => !String.IsNullOrWhiteSpace(Address));
             HomeCommand = new RelayCommand(() => AddressEditable = Address = CefExample.DefaultUrl);
+            ShowDevToolsCommand = new RelayCommand(() => WebBrowser.ShowDevTools());
+            CloseDevToolsCommand = new RelayCommand(() => WebBrowser.CloseDevTools());
             ExecuteJavaScriptCommand = new RelayCommand<string>(ExecuteJavaScript, s => !String.IsNullOrWhiteSpace(s));
             EvaluateJavaScriptCommand = new RelayCommand<string>(EvaluateJavaScript, s => !String.IsNullOrWhiteSpace(s));
 

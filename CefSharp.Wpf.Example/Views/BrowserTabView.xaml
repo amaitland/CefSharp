@@ -203,6 +203,11 @@
                             <Separator />
                             <MenuItem Header="View Source"
                                       Command="{Binding WebBrowser.ViewSourceCommand}" />
+                            <MenuItem Header="Show Dev Tools"
+                                      Command="{Binding ShowDevToolsCommand}" />
+                            <MenuItem Header="Close Dev Tools"
+                                      Command="{Binding CloseDevToolsCommand}" />
+                            <Separator />
                             <MenuItem Header="Cut" Command="{Binding WebBrowser.CutCommand}"/>
                             <MenuItem Header="Copy" Command="{Binding WebBrowser.CopyCommand}"/>
                             <MenuItem Header="Paste" Command="{Binding WebBrowser.PasteCommand}"/>

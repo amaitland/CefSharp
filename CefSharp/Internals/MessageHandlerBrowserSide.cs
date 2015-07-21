@@ -84,12 +84,11 @@ namespace CefSharp.Internals
                 responseArgList.SetBool(2, success);
                 if (success)
                 {
-                    responseArgList.SetString(3, exception);
+                    responseArgList.SerializeObject(3, result);
                 }
                 else
                 {
-                    MessagingExtensions.SerializeObject(3, responseArgList, result);
-                    //responseArgList.SetList
+                    responseArgList.SetString(3, exception);
                 }
 
                 browser.SendProcessMessage(message);

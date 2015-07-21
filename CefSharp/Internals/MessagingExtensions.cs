@@ -219,7 +219,7 @@ namespace CefSharp.Internals
             throw new NotImplementedException();
         }
 
-        public static bool SerializeObject(int index, IListValue list, object obj)
+        public static bool SerializeObject(this IListValue list, int index, object obj)
         {
             if(obj == null)
             {

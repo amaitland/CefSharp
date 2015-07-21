@@ -249,10 +249,11 @@ namespace CefSharp.Internals
             }
         }
 
-        private static JavascriptMethod CreateJavaScriptMethod(MethodInfo methodInfo, bool camelCaseJavascriptNames)
+        private JavascriptMethod CreateJavaScriptMethod(MethodInfo methodInfo, bool camelCaseJavascriptNames)
         {
             var jsMethod = new JavascriptMethod();
 
+            jsMethod.Id = Interlocked.Increment(ref lastId);
             jsMethod.ManagedName = methodInfo.Name;
             jsMethod.JavascriptName = GetJavascriptName(methodInfo.Name, camelCaseJavascriptNames);
             jsMethod.Function = methodInfo.Invoke;
@@ -265,6 +266,7 @@ namespace CefSharp.Internals
         {
             var jsProperty = new JavascriptProperty();
 
+            jsProperty.Id = Interlocked.Increment(ref lastId);
             jsProperty.ManagedName = propertyInfo.Name;
             jsProperty.JavascriptName = GetJavascriptName(propertyInfo.Name, camelCaseJavascriptNames);
             jsProperty.SetValue = (o, v) => propertyInfo.SetValue(o, v, null);

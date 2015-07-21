@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -34,7 +35,7 @@ namespace CefSharp.Internals
         // A hash from assigned object ids to the objects,
         // this is done to speed up finding the object in O(1) time
         // instead of traversing the JavaScriptRootObject tree.
-        private readonly Dictionary<long, JavascriptObject> objects = new Dictionary<long, JavascriptObject>();
+        private readonly ConcurrentDictionary<long, JavascriptObject> objects = new ConcurrentDictionary<long, JavascriptObject>();
 
         // This is the root of the objects that get serialized to the child
         // process.

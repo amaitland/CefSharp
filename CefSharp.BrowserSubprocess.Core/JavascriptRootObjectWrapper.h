@@ -7,8 +7,8 @@
 #include "include/cef_v8.h"
 #include "JavascriptCallbackRegistry.h"
 #include "JavascriptObjectWrapper.h"
+#include "IBrowserProcess.h"
 
-using namespace System::Runtime::Serialization;
 using namespace System::Linq;
 using namespace System::Collections::Generic;
 

@@ -10,8 +10,8 @@
 #include "JavascriptMethodWrapper.h"
 #include "JavascriptPropertyWrapper.h"
 #include "JavascriptPropertyHandler.h"
+#include "IBrowserProcess.h"
 
-using namespace System::Runtime::Serialization;
 using namespace System::Linq;
 using namespace System::Collections::Generic;
 

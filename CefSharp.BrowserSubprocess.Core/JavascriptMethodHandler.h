@@ -6,6 +6,7 @@
 
 #include "include/cef_v8.h"
 #include "JavascriptCallbackRegistry.h"
+#include "BrowserProcessResponse.h"
 
 using namespace CefSharp::Internals;
 
@@ -14,11 +15,11 @@ namespace CefSharp
     private class JavascriptMethodHandler : public CefV8Handler
     {
     private:
-        gcroot<Func<array<Object^>^, BrowserProcessResponse^>^> _method;
+        gcroot<Func<IList<CefV8ValueWrapper^>^, BrowserProcessResponse^>^> _method;
         gcroot<JavascriptCallbackRegistry^> _callbackRegistry;
 
     public:
-        JavascriptMethodHandler(Func<array<Object^>^, BrowserProcessResponse^>^ method, JavascriptCallbackRegistry^ callbackRegistry)
+        JavascriptMethodHandler(Func<IList<CefV8ValueWrapper^>^, BrowserProcessResponse^>^ method, JavascriptCallbackRegistry^ callbackRegistry)
         {
             _method = method;
             _callbackRegistry = callbackRegistry;

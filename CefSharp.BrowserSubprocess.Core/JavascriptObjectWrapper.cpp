@@ -44,11 +44,19 @@ namespace CefSharp
 
     BrowserProcessResponse^ JavascriptObjectWrapper::GetProperty(String^ memberName)
     {
-        return _browserProcess->GetProperty(_object->Id, memberName);
+        auto task = _browserProcess->GetPropertyAsync(_object->Id, memberName);
+
+        task->Wait();
+
+        return task->Result;
     };
 
     BrowserProcessResponse^ JavascriptObjectWrapper::SetProperty(String^ memberName, Object^ value)
     {
-        return _browserProcess->SetProperty(_object->Id, memberName, value);
+        auto task = _browserProcess->SetPropertyAsync(_object->Id, memberName, value);
+
+        task->Wait();
+
+        return task->Result;
     };
 }

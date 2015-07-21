@@ -89,6 +89,12 @@
     <ClInclude Include="CefV8ExceptionWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IBrowserProcess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BrowserProcessResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">

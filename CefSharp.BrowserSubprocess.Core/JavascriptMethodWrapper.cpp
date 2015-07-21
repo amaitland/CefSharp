@@ -19,8 +19,12 @@ namespace CefSharp
         v8Value->SetValue(methodName, v8Function, V8_PROPERTY_ATTRIBUTE_NONE);
     };
 
-    BrowserProcessResponse^ JavascriptMethodWrapper::Execute(array<Object^>^ parameters)
+    BrowserProcessResponse^ JavascriptMethodWrapper::Execute(IList<CefV8ValueWrapper^>^ parameters)
     {
-        return _browserProcess->CallMethod(_ownerId, _javascriptMethod->JavascriptName, parameters);
+        auto task = _browserProcess->CallMethodAsync(_ownerId, _javascriptMethod->JavascriptName, parameters);
+
+        task->Wait();
+
+        return task->Result;
     }
 }

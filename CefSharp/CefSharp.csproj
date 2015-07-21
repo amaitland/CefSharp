@@ -148,7 +148,6 @@
     <Compile Include="AddressChangedEventArgs.cs" />
     <Compile Include="DownloadItem.cs" />
     <Compile Include="CefEventFlags.cs" />
-    <Compile Include="Internals\BrowserProcessResponse.cs" />
     <Compile Include="Internals\JavascriptRootObject.cs" />
     <Compile Include="Internals\TaskExtensions.cs" />
     <Compile Include="IStringVisitor.cs" />
@@ -171,7 +170,6 @@
     <Compile Include="ICompletionHandler.cs" />
     <Compile Include="CefFocusSource.cs" />
     <Compile Include="Internals\BitmapInfo.cs" />
-    <Compile Include="Internals\IBrowserProcess.cs" />
     <Compile Include="Internals\JavascriptMethod.cs" />
     <Compile Include="Internals\JavascriptObject.cs" />
     <Compile Include="Internals\JavascriptObjectRepository.cs" />

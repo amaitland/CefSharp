@@ -8,6 +8,7 @@
 #include "include/cef_v8.h"
 
 #include "JavascriptCallbackRegistry.h"
+#include "IBrowserProcess.h"
 
 using namespace CefSharp::Internals;
 

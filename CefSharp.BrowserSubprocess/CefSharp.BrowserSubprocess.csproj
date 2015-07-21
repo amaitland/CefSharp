@@ -90,6 +90,7 @@
     <Compile Include="CefRenderProcess.cs" />
     <Compile Include="CefSubProcess.cs" />
     <Compile Include="Messaging\CefV8ValueExtensions.cs" />
+    <Compile Include="Messaging\RenderProcessMessageHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -157,6 +157,7 @@
     <ClInclude Include="..\CefSharp.Core\Internals\MCefRefPtr.h" />
     <ClInclude Include="..\CefSharp.Core\Internals\ReportUnhandledExceptions.h" />
     <ClInclude Include="..\CefSharp.Core\Internals\StringUtils.h" />
+    <ClInclude Include="BrowserProcessResponse.h" />
     <ClInclude Include="CefAppUnmanagedWrapper.h" />
     <ClInclude Include="CefAppWrapper.h" />
     <ClInclude Include="CefBrowserWrapper.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="CefV8ContextWrapper.h" />
     <ClInclude Include="CefV8ExceptionWrapper.h" />
     <ClInclude Include="CefV8ValueWrapper.h" />
+    <ClInclude Include="IBrowserProcess.h" />
     <ClInclude Include="JavascriptCallbackRegistry.h" />
     <ClInclude Include="JavascriptCallbackWrapper.h" />
     <ClInclude Include="JavascriptMethodWrapper.h" />

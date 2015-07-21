@@ -7,9 +7,10 @@
 #include "include/cef_v8.h"
 
 #include "JavascriptMethodHandler.h"
+#include "IBrowserProcess.h"
+#include "BrowserProcessResponse.h"
 
 using namespace CefSharp::Internals;
-using namespace System::Runtime::Serialization;
 
 namespace CefSharp
 {
@@ -27,7 +28,7 @@ namespace CefSharp
             _javascriptMethod = javascriptMethod;
             _ownerId = ownerId;
             _browserProcess = browserProcess;
-            _javascriptMethodHandler = new JavascriptMethodHandler(gcnew Func<array<Object^>^, BrowserProcessResponse^>(this, &JavascriptMethodWrapper::Execute), callbackRegistry);
+            _javascriptMethodHandler = new JavascriptMethodHandler(gcnew Func<IList<CefV8ValueWrapper^>^, BrowserProcessResponse^>(this, &JavascriptMethodWrapper::Execute), callbackRegistry);
         }
 
         !JavascriptMethodWrapper()
@@ -44,6 +45,6 @@ namespace CefSharp
         }
 
         void Bind(CefRefPtr<CefV8Value> V8Value);
-        BrowserProcessResponse^ Execute(array<Object^>^ parameters);
+        BrowserProcessResponse^ Execute(IList<CefV8ValueWrapper^>^ parameters);
     };
 }

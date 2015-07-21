@@ -5,6 +5,7 @@
 #include "Stdafx.h"
 #include "TypeUtils.h"
 #include "JavascriptMethodHandler.h"
+#include "CefV8ValueWrapper.h"
 
 using namespace CefSharp::Internals;
 
@@ -12,11 +13,12 @@ namespace CefSharp
 {
     bool JavascriptMethodHandler::Execute(const CefString& name, CefRefPtr<CefV8Value> object, const CefV8ValueList& arguments, CefRefPtr<CefV8Value>& retval, CefString& exception)
     {
-        auto parameter = gcnew array<Object^>(arguments.size());
+        auto parameters = gcnew List<CefV8ValueWrapper^>(arguments.size());
 
         for (std::vector<CefRefPtr<CefV8Value>>::size_type i = 0; i != arguments.size(); i++)
         {
-            if (arguments[i]->IsFunction())
+            parameters->Add(gcnew CefV8ValueWrapper(arguments[i]));
+            /*if (arguments[i]->IsFunction())
             {
                 parameter[i] = _callbackRegistry->Register(gcnew CefV8ContextWrapper(CefV8Context::GetCurrentContext()),
                                                            gcnew CefV8ValueWrapper(arguments[i]));
@@ -24,12 +26,12 @@ namespace CefSharp
             else
             {
                 parameter[i] = TypeUtils::ConvertFromCef(arguments[i]);
-            }
+            }*/
         }
 
         try
         {
-            auto response = _method->Invoke(parameter);
+            auto response = _method->Invoke(parameters);
 
             retval = ConvertToCefObject(response->Result);
             if (!response->Success)

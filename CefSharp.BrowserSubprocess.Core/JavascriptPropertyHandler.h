@@ -8,6 +8,7 @@
 
 #include "include/cef_v8.h"
 #include "TypeUtils.h"
+#include "BrowserProcessResponse.h"
 
 using namespace CefSharp::Internals;
 

@@ -8,6 +8,7 @@
 #include "CefBrowserWrapper.h"
 #include "CefAppUnmanagedWrapper.h"
 #include "JavascriptRootObjectWrapper.h"
+#include "IBrowserProcess.h"
 #include "..\CefSharp.Core\Internals\CefProcessMessageWrapper.h"
 
 using namespace System;

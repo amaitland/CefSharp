@@ -18,7 +18,8 @@ namespace CefSharp
         {
             if (arguments[i]->IsFunction())
             {
-                parameter[i] = _callbackRegistry->Register(CefV8Context::GetCurrentContext(), arguments[i]);
+                parameter[i] = _callbackRegistry->Register(gcnew CefV8ContextWrapper(CefV8Context::GetCurrentContext()),
+                                                           gcnew CefV8ValueWrapper(arguments[i]));
             }
             else
             {

@@ -18,19 +18,21 @@ namespace CefSharp
         private ref class JavascriptCallbackWrapper
         {
         private:
-            MCefRefPtr<CefV8Value> _value;
-            MCefRefPtr<CefV8Context> _context;
+            CefV8ContextWrapper^ _context;
+            CefV8ValueWrapper^ _value;
 
         public:
-            JavascriptCallbackWrapper(CefRefPtr<CefV8Value> value, CefRefPtr<CefV8Context> context)
-                : _value(value), _context(context) 
+            JavascriptCallbackWrapper(CefV8ContextWrapper^ context, CefV8ValueWrapper^ value)
+                : _context(context), _value(value)
             {
             }
 
             !JavascriptCallbackWrapper()
             {
-                _value = nullptr;
+                delete _context;
+                delete _value;
                 _context = nullptr;
+                _value = nullptr;
             }
 
             ~JavascriptCallbackWrapper()
@@ -38,14 +40,14 @@ namespace CefSharp
                 this->!JavascriptCallbackWrapper();
             }
 
-            CefV8ValueWrapper^ GetValue()
-            {
-                return gcnew CefV8ValueWrapper(_value.get());
-            }
-
             CefV8ContextWrapper^ GetContext()
             {
-                return gcnew CefV8ContextWrapper(_context.get());
+                return _context;
+            }
+
+            CefV8ValueWrapper^ GetValue()
+            {
+                return _value;
             }
         };
     }

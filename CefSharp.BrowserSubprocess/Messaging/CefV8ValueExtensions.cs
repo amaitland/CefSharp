@@ -81,8 +81,20 @@ namespace CefSharp.BrowserSubprocess.Messaging
             }
             else if (obj.IsFunction)
             {
-                //auto jsCallback = callbackRegistry.Register(context, obj);
-                //SetJsCallback(jsCallback, list, index);
+				//var jsCallback = callbackRegistry.Register(context, obj);
+				//SetJsCallback(jsCallback, list, index);
+
+				//auto id = value->Id;
+				//auto browserId = value->BrowserId;
+
+				//unsigned char mem[1 + sizeof(int) + sizeof(int64)];
+				//mem[0] = static_cast<unsigned char>(PrimitiveType::JsCallback);
+				//memcpy(reinterpret_cast<void*>(mem + 1), &browserId, sizeof(int));
+				//memcpy(reinterpret_cast<void*>(mem + 1 + sizeof(int)), &id, sizeof(int64));
+
+				//auto binaryValue = CefBinaryValue::Create(mem, sizeof(mem));
+				//list->SetBinary(index, binaryValue);
+
                 throw new NotImplementedException();
             }
             else if (obj.IsObject)

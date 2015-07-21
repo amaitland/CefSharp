@@ -29,7 +29,6 @@ namespace CefSharp
     {
         MCefRefPtr<ClientAdapter> _clientAdapter;
         IWebBrowserInternal^ _webBrowserInternal;
-        JavascriptObjectRepository^ _javaScriptObjectRepository;
         MessageHandlerBrowserSide^ _messageHandler;
         IBrowser^ _browserWrapper;
         bool _isDisposed;		
@@ -59,7 +58,6 @@ namespace CefSharp
             }
 
             _webBrowserInternal = webBrowserInternal;
-            _javaScriptObjectRepository = gcnew JavascriptObjectRepository();
             _messageHandler = gcnew MessageHandlerBrowserSide();
         }
 
@@ -82,7 +80,6 @@ namespace CefSharp
             _messageHandler = nullptr;
 
             _webBrowserInternal = nullptr;
-            _javaScriptObjectRepository = nullptr;
             _isDisposed = true;
         }
 

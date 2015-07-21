@@ -36,14 +36,7 @@ void ManagedCefBrowserAdapter::OnAfterBrowserCreated(int browserId)
         _browserWrapper = gcnew CefSharpBrowserWrapper(browser);
     }
 
-    if (_javaScriptObjectRepository->HasObjects)
-    {
-        auto message = CefProcessMessage::Create(StringUtils::ToNative(Messages::RegisterJavascriptObjectsRequest));
-        auto messageWrapper = gcnew CefProcessMessageWrapper(message);
-        MessagingExtensions::SerializeJsRootObject(messageWrapper->ArgumentList, _javaScriptObjectRepository->RootObject);
-
-        browser->SendProcessMessage(CefProcessId::PID_RENDERER, message);
-    }
+    _messageHandler->SendRegisteredJsObjects(_browserWrapper);
     
     if (_webBrowserInternal != nullptr)
     {

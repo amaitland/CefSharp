@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CefSharp.Internals
@@ -64,10 +65,31 @@ namespace CefSharp.Internals
                 var methodName = argList.GetString(i++);
                 var paramCount = argList.GetInt(i++);
 
+                var parameters = new List<object>();
+
                 for (var j = i; j < paramCount + i; j++)
                 {
-                    var result = argList.DeserializeV8Object(j, new JavascriptCallbackFactory(pendingTaskRepository, browser));
+                    var obj = argList.DeserializeV8Object(j, new JavascriptCallbackFactory(pendingTaskRepository, browser));
+
+                    parameters.Add(obj);
                 }
+
+                object result;
+                string exception;
+                var success = objectRepository.TryCallMethod(objectId, methodName, parameters.ToArray(), out result, out exception);
+
+				var response = message.CreateResponse(Messages.CallMethodResponse);
+	            var responseArgList = response.ArgumentList;
+				responseArgList.SetInt64(0, 1, callBackId);
+				responseArgList.SetBool(2, success);
+	            if (success)
+	            {
+		            responseArgList.SetString(3, exception);
+	            }
+	            else
+	            {
+		            //responseArgList.SetList
+	            }
             }
 
             return handled;
@@ -88,6 +110,17 @@ namespace CefSharp.Internals
             browser.SendProcessMessage(message);
 
             return idAndComplectionSource.Value.Task;
+        }
+
+        public void SendRegisteredJsObjects(IBrowser browser)
+        {
+            if (objectRepository.HasObjects)
+            {
+                var message = WrapperFactory.CreateProcessMessage(Messages.RegisterJavascriptObjectsRequest);
+                message.ArgumentList.SerializeJsRootObject(objectRepository.RootObject);
+
+                browser.SendProcessMessage(message);
+            }
         }
 
         public void RegisterJsObject(string name, object obj, bool camelCaseJavascriptNames)

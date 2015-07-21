@@ -29,7 +29,6 @@ namespace CefSharp
         MCefRefPtr<JavascriptPropertyHandler> _jsPropertyHandler;
 
     internal:
-        MCefRefPtr<CefV8Value> V8Value;
         JavascriptCallbackRegistry^ CallbackRegistry;
 
     public:
@@ -44,7 +43,6 @@ namespace CefSharp
 
         !JavascriptObjectWrapper()
         {
-            V8Value = nullptr;
             _jsPropertyHandler = nullptr;
         }
 
@@ -63,7 +61,7 @@ namespace CefSharp
             }
         }
 
-        void Bind();
+        void Bind(CefRefPtr<CefV8Value> v8Value);
         BrowserProcessResponse^ GetProperty(String^ memberName);
         BrowserProcessResponse^ SetProperty(String^ memberName, Object^ value);
     };

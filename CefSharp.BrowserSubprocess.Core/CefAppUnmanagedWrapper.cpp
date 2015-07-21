@@ -49,12 +49,9 @@ namespace CefSharp
 
         if (wrapper->JavascriptRootObject != nullptr)
         {
-            auto window = context->GetGlobal();
-
             wrapper->JavascriptRootObjectWrapper = gcnew JavascriptRootObjectWrapper(wrapper->JavascriptRootObject, wrapper->BrowserProcess);
 
-            wrapper->JavascriptRootObjectWrapper->V8Value = window;
-            wrapper->JavascriptRootObjectWrapper->Bind();
+            wrapper->JavascriptRootObjectWrapper->Bind(context->GetGlobal());
         }
     };
 

@@ -51,18 +51,18 @@ namespace CefSharp
 
         property int BrowserId;
 
-        // The serialized registered object data waiting to be used.
-        property JavascriptRootObject^ JavascriptRootObject;
-
-        property JavascriptRootObjectWrapper^ JavascriptRootObjectWrapper;
-
-        // The WCF proxy to the parent process.
-        property IBrowserProcess^ BrowserProcess;
-
         bool SendProcessMessage(IProcessMessage^ message);
 
         IProcessMessage^ CreateProcessMessage(String^ name);
 
         CefFrameWrapper^ GetFrame(int64 frameId);
+
+    internal:
+        // The serialized registered object data waiting to be used.
+        property JavascriptRootObject^ JavascriptRootObject;
+        
+        property JavascriptRootObjectWrapper^ JavascriptRootObjectWrapper;
+
+        property IBrowserProcess^ BrowserProcess;
     };
 }

@@ -11,7 +11,7 @@ using namespace System;
 
 namespace CefSharp
 {
-    void JavascriptMethodWrapper::Bind(CefRefPtr<CefV8Value> v8Value)
+    void JavascriptMethodWrapper::Bind(const CefRefPtr<CefV8Value>& v8Value)
     {
         auto methodName = StringUtils::ToNative(_javascriptMethod->JavascriptName);
         auto v8Function = CefV8Value::CreateFunction(methodName, _javascriptMethodHandler.get());

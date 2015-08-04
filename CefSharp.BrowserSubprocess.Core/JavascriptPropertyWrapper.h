@@ -41,6 +41,6 @@ namespace CefSharp
             _javascriptProperty = nullptr;
         }
 
-        void Bind(CefRefPtr<CefV8Value> v8Value, JavascriptCallbackRegistry^ callbackRegistry);
+        void Bind(const CefRefPtr<CefV8Value>& v8Value, JavascriptCallbackRegistry^ callbackRegistry);
     };
 }

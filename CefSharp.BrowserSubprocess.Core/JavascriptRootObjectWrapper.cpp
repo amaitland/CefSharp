@@ -9,7 +9,7 @@
 
 namespace CefSharp
 {
-    void JavascriptRootObjectWrapper::Bind(CefRefPtr<CefV8Value> v8Value)
+    void JavascriptRootObjectWrapper::Bind(const CefRefPtr<CefV8Value>& v8Value)
     {
         auto memberObjects = _rootObject->MemberObjects;
         for each (JavascriptObject^ obj in Enumerable::OfType<JavascriptObject^>(memberObjects))

@@ -12,7 +12,7 @@ using namespace System;
 
 namespace CefSharp
 {
-    void JavascriptPropertyWrapper::Bind(CefRefPtr<CefV8Value> v8Value, JavascriptCallbackRegistry^ callbackRegistry)
+    void JavascriptPropertyWrapper::Bind(const CefRefPtr<CefV8Value>& v8Value, JavascriptCallbackRegistry^ callbackRegistry)
     {
         auto propertyName = StringUtils::ToNative(_javascriptProperty->JavascriptName);
         auto clrPropertyName = _javascriptProperty->JavascriptName;

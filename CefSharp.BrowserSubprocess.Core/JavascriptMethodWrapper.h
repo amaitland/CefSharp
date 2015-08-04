@@ -44,7 +44,7 @@ namespace CefSharp
             _browserProcess = nullptr;
         }
 
-        void Bind(CefRefPtr<CefV8Value> V8Value);
+        void Bind(const CefRefPtr<CefV8Value>& v8Value);
         BrowserProcessResponse^ Execute(IList<CefV8ValueWrapper^>^ parameters);
     };
 }

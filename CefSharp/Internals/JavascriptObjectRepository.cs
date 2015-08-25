@@ -27,7 +27,7 @@ namespace CefSharp.Internals
     /// All of the registered objects are tracked via meta-data for the objects 
     /// expressed starting with the JavaScriptObject type.
     /// </summary>
-    public class JavascriptObjectRepository : DisposableResource
+    public class JavascriptObjectRepository
     {
         private static long lastId;
 

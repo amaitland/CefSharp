@@ -12,6 +12,8 @@ namespace CefSharp.BrowserSubprocess
 {
     public class CefRenderProcess : CefSubProcess
     {
+        public int? ParentProcessId { get; private set; }
+
         private int? parentBrowserId;
         private List<CefBrowserWrapper> browsers = new List<CefBrowserWrapper>();
 
@@ -19,17 +21,23 @@ namespace CefSharp.BrowserSubprocess
         {
             LocateParentProcessId(args);
         }
-        
-        protected override void DoDispose(bool isDisposing)
+
+        protected override void Dispose(bool isDisposing)
         {
-            foreach(var browser in browsers)
+            if (isDisposing)
             {
-                browser.Dispose();
+                if (browsers != null)
+                {
+                    foreach (var browser in browsers)
+                    {
+                        browser.Dispose();
+                    }
+
+                    browsers = null;
+                }
             }
 
-            browsers = null;
-
-            base.DoDispose(isDisposing);
+            base.Dispose(isDisposing);
         }
 
         public override void OnBrowserCreated(CefBrowserWrapper browser)
@@ -95,8 +103,6 @@ namespace CefSharp.BrowserSubprocess
             browser.ChannelFactory = null;
             browser.BrowserProcess = null;
         }
-
-        public int? ParentProcessId { get; private set; }
 
         private void LocateParentProcessId(IEnumerable<string> args)
         {

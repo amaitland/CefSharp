@@ -3,22 +3,21 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using System.Linq;
 using CefSharp.Internals;
 using System.Collections.Generic;
 using System.ServiceModel;
 
 namespace CefSharp.BrowserSubprocess
 {
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, IncludeExceptionDetailInFaults=true)]
     public class CefRenderProcess : CefSubProcess
     {
         private int? parentBrowserId;
         private List<CefBrowserWrapper> browsers = new List<CefBrowserWrapper>();
 
         public CefRenderProcess(IEnumerable<string> args) 
-            : base(args)
         {
-            
+            LocateParentProcessId(args);
         }
         
         protected override void DoDispose(bool isDisposing)
@@ -95,7 +94,27 @@ namespace CefSharp.BrowserSubprocess
 
             browser.ChannelFactory = null;
             browser.BrowserProcess = null;
-            browser.JavascriptRootObject = null;
+        }
+
+        public int? ParentProcessId { get; private set; }
+
+        private void LocateParentProcessId(IEnumerable<string> args)
+        {
+            // Format being parsed:
+            // --channel=3828.2.1260352072\1102986608
+            // We only really care about the PID (3828) part.
+            const string channelPrefix = "--channel=";
+            var channelArgument = args.SingleOrDefault(arg => arg.StartsWith(channelPrefix));
+            if (channelArgument == null)
+            {
+                return;
+            }
+
+            var parentProcessId = channelArgument
+                .Substring(channelPrefix.Length)
+                .Split('.')
+                .First();
+            ParentProcessId = int.Parse(parentProcessId);
         }
     }
 }

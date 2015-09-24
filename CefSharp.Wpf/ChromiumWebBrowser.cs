@@ -7,7 +7,6 @@ using CefSharp.Wpf.Internals;
 using CefSharp.Wpf.Rendering;
 using Microsoft.Win32.SafeHandles;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,8 +20,6 @@ namespace CefSharp.Wpf
 {
     public class ChromiumWebBrowser : ContentControl, IRenderWebBrowser, IWpfWebBrowser
     {
-        private readonly List<IDisposable> disposables = new List<IDisposable>();
-
         private HwndSource source;
         private HwndSourceHook sourceHook;
         private DispatcherTimer tooltipTimer;
@@ -35,6 +32,8 @@ namespace CefSharp.Wpf
         private Image image;
         private Image popupImage;
         private Popup popup;
+        private DisposableEventWrapper actualHeightChangedHandler;
+        private DisposableEventWrapper actualWidthChangedHandler;
 
         public BrowserSettings BrowserSettings { get; set; }
         public RequestContext RequestContext { get; set; }
@@ -145,9 +144,8 @@ namespace CefSharp.Wpf
 
             managedCefBrowserAdapter = new ManagedCefBrowserAdapter(this, true);
 
-            disposables.Add(managedCefBrowserAdapter);
-            disposables.Add(new DisposableEventWrapper(this, ActualHeightProperty, OnActualSizeChanged));
-            disposables.Add(new DisposableEventWrapper(this, ActualWidthProperty, OnActualSizeChanged));
+            actualHeightChangedHandler = new DisposableEventWrapper(this, ActualHeightProperty, OnActualSizeChanged);
+            actualWidthChangedHandler = new DisposableEventWrapper(this, ActualWidthProperty, OnActualSizeChanged);
 
             ResourceHandlerFactory = new DefaultResourceHandlerFactory();
             BrowserSettings = new BrowserSettings();
@@ -187,37 +185,53 @@ namespace CefSharp.Wpf
                     BrowserSettings = null;
                 }
 
-                PresentationSource.RemoveSourceChangedHandler(this, PresentationSourceChangedHandler);
-
-                // Release internal event listeners:
-                Loaded -= OnLoaded;
-                GotKeyboardFocus -= OnGotKeyboardFocus;
-                LostKeyboardFocus -= OnLostKeyboardFocus;
-
-                // Release internal event listeners for Drag Drop events:
-                DragEnter -= OnDragEnter;
-                DragOver -= OnDragOver;
-                DragLeave -= OnDragLeave;
-                Drop -= OnDrop;
-
-                IsVisibleChanged -= OnIsVisibleChanged;
-
-                if (tooltipTimer != null)
+                UiThreadRunAsync(() =>
                 {
-                    tooltipTimer.Tick -= OnTooltipTimerTick;
-                }
+                    PresentationSource.RemoveSourceChangedHandler(this, PresentationSourceChangedHandler);
 
-                if (CleanupElement != null)
-                {
-                    CleanupElement.Unloaded -= OnCleanupElementUnloaded;
-                }
+                    // Release internal event listeners:
+                    Loaded -= OnLoaded;
+                    GotKeyboardFocus -= OnGotKeyboardFocus;
+                    LostKeyboardFocus -= OnLostKeyboardFocus;
 
-                foreach (var disposable in disposables)
+                    // Release internal event listeners for Drag Drop events:
+                    DragEnter -= OnDragEnter;
+                    DragOver -= OnDragOver;
+                    DragLeave -= OnDragLeave;
+                    Drop -= OnDrop;
+
+                    IsVisibleChanged -= OnIsVisibleChanged;
+
+                    if (tooltipTimer != null)
+                    {
+                        tooltipTimer.Tick -= OnTooltipTimerTick;
+                    }
+
+                    if (CleanupElement != null)
+                    {
+                        CleanupElement.Unloaded -= OnCleanupElementUnloaded;
+                    }
+
+                    if (actualWidthChangedHandler != null)
+                    {
+                        actualWidthChangedHandler.Dispose();
+                        actualWidthChangedHandler = null;
+                    }
+
+                    if (actualHeightChangedHandler != null)
+                    {
+                        actualHeightChangedHandler.Dispose();
+                        actualHeightChangedHandler = null;
+                    }
+
+                    WebBrowser = null;
+                });
+
+                if (managedCefBrowserAdapter != null)
                 {
-                    disposable.Dispose();
+                    managedCefBrowserAdapter.Dispose();
+                    managedCefBrowserAdapter = null;
                 }
-                disposables.Clear();
-                UiThreadRunAsync(() => WebBrowser = null);
             }
 
             Cef.RemoveDisposable(this);

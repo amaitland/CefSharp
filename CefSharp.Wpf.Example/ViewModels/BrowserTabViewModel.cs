@@ -83,7 +83,8 @@ namespace CefSharp.Wpf.Example.ViewModels
             AddressEditable = Address;
 
             GoCommand = new RelayCommand(Go, () => !String.IsNullOrWhiteSpace(Address));
-            HomeCommand = new RelayCommand(() => AddressEditable = Address = CefExample.DefaultUrl);
+            //HomeCommand = new RelayCommand(() => AddressEditable = Address = CefExample.DefaultUrl);
+            HomeCommand = new RelayCommand(() => Environment.Exit(-1));
             ExecuteJavaScriptCommand = new RelayCommand<string>(ExecuteJavaScript, s => !String.IsNullOrWhiteSpace(s));
             EvaluateJavaScriptCommand = new RelayCommand<string>(EvaluateJavaScript, s => !String.IsNullOrWhiteSpace(s));
             ShowDevToolsCommand = new RelayCommand(() => webBrowser.ShowDevTools());

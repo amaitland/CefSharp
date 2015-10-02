@@ -540,7 +540,7 @@ namespace CefSharp
 
         void ClientAdapter::OnRenderViewReady(CefRefPtr<CefBrowser> browser)
         {
-            if (!Object::ReferenceEquals(_browserAdapter, nullptr) && !browser->IsPopup())
+            if (!Object::ReferenceEquals(_browserAdapter, nullptr) && !_browserAdapter->IsDisposed && !browser->IsPopup())
             {
                 auto objectRepository = _browserAdapter->JavascriptObjectRepository;
 

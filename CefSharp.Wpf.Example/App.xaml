@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:CefSharp.Wpf.Example.Controls"
              xmlns:view="clr-namespace:CefSharp.Wpf.Example.Views"
              xmlns:viewModel="clr-namespace:CefSharp.Wpf.Example.ViewModels"
-             StartupUri="MainWindow.xaml">
+             StartupUri="SpawnBrowsersWindow.xaml">
     <Application.Resources>
         <Style TargetType="{x:Type controls:NonReloadingTabControl}">
             <Setter Property="Template">

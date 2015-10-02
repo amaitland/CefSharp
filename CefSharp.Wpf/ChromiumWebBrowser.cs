@@ -36,6 +36,8 @@ namespace CefSharp.Wpf
         private Image popupImage;
         private Popup popup;
 
+        bool isDisposed = false;
+
         public BrowserSettings BrowserSettings { get; set; }
         public RequestContext RequestContext { get; set; }
         public IDialogHandler DialogHandler { get; set; }
@@ -166,6 +168,8 @@ namespace CefSharp.Wpf
             GC.SuppressFinalize(this);
         }
 
+        
+
         protected virtual void Dispose(bool isdisposing)
         {
             // No longer reference event listeners:
@@ -225,6 +229,8 @@ namespace CefSharp.Wpf
             RemoveSourceHook();
 
             managedCefBrowserAdapter = null;
+
+            isDisposed = true;
         }
 
         ScreenInfo IRenderWebBrowser.GetScreenInfo()
@@ -545,12 +551,19 @@ namespace CefSharp.Wpf
 
         protected virtual void OnIsBrowserInitializedChanged(bool oldValue, bool newValue)
         {
+            //if (isDisposed)
+            //    return;
+
             var task = this.GetZoomLevelAsync();
             task.ContinueWith(previous =>
             {
                 if (previous.IsCompleted)
                 {
-                    UiThreadRunAsync(() => SetCurrentValue(ZoomLevelProperty, previous.Result));
+                    UiThreadRunAsync(() => {
+                        //if (isDisposed)
+                        //    return;
+                        SetCurrentValue(ZoomLevelProperty, previous.Result);
+                    });
                 }
                 else
                 {

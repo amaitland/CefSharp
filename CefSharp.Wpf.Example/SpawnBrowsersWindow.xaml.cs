@@ -35,29 +35,20 @@ namespace CefSharp.Wpf.Example
 
         private async void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DisposeCurrentBrowser();
-            await Task.Delay(100);
-            CreateBrowser();
-        }
-
-        private void CreateBrowser()
-        {
-            ChromiumWebBrowser browser = new ChromiumWebBrowser()
-            {
-                Address = "http://www.google.com"
-            };
-            browserContainer.Content = browser;
-            //browser.ExecuteScriptAsync("document.body.innerHTML = '';");
-        }
-
-        private void DisposeCurrentBrowser()
-        {
             if (browserContainer.Content is ChromiumWebBrowser)
             {
                 ChromiumWebBrowser oldBrowser = browserContainer.Content as ChromiumWebBrowser;
                 browserContainer.Content = null;
                 oldBrowser.Dispose();
             }
+            await Task.Delay(10);
+
+            ChromiumWebBrowser browser = new ChromiumWebBrowser()
+            {
+                Address = "http://www.google.com"
+            };
+            browserContainer.Content = browser;
+            //browser.ExecuteScriptAsync("document.body.innerHTML = '';");
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)

@@ -39,6 +39,8 @@ namespace CefSharp
     // CefRenderProcessHandler
     void CefAppUnmanagedWrapper::OnBrowserCreated(CefRefPtr<CefBrowser> browser)
     {
+        DLOG(INFO) << "OnBrowserCreated:" << browser->GetIdentifier();
+
         auto wrapper = gcnew CefBrowserWrapper(browser);
         _onBrowserCreated->Invoke(wrapper);
 
@@ -48,6 +50,8 @@ namespace CefSharp
 
     void CefAppUnmanagedWrapper::OnBrowserDestroyed(CefRefPtr<CefBrowser> browser)
     {
+        DLOG(INFO) << "OnBrowserDestroyed:" << browser->GetIdentifier();
+
         auto wrapper = FindBrowserWrapper(browser->GetIdentifier(), false);
 
         if (wrapper != nullptr)

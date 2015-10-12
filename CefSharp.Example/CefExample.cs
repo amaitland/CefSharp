@@ -105,7 +105,7 @@ namespace CefSharp.Example
                 }
             }
             
-            settings.LogSeverity = LogSeverity.Verbose;
+            settings.LogSeverity = LogSeverity.Info;
 
             if (DebuggingSubProcess)
             {

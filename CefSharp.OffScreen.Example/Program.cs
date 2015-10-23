@@ -22,7 +22,8 @@ namespace CefSharp.OffScreen.Example
             Console.WriteLine();
 
             // You need to replace this with your own call to Cef.Initialize();
-            CefExample.Init(true, multiThreadedMessageLoop:true);
+            //CefExample.Init(true, multiThreadedMessageLoop:true);
+            //CefSharpSettings.WcfEnabled = true;
 
             MainAsync("cachePath1", 1.0);
             //Demo showing Zoom Level of 3.0
@@ -40,50 +41,17 @@ namespace CefSharp.OffScreen.Example
 
         private static async void MainAsync(string cachePath, double zoomLevel)
         {
-            var browserSettings = new BrowserSettings();
-            //Reduce rendering speed to one frame per second so it's easier to take screen shots
-            browserSettings.WindowlessFrameRate = 1;
-            var requestContextSettings = new RequestContextSettings { CachePath = cachePath };
-
             // RequestContext can be shared between browser instances and allows for custom settings
             // e.g. CachePath
-            using(var requestContext = new RequestContext(requestContextSettings))
-            using (var browser = new ChromiumWebBrowser(TestUrl, browserSettings, requestContext))
+            using (var browser = new ChromiumWebBrowser("http://crawlbin.com/"))
             {
-                if (zoomLevel > 1)
-                {
-                    browser.FrameLoadStart += (s, argsi) =>
-                    {
-                        var b = (ChromiumWebBrowser)s;
-                        if (argsi.Frame.IsMain)
-                        {
-                            b.SetZoomLevel(zoomLevel);
-                        }
-                    };
-                }
                 await LoadPageAsync(browser);
 
-                // For Google.com pre-pupulate the search text box
-                await browser.EvaluateScriptAsync("document.getElementById('lst-ib').value = 'CefSharp Was Here!'");
+                // KO, Message error 'Frame 1 is no longer available, most likely the Frame has been Disposed.'
+                JavascriptResponse response = await browser.EvaluateScriptAsync(@"(function() { return 1; })();");
+                var result = response.Success ? (response.Result ?? "null") : response.Message;
 
-                // Wait for the screenshot to be taken,
-                // if one exists ignore it, wait for a new one to make sure we have the most up to date
-                await browser.ScreenshotAsync(true).ContinueWith(DisplayBitmap);
-
-                await LoadPageAsync(browser, "http://github.com");
-
-                
-                //Gets a wrapper around the underlying CefBrowser instance
-                var cefBrowser = browser.GetBrowser();
-                // Gets a warpper around the CefBrowserHost instance
-                // You can perform a lot of low level browser operations using this interface
-                var cefHost = cefBrowser.GetHost();
-
-                //You can call Invalidate to redraw/refresh the image
-                cefHost.Invalidate(PaintElementType.View);
-
-                // Wait for the screenshot to be taken.
-                await browser.ScreenshotAsync(true).ContinueWith(DisplayBitmap);
+                Console.WriteLine(result);
             }
         }
 
@@ -109,32 +77,6 @@ namespace CefSharp.OffScreen.Example
                 browser.Load(address);
             }
             return tcs.Task;
-        }
-
-        private static void DisplayBitmap(Task<Bitmap> task)
-        {
-            // Make a file to save it to (e.g. C:\Users\jan\Desktop\CefSharp screenshot.png)
-            var screenshotPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "CefSharp screenshot" + DateTime.Now.Ticks + ".png");
-
-            Console.WriteLine();
-            Console.WriteLine("Screenshot ready. Saving to {0}", screenshotPath);
-
-            var bitmap = task.Result;
-
-            // Save the Bitmap to the path.
-            // The image type is auto-detected via the ".png" extension.
-            bitmap.Save(screenshotPath);
-
-            // We no longer need the Bitmap.
-            // Dispose it to avoid keeping the memory alive.  Especially important in 32-bit applications.
-            bitmap.Dispose();
-
-            Console.WriteLine("Screenshot saved.  Launching your default image viewer...");
-
-            // Tell Windows to launch the saved image.
-            Process.Start(screenshotPath);
-
-            Console.WriteLine("Image viewer launched.  Press any key to exit.");
         }
     }
 }

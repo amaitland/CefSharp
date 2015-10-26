@@ -24,6 +24,11 @@ namespace CefSharp.OffScreen.Example
             // You need to replace this with your own call to Cef.Initialize();
             //CefExample.Init(true, multiThreadedMessageLoop:true);
             //CefSharpSettings.WcfEnabled = true;
+            var settings = new CefSettings();
+            settings.CefCommandLineArgs.Add("renderer-startup-dialog", "1");
+            settings.LogSeverity = LogSeverity.Warning;
+
+            Cef.Initialize(settings);
 
             MainAsync("cachePath1", 1.0);
             //Demo showing Zoom Level of 3.0
@@ -46,6 +51,8 @@ namespace CefSharp.OffScreen.Example
             using (var browser = new ChromiumWebBrowser("http://crawlbin.com/"))
             {
                 await LoadPageAsync(browser);
+
+                //browser.ExecuteScriptAsync("1 + 1");
 
                 // KO, Message error 'Frame 1 is no longer available, most likely the Frame has been Disposed.'
                 JavascriptResponse response = await browser.EvaluateScriptAsync(@"(function() { return 1; })();");

@@ -31,6 +31,22 @@ namespace CefSharp
         "   result.p = promise;"
         "   return result;"
         "}";
+    const CefString CefAppUnmanagedWrapper::kDomLoadScript = ""
+        "(function()"
+        "{"
+        "   if (cefsharp)"
+        "   {" 
+        "	  cefsharp.DomReadyHandler = function()"
+        "	  {"
+        "		  document.removeEventListener('DOMContentLoaded', cefsharp.DomReadyHandler);"
+        "		  cefsharp.DomContentLoadedHandler();"
+        "	  };"
+        "	  if (cefsharp.DomContentLoadedHandler)"
+        "	  {"
+        "		  document.addEventListener('DOMContentLoaded', cefsharp.DomReadyHandler);"
+        "	  }"
+        "	}"
+        "})();";
 
     CefRefPtr<CefRenderProcessHandler> CefAppUnmanagedWrapper::GetRenderProcessHandler()
     {
@@ -63,6 +79,13 @@ namespace CefSharp
 
         auto rootObjectWrappers = browserWrapper->JavascriptRootObjectWrappers;
         auto frameId = frame->GetIdentifier();
+
+        if (frame->IsMain())
+        {
+            CefRefPtr<CefV8Value> result;
+            CefRefPtr<CefV8Exception> exception;
+            auto success = context->Eval(kDomLoadScript, result, exception);
+        }
 
         if (rootObjectWrappers->ContainsKey(frameId))
         {

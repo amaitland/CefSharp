@@ -1,14 +1,10 @@
 ﻿var cefsharp;
-if (!cefsharp)
-    cefsharp = {};
-
-if (!cefsharp.example)
-    cefsharp.example = {};
+if (!cefsharp) { cefsharp = {}; }
 
 (function ()
 {
-    cefsharp.example.alert = function(text)
+    cefsharp.DomContentLoadedHandler = function ()
     {
-        alert(text);
+        alert("DomLoaded");
     };
 })();

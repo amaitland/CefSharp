@@ -19,6 +19,7 @@ namespace CefSharp
     {
     private:
         static const CefString kPromiseCreatorScript;
+        static const CefString kDomLoadScript;
 
         gcroot<Action<CefBrowserWrapper^>^> _onBrowserCreated;
         gcroot<Action<CefBrowserWrapper^>^> _onBrowserDestroyed;

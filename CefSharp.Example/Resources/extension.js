@@ -5,6 +5,6 @@ if (!cefsharp) { cefsharp = {}; }
 {
     cefsharp.DomContentLoadedHandler = function ()
     {
-        alert("DomLoaded");
+        alert("DomLoaded:" + bound.echoMyProperty());
     };
 })();

@@ -20,6 +20,7 @@ namespace CefSharp.Wpf.Example.Views
             browser.RegisterAsyncJsObject("boundAsync", new AsyncBoundObject());
             // Enable touch scrolling - once properly tested this will likely become the default
             //browser.IsManipulationEnabled = true;
+            browser.BrowserSettings.AcceptLanguageList = "ru-RU";
 
             //browser.LifeSpanHandler = new LifespanHandler();
             browser.MenuHandler = new MenuHandler();

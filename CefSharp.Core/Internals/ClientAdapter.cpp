@@ -555,21 +555,6 @@ namespace CefSharp
 
         void ClientAdapter::OnRenderViewReady(CefRefPtr<CefBrowser> browser)
         {
-            if (!Object::ReferenceEquals(_browserAdapter, nullptr) && !_browserAdapter->IsDisposed && !browser->IsPopup())
-            {
-                auto objectRepository = _browserAdapter->JavascriptObjectRepository;
-
-                if (objectRepository->HasBoundObjects)
-                {
-                    //transmit async bound objects
-                    auto jsRootObjectMessage = CefProcessMessage::Create(kJavascriptRootObjectRequest);
-                    auto argList = jsRootObjectMessage->GetArgumentList();
-                    SerializeJsObject(objectRepository->AsyncRootObject, argList, 0);
-                    SerializeJsObject(objectRepository->RootObject, argList, 1);
-                    browser->SendProcessMessage(CefProcessId::PID_RENDERER, jsRootObjectMessage);
-                }
-            }
-
             auto handler = _browserControl->RequestHandler;
 
             if (handler != nullptr)
@@ -1116,6 +1101,24 @@ namespace CefSharp
 
             if (name == kOnContextCreatedRequest)
             {
+                auto frameId = GetInt64(argList, 0);
+
+                if (!Object::ReferenceEquals(_browserAdapter, nullptr) && !_browserAdapter->IsDisposed)
+                {
+                    auto objectRepository = _browserAdapter->JavascriptObjectRepository;
+
+                    if (objectRepository->HasBoundObjects)
+                    {
+                        //transmit async bound objects
+                        auto jsRootObjectMessage = CefProcessMessage::Create(kJavascriptRootObjectRequest);
+                        auto argList = jsRootObjectMessage->GetArgumentList();
+                        SerializeJsObject(objectRepository->AsyncRootObject, argList, 0);
+                        SerializeJsObject(objectRepository->RootObject, argList, 1);
+                        SetInt64(argList, 2, frameId);
+                        browser->SendProcessMessage(CefProcessId::PID_RENDERER, jsRootObjectMessage);
+                    }
+                }
+
                 _browserControl->SetCanExecuteJavascriptOnMainFrame(true);
 
                 auto handler = _browserControl->RenderProcessMessageHandler;
@@ -1123,7 +1126,7 @@ namespace CefSharp
                 if (handler != nullptr)
                 {
                     auto browserWrapper = GetBrowserWrapper(browser->GetIdentifier(), browser->IsPopup());
-                    CefFrameWrapper frameWrapper(browser->GetFrame(GetInt64(argList, 0)));
+                    CefFrameWrapper frameWrapper(browser->GetFrame(frameId));
 
                     handler->OnContextCreated(_browserControl, browserWrapper, %frameWrapper);
                 }

@@ -71,30 +71,6 @@ namespace CefSharp
 
             browser->SendProcessMessage(CefProcessId::PID_BROWSER, contextCreatedMessage);
         }
-
-        auto browserWrapper = FindBrowserWrapper(browser->GetIdentifier(), true);
-
-        auto rootObjectWrappers = browserWrapper->JavascriptRootObjectWrappers;
-        auto frameId = frame->GetIdentifier();
-
-        JavascriptRootObjectWrapper^ rootObject;
-        if (!rootObjectWrappers->TryGetValue(frameId, rootObject))
-        {
-            rootObject = gcnew JavascriptRootObjectWrapper(browser->GetIdentifier(), browserWrapper->BrowserProcess);
-            rootObjectWrappers->TryAdd(frameId, rootObject);
-        }
-
-        if (rootObject->IsBound)
-        {
-            LOG(WARNING) << "A context has been created for the same browser / frame without context released called previously";
-        }
-        else
-        {
-            if (!Object::ReferenceEquals(_javascriptRootObject, nullptr) || !Object::ReferenceEquals(_javascriptAsyncRootObject, nullptr))
-            {
-                rootObject->Bind(_javascriptRootObject, _javascriptAsyncRootObject, context->GetGlobal());
-            }
-        }
     };
 
     void CefAppUnmanagedWrapper::OnContextReleased(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context)
@@ -400,8 +376,45 @@ namespace CefSharp
         }
         else if (name == kJavascriptRootObjectRequest)
         {
-            _javascriptAsyncRootObject = DeserializeJsRootObject(argList, 0);
-            _javascriptRootObject = DeserializeJsRootObject(argList, 1);
+            auto javascriptAsyncRootObject = DeserializeJsRootObject(argList, 0);
+            auto javascriptRootObject = DeserializeJsRootObject(argList, 1);
+            auto frameId = GetInt64(argList, 2);
+
+            auto browserWrapper = FindBrowserWrapper(browser->GetIdentifier(), true);
+
+            auto rootObjectWrappers = browserWrapper->JavascriptRootObjectWrappers;
+            auto frame = browser->GetFrame(frameId);
+            if (frame.get())
+            {
+                JavascriptRootObjectWrapper^ rootObject;
+                if (!rootObjectWrappers->TryGetValue(frameId, rootObject))
+                {
+                    rootObject = gcnew JavascriptRootObjectWrapper(browser->GetIdentifier(), browserWrapper->BrowserProcess);
+                    rootObjectWrappers->TryAdd(frameId, rootObject);
+                }
+
+                if (rootObject->IsBound)
+                {
+                    LOG(WARNING) << "A context has been created for the same browser / frame without context released called previously";
+                }
+                else
+                {
+                    auto context = frame->GetV8Context();
+
+                    if (context.get() && context->Enter())
+                    {
+                        try
+                        {
+                            rootObject->Bind(javascriptRootObject, javascriptAsyncRootObject, context->GetGlobal());
+                        }
+                        finally
+                        {
+                            context->Exit();
+                        }
+                    }
+                }
+            }
+
             handled = true;
         }
         else if (name == kJavascriptAsyncMethodCallResponse)

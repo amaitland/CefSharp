@@ -41,6 +41,15 @@ namespace CefSharp
     // CefRenderProcessHandler
     void CefAppUnmanagedWrapper::OnBrowserCreated(CefRefPtr<CefBrowser> browser)
     {
+        if (_requestBoundObjects)
+        {
+            _requestBoundObjects = false;
+
+            auto msg = CefProcessMessage::Create(kOnBrowserCreated);
+
+            browser->SendProcessMessage(CefProcessId::PID_BROWSER, msg);
+        }
+
         auto wrapper = gcnew CefBrowserWrapper(browser);
         _onBrowserCreated->Invoke(wrapper);
 

@@ -555,21 +555,6 @@ namespace CefSharp
 
         void ClientAdapter::OnRenderViewReady(CefRefPtr<CefBrowser> browser)
         {
-            if (!Object::ReferenceEquals(_browserAdapter, nullptr) && !_browserAdapter->IsDisposed && !browser->IsPopup())
-            {
-                auto objectRepository = _browserAdapter->JavascriptObjectRepository;
-
-                if (objectRepository->HasBoundObjects)
-                {
-                    //transmit async bound objects
-                    auto jsRootObjectMessage = CefProcessMessage::Create(kJavascriptRootObjectRequest);
-                    auto argList = jsRootObjectMessage->GetArgumentList();
-                    SerializeJsObject(objectRepository->AsyncRootObject, argList, 0);
-                    SerializeJsObject(objectRepository->RootObject, argList, 1);
-                    browser->SendProcessMessage(CefProcessId::PID_RENDERER, jsRootObjectMessage);
-                }
-            }
-
             auto handler = _browserControl->RequestHandler;
 
             if (handler != nullptr)
@@ -1114,7 +1099,26 @@ namespace CefSharp
             auto argList = message->GetArgumentList();
             IJavascriptCallbackFactory^ callbackFactory = _browserAdapter->JavascriptCallbackFactory;
 
-            if (name == kOnContextCreatedRequest)
+            if (name == kOnBrowserCreated)
+            {
+                if (!Object::ReferenceEquals(_browserAdapter, nullptr) && !_browserAdapter->IsDisposed)
+                {
+                    auto objectRepository = _browserAdapter->JavascriptObjectRepository;
+
+                    if (objectRepository->HasBoundObjects)
+                    {
+                        //transmit async bound objects
+                        auto jsRootObjectMessage = CefProcessMessage::Create(kJavascriptRootObjectRequest);
+                        auto argList = jsRootObjectMessage->GetArgumentList();
+                        SerializeJsObject(objectRepository->AsyncRootObject, argList, 0);
+                        SerializeJsObject(objectRepository->RootObject, argList, 1);
+                        browser->SendProcessMessage(CefProcessId::PID_RENDERER, jsRootObjectMessage);
+                    }
+                }
+
+                handled = true;
+            }
+            else if (name == kOnContextCreatedRequest)
             {
                 _browserControl->SetCanExecuteJavascriptOnMainFrame(true);
 

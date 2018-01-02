@@ -26,6 +26,7 @@ namespace CefSharp
         gcroot<List<CefExtension^>^> _extensions;
         gcroot<List<CefCustomScheme^>^> _schemes;
         bool _focusedNodeChangedEnabled;
+        bool _requestBoundObjects;
 
         // The serialized registered object data waiting to be used (only contains methods and bound async).
         gcroot<JavascriptRootObject^> _javascriptAsyncRootObject;
@@ -44,6 +45,7 @@ namespace CefSharp
             _extensions = gcnew List<CefExtension^>();
             _schemes = schemes;
             _focusedNodeChangedEnabled = enableFocusedNodeChanged;
+            _requestBoundObjects = true;
         }
 
         ~CefAppUnmanagedWrapper()

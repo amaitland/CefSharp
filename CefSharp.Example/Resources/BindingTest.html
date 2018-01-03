@@ -8,108 +8,120 @@
             Async Binding Test
             <span id="asyncresult"></span>
             <script type="text/javascript">
-                var asResult = document.getElementById('asyncresult');
+                //(async function() {
+                //    // <embed user provided code here>
 
-                function writeAsyncResult(call, end)
-                {
-                    var p = document.createElement('p');
-                    var br = document.createElement('br');
-                    var br2 = document.createElement('br');
-                    var title = document.createTextNode('Async Call: ');
-                    var callText = document.createTextNode(call);
-                    var endText = document.createTextNode(end);
+                //    await CefSharp.RegisterBoundObject("boundAsync", "bound");
+                //})();
 
-                    p.appendChild(title);
-                    p.appendChild(br);
-                    p.appendChild(callText);
-                    p.appendChild(br2);
-                    p.appendChild(endText);
+                (async () => {
+                    await CefSharp.RegisterBoundObject("boundAsync", "bound");
 
-                    asResult.appendChild(p);
-                }
+                    var asResult = document.getElementById('asyncresult');
 
-                function asyncError()
-                {
-                    var call = "Async call (Throw Exception): " + Date();
-                    boundAsync.error().catch(function (e)
+                    function writeAsyncResult(call, end)
                     {
-                        var end = "Error: " + e + "(" + Date() + ")";
-                        writeAsyncResult(call, end);
-                    });
-                }
+                        var p = document.createElement('p');
+                        var br = document.createElement('br');
+                        var br2 = document.createElement('br');
+                        var title = document.createTextNode('Async Call: ');
+                        var callText = document.createTextNode(call);
+                        var endText = document.createTextNode(end);
 
-                function asyncDivOk()
-                {
-                    var call = "Async call (Divide 16 / 2): " + Date();
-                    boundAsync.div(16, 2).then(function (res)
-                    {
-                        var end = "Result: " + res + "(" + Date() + ")";
-                        writeAsyncResult(call, end);
-                    });
-                }
+                        p.appendChild(title);
+                        p.appendChild(br);
+                        p.appendChild(callText);
+                        p.appendChild(br2);
+                        p.appendChild(endText);
 
-                function asyncDivFail()
-                {
-                    var call = "Async call (Divide 16 /0): " + Date();
-                    boundAsync.div(16, 0).then(function (res)
-                    {
-                        var end = "Result: " + res + "(" + Date() + ")";
-                        writeAsyncResult(call, end);
-                    },
-                    function (e)
-                    {
-                        var end = "Error: " + e + "(" + Date() + ")";
-                        writeAsyncResult(call, end);
-                    });
-                }
+                        asResult.appendChild(p);
+                    }
 
-                function asyncHello()
-                {
-                    var call = "Async call (Hello): " + Date();
-                    boundAsync.hello('CefSharp').then(function (res)
+                    function asyncError()
                     {
-                        var end = "Result: " + res + "(" + Date() + ")";
-                        writeAsyncResult(call, end);
-                    });
-                }
+                        var call = "Async call (Throw Exception): " + Date();
+                        boundAsync.error().catch(function (e)
+                        {
+                            var end = "Error: " + e + "(" + Date() + ")";
+                            writeAsyncResult(call, end);
+                        });
+                    }
 
-                function asyncDoSomething()
-                {
-                    var call = "Async call (Long Running Task): " + Date();
-                    boundAsync.doSomething().then(function (res)
+                    function asyncDivOk()
                     {
-                        var end = "Result: " + res + "(" + Date() + ")";
-                        writeAsyncResult(call, end);
-                    });
-                }
+                        var call = "Async call (Divide 16 / 2): " + Date();
+                        boundAsync.div(16, 2).then(function (res)
+                        {
+                            var end = "Result: " + res + "(" + Date() + ")";
+                            writeAsyncResult(call, end);
+                        });
+                    }
 
-                function asyncObject()
-                {
-                    var call = "Async call (Object): " + Date();
-                    boundAsync.returnObject('CefSharp').then(function (res)
+                    function asyncDivFail()
                     {
-                        var end = "Result: " + JSON.stringify(res) + " (" + Date() + ")";
-                        writeAsyncResult(call, end);
-                    });
-                }
+                        var call = "Async call (Divide 16 /0): " + Date();
+                        boundAsync.div(16, 0).then(function (res)
+                        {
+                            var end = "Result: " + res + "(" + Date() + ")";
+                            writeAsyncResult(call, end);
+                        },
+                        function (e)
+                        {
+                            var end = "Error: " + e + "(" + Date() + ")";
+                            writeAsyncResult(call, end);
+                        });
+                    }
 
-                function asyncObjectArray()
-                {
-                    var call = "Async call (ObjectArray): " + Date();
-                    boundAsync.objectArray('CefSharp').then(function (res)
+                    function asyncHello()
                     {
-                        var end = "Result: [ " + res.map(function (item) { return item.Value }) + " ] (" + Date() + ")";
-                        writeAsyncResult(call, end);
-                    });
-                }
+                        var call = "Async call (Hello): " + Date();
+                        boundAsync.hello('CefSharp').then(function (res)
+                        {
+                            var end = "Result: " + res + "(" + Date() + ")";
+                            writeAsyncResult(call, end);
+                        });
+                    }
 
-                asyncError();
-                asyncDivOk();
-                asyncDivFail();
-                asyncDoSomething();
-                asyncHello();
-                asyncObject();
-                asyncObjectArray();
+                    function asyncDoSomething()
+                    {
+                        var call = "Async call (Long Running Task): " + Date();
+                        boundAsync.doSomething().then(function (res)
+                        {
+                            var end = "Result: " + res + "(" + Date() + ")";
+                            writeAsyncResult(call, end);
+                        });
+                    }
+
+                    function asyncObject()
+                    {
+                        var call = "Async call (Object): " + Date();
+                        boundAsync.returnObject('CefSharp').then(function (res)
+                        {
+                            var end = "Result: " + JSON.stringify(res) + " (" + Date() + ")";
+                            writeAsyncResult(call, end);
+                        });
+                    }
+
+                    function asyncObjectArray()
+                    {
+                        var call = "Async call (ObjectArray): " + Date();
+                        boundAsync.objectArray('CefSharp').then(function (res)
+                        {
+                            var end = "Result: [ " + res.map(function (item) { return item.Value }) + " ] (" + Date() + ")";
+                            writeAsyncResult(call, end);
+                        });
+                    }
+
+                    asyncError();
+                    asyncDivOk();
+                    asyncDivFail();
+                    asyncDoSomething();
+                    asyncHello();
+                    asyncObject();
+                    asyncObjectArray();
+                })();
+
+                
             </script>
         </p>
         <p>
@@ -291,30 +303,21 @@
         <p>
             Javascript function sending variable number of parameters to Bound Object. (ParamArray Test)
             <script type="text/javascript">
-                function str2ab(str)
-                {
-                    var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
-                    var bufView = new Uint16Array(buf);
-                    for (var i = 0, strLen = str.length; i < strLen; i++)
-                    {
-                        bufView[i] = str.charCodeAt(i);
-                    }
-                    return buf;
-                }
+                (async () => {
+                    await CefSharp.RegisterBoundObject("boundAsync", "bound");
 
-                document.write(bound.methodWithParams('With 1 Params', 'hello-world') + "<br/>");
-                document.write(bound.methodWithParams('With 2 Params', 'hello-world', 'chris was here') + "<br/>");
-                document.write(bound.methodWithParams('With no Params') + "<br/>");
-                document.write(bound.methodWithoutParams('Normal Method', 'hello') + "<br/>");
-                document.write(bound.methodWithoutAnything() + "<br/>");
+                    document.write(bound.methodWithParams('With 1 Params', 'hello-world') + "<br/>");
+                    document.write(bound.methodWithParams('With 2 Params', 'hello-world', 'chris was here') + "<br/>");
+                    document.write(bound.methodWithParams('With no Params') + "<br/>");
+                    document.write(bound.methodWithoutParams('Normal Method', 'hello') + "<br/>");
+                    document.write(bound.methodWithoutAnything() + "<br/>");
 
-                document.write(bound.methodWithThreeParamsOneOptionalOneArray(null) + "<br/>");
-                document.write(bound.methodWithThreeParamsOneOptionalOneArray(null, null) + "<br/>");
-                document.write(bound.methodWithThreeParamsOneOptionalOneArray("Test", null) + "<br/>");
-                document.write(bound.methodWithThreeParamsOneOptionalOneArray(null, null, "Arg1", "Arg2") + "<br/>");
-
-                var buffer = str2ab("Testing array buffer");
-                document.write(bound.complexParamObject(buffer));
+                    document.write(bound.methodWithThreeParamsOneOptionalOneArray(null) + "<br/>");
+                    document.write(bound.methodWithThreeParamsOneOptionalOneArray(null, null) + "<br/>");
+                    document.write(bound.methodWithThreeParamsOneOptionalOneArray("Test", null) + "<br/>");
+                    document.write(bound.methodWithThreeParamsOneOptionalOneArray(null, null, "Arg1", "Arg2") + "<br/>");
+                })();
+                
             </script>
         </p>
     </body>

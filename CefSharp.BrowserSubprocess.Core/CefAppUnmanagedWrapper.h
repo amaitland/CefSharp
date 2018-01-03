@@ -9,6 +9,7 @@
 #include "include/cef_base.h"
 
 #include "CefBrowserWrapper.h"
+#include "RegisterBoundObjectRegistry.h"
 
 using namespace System::Collections::Generic;
 
@@ -19,6 +20,7 @@ namespace CefSharp
     {
     private:
         static const CefString kPromiseCreatorScript;
+        static const CefString kRegisterBoundObjectScript;
 
         gcroot<Action<CefBrowserWrapper^>^> _onBrowserCreated;
         gcroot<Action<CefBrowserWrapper^>^> _onBrowserDestroyed;
@@ -34,6 +36,8 @@ namespace CefSharp
         // The serialized registered object data waiting to be used.
         gcroot<JavascriptRootObject^> _javascriptRootObject;
 
+        gcroot<RegisterBoundObjectRegistry^> _registerBoundObjectRegistry;
+
     public:
         static const CefString kPromiseCreatorFunction;
 
@@ -46,6 +50,7 @@ namespace CefSharp
             _schemes = schemes;
             _focusedNodeChangedEnabled = enableFocusedNodeChanged;
             _requestBoundObjects = true;
+            _registerBoundObjectRegistry = gcnew RegisterBoundObjectRegistry();
         }
 
         ~CefAppUnmanagedWrapper()

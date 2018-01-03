@@ -41,6 +41,8 @@ namespace CefSharp
             const CefString kOnFocusedNodeChanged = "OnFocusedNodeChanged";
 
             const CefString kOnBrowserCreated = "OnBrowserCreated";
+
+            const CefString kJavascriptBoundObjectRequest = "JavascriptBoundObjectRequest";
         }
     }
 }

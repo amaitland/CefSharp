@@ -58,7 +58,7 @@ namespace CefSharp.Example
             settings.CachePath = "cache";
             //settings.UserAgent = "CefSharp Browser" + Cef.CefSharpVersion; // Example User Agent
             //settings.CefCommandLineArgs.Add("renderer-process-limit", "1");
-            settings.CefCommandLineArgs.Add("renderer-startup-dialog", "1");
+            //settings.CefCommandLineArgs.Add("renderer-startup-dialog", "1");
             //settings.CefCommandLineArgs.Add("enable-media-stream", "1"); //Enable WebRTC
             //settings.CefCommandLineArgs.Add("no-proxy-server", "1"); //Don't use a proxy server, always make direct connections. Overrides any other proxy server flags that are passed.
             //settings.CefCommandLineArgs.Add("debug-plugin-loading", "1"); //Dumps extra logging about plugin loading to the log file.

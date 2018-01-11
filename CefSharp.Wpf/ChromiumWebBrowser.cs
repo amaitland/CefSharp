@@ -38,10 +38,6 @@ namespace CefSharp.Wpf
         /// </summary>
         private HwndSourceHook sourceHook;
         /// <summary>
-        /// The tooltip timer
-        /// </summary>
-        private DispatcherTimer tooltipTimer;
-        /// <summary>
         /// The tool tip
         /// </summary>
         private ToolTip toolTip;
@@ -442,10 +438,9 @@ namespace CefSharp.Wpf
 
             IsVisibleChanged += OnIsVisibleChanged;
 
-            ToolTip = toolTip = new ToolTip();
-            toolTip.StaysOpen = true;
-            toolTip.Visibility = Visibility.Collapsed;
-            toolTip.Closed += OnTooltipClosed;
+            toolTip = new ToolTip();
+            toolTip.Placement = PlacementMode.Relative;
+            toolTip.PlacementTarget = this;
 
             BackCommand = new DelegateCommand(this.Back, () => CanGoBack);
             ForwardCommand = new DelegateCommand(this.Forward, () => CanGoForward);
@@ -548,13 +543,6 @@ namespace CefSharp.Wpf
                         popup.Opened -= PopupOpened;
                         popup.Closed -= PopupClosed;
                         popup = null;
-                    }
-
-                    if (tooltipTimer != null)
-                    {
-                        tooltipTimer.Tick -= OnTooltipTimerTick;
-                        tooltipTimer.Stop();
-                        tooltipTimer = null;
                     }
 
                     if (CleanupElement != null)
@@ -810,7 +798,8 @@ namespace CefSharp.Wpf
                 ignoreUriChange = false;
 
                 // The tooltip should obviously also be reset (and hidden) when the address changes.
-                SetCurrentValue(TooltipTextProperty, null);
+                //TODO: Confirm if this is still required
+                ((IWebBrowserInternal)this).SetTooltipText(null);
             });
         }
 
@@ -853,7 +842,20 @@ namespace CefSharp.Wpf
         /// <param name="tooltipText">The tooltip text.</param>
         void IWebBrowserInternal.SetTooltipText(string tooltipText)
         {
-            UiThreadRunAsync(() => SetCurrentValue(TooltipTextProperty, tooltipText));
+            UiThreadRunAsync(() =>
+            {
+                SetCurrentValue(TooltipTextProperty,  tooltipText);
+
+                if (string.IsNullOrEmpty(tooltipText))
+                {
+                    toolTip.IsOpen = false;
+                }
+                else
+                {
+                    toolTip.Content = tooltipText;
+                    toolTip.IsOpen = true;
+                }
+            });   
         }
 
         /// <summary>
@@ -1349,34 +1351,7 @@ namespace CefSharp.Wpf
         /// The tooltip text property
         /// </summary>
         public static readonly DependencyProperty TooltipTextProperty =
-            DependencyProperty.Register("TooltipText", typeof(string), typeof(ChromiumWebBrowser), new PropertyMetadata(null, (sender, e) => ((ChromiumWebBrowser)sender).OnTooltipTextChanged()));
-
-        /// <summary>
-        /// Called when [tooltip text changed].
-        /// </summary>
-        private void OnTooltipTextChanged()
-        {
-            var timer = tooltipTimer;
-            if (timer == null)
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(TooltipText))
-            {
-                UiThreadRunAsync(() => UpdateTooltip(null), DispatcherPriority.Render);
-
-                if(timer.IsEnabled)
-                {
-                    timer.Stop();
-                }
-            }
-            else if(!timer.IsEnabled)
-            {
-                timer.Start();
-            }
-        }
-
+            DependencyProperty.Register("TooltipText", typeof(string), typeof(ChromiumWebBrowser));
         #endregion
 
         #region WebBrowser dependency property
@@ -1752,15 +1727,6 @@ namespace CefSharp.Wpf
                 CleanupElement = Window.GetWindow(this);
             }
 
-            // TODO: Consider making the delay here configurable.
-            tooltipTimer = new DispatcherTimer(
-                TimeSpan.FromSeconds(0.5),
-                DispatcherPriority.Render,
-                OnTooltipTimerTick,
-                Dispatcher
-                );
-            tooltipTimer.IsEnabled = false;
-
             //Initial value for screen location
             UpdateBrowserScreenLocation();
         }
@@ -1909,55 +1875,6 @@ namespace CefSharp.Wpf
         }
 
         /// <summary>
-        /// Handles the <see cref="E:TooltipTimerTick" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnTooltipTimerTick(object sender, EventArgs e)
-        {
-            // Checks to see if the control is disposed/disposing
-            if (!IsDisposed)
-            {
-                tooltipTimer.Stop();
-
-                UpdateTooltip(TooltipText);
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="E:TooltipClosed" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void OnTooltipClosed(object sender, RoutedEventArgs e)
-        {
-            toolTip.Visibility = Visibility.Collapsed;
-
-            // Set Placement to something other than PlacementMode.Mouse, so that when we re-show the tooltip in
-            // UpdateTooltip(), the tooltip will be repositioned to the new mouse point.
-            toolTip.Placement = PlacementMode.Absolute;
-        }
-
-        /// <summary>
-        /// Updates the tooltip.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        private void UpdateTooltip(string text)
-        {
-            if (String.IsNullOrEmpty(text))
-            {
-                toolTip.IsOpen = false;
-            }
-            else
-            {
-                toolTip.Content = text;
-                toolTip.Placement = PlacementMode.Mouse;
-                toolTip.Visibility = Visibility.Visible;
-                toolTip.IsOpen = true;
-            }
-        }
-
-        /// <summary>
         /// Handles the <see cref="E:GotKeyboardFocus" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -2052,6 +1969,12 @@ namespace CefSharp.Wpf
                 var modifiers = e.GetModifiers();
 
                 browser.GetHost().SendMouseMoveEvent((int)point.X, (int)point.Y, false, modifiers);
+
+                if(toolTip.IsOpen)
+                {
+                    toolTip.HorizontalOffset = point.X + 10;
+                    toolTip.VerticalOffset = point.Y + 10; 
+                }
             }
 
             base.OnMouseMove(e);

@@ -126,8 +126,9 @@ namespace CefSharp
         /// <param name="scriptUrl">is the URL where the script in question can be found, if any.</param>
         /// <param name="startLine">is the base line number to use for error reporting.</param>
         /// <param name="timeout">The timeout after which the Javascript code execution should be aborted.</param>
+        /// <param name="promiseResponseType">is the response type a promise</param>
         /// <returns>A Task that can be awaited to perform the script execution</returns>
-        Task<JavascriptResponse> EvaluateScriptAsync(string script, string scriptUrl = "about:blank", int startLine = 1, TimeSpan? timeout = null);
+        Task<JavascriptResponse> EvaluateScriptAsync(string script, string scriptUrl = "about:blank", int startLine = 1, TimeSpan? timeout = null, bool promiseResponseType = false);
 
         /// <summary>
         /// Returns true if this is the main (top-level) frame.

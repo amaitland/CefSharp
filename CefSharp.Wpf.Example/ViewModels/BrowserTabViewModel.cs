@@ -120,7 +120,7 @@ namespace CefSharp.Wpf.Example.ViewModels
         {
             try
             {
-                var response = await webBrowser.EvaluateScriptAsync(s);
+                var response = await webBrowser.EvaluateScriptAsync(s, promiseResponseType: true);
                 if (response.Success && response.Result is IJavascriptCallback)
                 {
                     response = await ((IJavascriptCallback)response.Result).ExecuteAsync("This is a callback from EvaluateJavaScript");

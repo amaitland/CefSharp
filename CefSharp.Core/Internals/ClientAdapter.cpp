@@ -1380,7 +1380,7 @@ namespace CefSharp
             return handled;
         }
 
-        Task<JavascriptResponse^>^ ClientAdapter::EvaluateScriptAsync(int browserId, bool isBrowserPopup, int64 frameId, String^ script, String^ scriptUrl, int startLine, Nullable<TimeSpan> timeout)
+        Task<JavascriptResponse^>^ ClientAdapter::EvaluateScriptAsync(int browserId, bool isBrowserPopup, int64 frameId, String^ script, String^ scriptUrl, int startLine, Nullable<TimeSpan> timeout, bool promiseResponseType)
         {
             auto browser = GetBrowserWrapper(browserId, isBrowserPopup);
 
@@ -1394,6 +1394,11 @@ namespace CefSharp
 
             //create a new taskcompletionsource
             auto idAndComplectionSource = _pendingTaskRepository->CreatePendingTask(timeout);
+
+            if (promiseResponseType)
+            {
+                script = "(function(cefSharpCallbackId) { let cefSharpPromise = (function() { " + script + " })(); return cefsharp_PromiseWrapper(cefSharpCallbackId, Promise.resolve(cefSharpPromise)); })(" + idAndComplectionSource.Key + ");";
+            }
 
             auto message = CefProcessMessage::Create(kEvaluateJavascriptRequest);
             auto argList = message->GetArgumentList();

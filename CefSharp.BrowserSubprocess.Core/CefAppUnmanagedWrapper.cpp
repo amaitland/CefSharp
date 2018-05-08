@@ -9,6 +9,7 @@
 #include "CefAppUnmanagedWrapper.h"
 #include "RegisterBoundObjectHandler.h"
 #include "JavascriptRootObjectWrapper.h"
+#include "JavascriptPromiseHandler.h"
 #include "Serialization\V8Serialization.h"
 #include "Serialization\JsObjectsSerialization.h"
 #include "Async\JavascriptAsyncMethodCallback.h"
@@ -33,6 +34,8 @@ namespace CefSharp
         "   result.p = promise;"
         "   return result;"
         "}";
+    const CefString CefAppUnmanagedWrapper::kPromiseWrapperFunction = "cefsharp_PromiseWrapper";
+    const CefString CefAppUnmanagedWrapper::kPromiseWrapperScript = "function cefsharp_PromiseWrapper(id, p) { p.then(function(arg) { native function PromiseThenFunction(); PromiseThenFunction(id, arg); }); return 'CefSharpPromise'; }";
 
     CefRefPtr<CefRenderProcessHandler> CefAppUnmanagedWrapper::GetRenderProcessHandler()
     {
@@ -303,6 +306,7 @@ namespace CefSharp
         //these messages are roughly handled the same way
         if (name == kEvaluateJavascriptRequest || name == kJavascriptCallbackRequest)
         {
+            bool sendResponse = true;
             bool success = false;
             CefRefPtr<CefV8Value> result;
             CefString errorMessage;
@@ -358,8 +362,15 @@ namespace CefSharp
                             //we need to do this here to be able to store the v8context
                             if (success)
                             {
-                                auto responseArgList = response->GetArgumentList();
-                                SerializeV8Object(result, responseArgList, 2, callbackRegistry);
+                                if(result->IsString() && result->GetStringValue() == "CefSharpPromise")
+                                {
+                                    sendResponse = false;
+                                }
+                                else
+                                {
+                                    auto responseArgList = response->GetArgumentList();
+                                    SerializeV8Object(result, responseArgList, 2, callbackRegistry);
+                                }
                             }
                             else
                             {
@@ -446,14 +457,18 @@ namespace CefSharp
                 }
             }
 
-            auto responseArgList = response->GetArgumentList();
-            responseArgList->SetBool(0, success);
-            SetInt64(responseArgList, 1, callbackId);
-            if (!success)
+            //Send the response for everything except Promises
+            if(sendResponse)
             {
-                responseArgList->SetString(2, errorMessage);
+                auto responseArgList = response->GetArgumentList();
+                responseArgList->SetBool(0, success);
+                SetInt64(responseArgList, 1, callbackId);
+                if (!success)
+                {
+                    responseArgList->SetString(2, errorMessage);
+                }
+                browser->SendProcessMessage(sourceProcessId, response);
             }
-            browser->SendProcessMessage(sourceProcessId, response);
 
             handled = true;
         }
@@ -671,6 +686,7 @@ namespace CefSharp
     {
         //we need to do this because the builtin Promise object is not accesible
         CefRegisterExtension("cefsharp/promisecreator", kPromiseCreatorScript, NULL);
+        CefRegisterExtension("cefsharp/promiseWrapper", kPromiseWrapperScript, new JavascriptPromiseHandler());
 
         for each(CefExtension^ extension in _extensions->AsReadOnly())
         {

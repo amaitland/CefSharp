@@ -20,6 +20,7 @@ namespace CefSharp
     {
     private:
         static const CefString kPromiseCreatorScript;
+        static const CefString kPromiseWrapperScript;
 
         gcroot<Action<CefBrowserWrapper^>^> _onBrowserCreated;
         gcroot<Action<CefBrowserWrapper^>^> _onBrowserDestroyed;
@@ -36,6 +37,7 @@ namespace CefSharp
 
     public:
         static const CefString kPromiseCreatorFunction;
+        static const CefString kPromiseWrapperFunction;;
 
         CefAppUnmanagedWrapper(List<CefCustomScheme^>^ schemes, bool enableFocusedNodeChanged, Action<CefBrowserWrapper^>^ onBrowserCreated, Action<CefBrowserWrapper^>^ onBrowserDestoryed)
         {

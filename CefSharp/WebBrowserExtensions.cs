@@ -775,7 +775,7 @@ namespace CefSharp
             host.SendMouseMoveEvent(new MouseEvent(x, y, modifiers), mouseLeave);
         }
         
-        public static Task<JavascriptResponse> EvaluateScriptAsync(this IWebBrowser browser, string script, TimeSpan? timeout = null)
+        public static Task<JavascriptResponse> EvaluateScriptAsync(this IWebBrowser browser, string script, TimeSpan? timeout = null, bool promiseResponseType = false)
         {
             if (timeout.HasValue && timeout.Value.TotalMilliseconds > UInt32.MaxValue)
             {
@@ -792,7 +792,7 @@ namespace CefSharp
             {
                 ThrowExceptionIfFrameNull(frame);
 
-                return frame.EvaluateScriptAsync(script, timeout: timeout);
+                return frame.EvaluateScriptAsync(script, timeout: timeout, promiseResponseType: promiseResponseType);
             }
         }
 

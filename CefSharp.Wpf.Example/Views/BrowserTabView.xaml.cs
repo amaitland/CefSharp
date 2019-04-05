@@ -14,6 +14,7 @@ using CefSharp.Example.JavascriptBinding;
 using CefSharp.Example.ModelBinding;
 using CefSharp.Wpf.Example.Handlers;
 using CefSharp.Wpf.Example.ViewModels;
+using CefSharp.Wpf.Experimental;
 
 namespace CefSharp.Wpf.Example.Views
 {
@@ -25,6 +26,8 @@ namespace CefSharp.Wpf.Example.Views
         public BrowserTabView()
         {
             InitializeComponent();
+
+            browser.EnableExperimentalTouchSupport();
 
             //browser.BrowserSettings.BackgroundColor = Cef.ColorSetARGB(0, 255, 255, 255);
 
@@ -147,7 +150,7 @@ namespace CefSharp.Wpf.Example.Views
                 var errorBody = string.Format("<html><body bgcolor=\"white\"><h2>Failed to load URL {0} with error {1} ({2}).</h2></body></html>",
                                               args.FailedUrl, args.ErrorText, args.ErrorCode);
 
-                args.Frame.LoadHtml(errorBody, base64Encode:true);
+                args.Frame.LoadHtml(errorBody, base64Encode: true);
             };
 
             CefExample.RegisterTestResources(browser);

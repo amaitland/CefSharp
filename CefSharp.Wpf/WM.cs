@@ -54,5 +54,17 @@ namespace CefSharp.Wpf
         /// its WindowProc function. 
         /// </summary>
         IME_CHAR = 0x0286,
+
+        //WM_POINTER SUPPORT
+        PointerDeviceChange = 0X0238,
+        PointerDeviceInRange = 0x0239,
+        PointerDeviceOutOfRange = 0x023A,
+        PointerUpdate = 0x0245,
+        PointerDown = 0x0246,
+        PointerUp = 0x0247,
+        PointerEnter = 0x0249,
+        PointerLeave = 0x024A,
+        PointerActive = 0x024B,
+        PointerCaptureChanged = 0x024C,
     }
 }

@@ -1676,7 +1676,7 @@ namespace CefSharp.Wpf
             {
                 foreach (var hwndSourceObserver in hwndSourceObservers)
                 {
-                    hwndSourceObserver.NotifySourceChange(source);
+                    hwndSourceObserver.NotifySourceChange(null);
                 }
 
                 var window = args.OldSource.RootVisual as Window;

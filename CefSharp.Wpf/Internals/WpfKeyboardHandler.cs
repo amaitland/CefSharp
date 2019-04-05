@@ -3,7 +3,6 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System.Windows.Input;
-using System.Windows.Interop;
 
 namespace CefSharp.Wpf.Internals
 {
@@ -17,16 +16,6 @@ namespace CefSharp.Wpf.Internals
         public WpfKeyboardHandler(ChromiumWebBrowser owner)
         {
             this.owner = owner;
-        }
-
-        public virtual void Setup(HwndSource source)
-        {
-            // nothing to do here
-        }
-
-        public virtual void Dispose()
-        {
-            // nothing to do here
         }
 
         public virtual void HandleKeyPress(KeyEventArgs e)

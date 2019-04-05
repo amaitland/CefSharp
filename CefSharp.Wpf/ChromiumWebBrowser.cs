@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,6 +34,10 @@ namespace CefSharp.Wpf
     /// <seealso cref="CefSharp.Wpf.IWpfWebBrowser" />
     public class ChromiumWebBrowser : Control, IRenderWebBrowser, IWpfWebBrowser
     {
+        /// <summary>
+        /// List of classes that are notified of hwndSource creation
+        /// </summary>
+        private readonly IList<IHwndSourceObserver> hwndSourceObservers = new List<IHwndSourceObserver>();
         /// <summary>
         /// The source
         /// </summary>
@@ -683,7 +688,10 @@ namespace CefSharp.Wpf
                 // is called.
                 LifeSpanHandler = null;
 
-                WpfKeyboardHandler.Dispose();
+                foreach (var hwndSourceHandler in hwndSourceObservers)
+                {
+                    hwndSourceHandler.Dispose();
+                }
 
                 source = null;
             }
@@ -1625,7 +1633,10 @@ namespace CefSharp.Wpf
 
                 DpiScaleFactor = source.CompositionTarget.TransformToDevice.M11;
 
-                WpfKeyboardHandler.Setup(source);
+                foreach (var hwndSourceObserver in hwndSourceObservers)
+                {
+                    hwndSourceObserver.NotifySourceChange(source);
+                }
 
                 if (notifyDpiChanged && browser != null)
                 {
@@ -1663,7 +1674,10 @@ namespace CefSharp.Wpf
             }
             else if (args.OldSource != null)
             {
-                WpfKeyboardHandler.Dispose();
+                foreach (var hwndSourceObserver in hwndSourceObservers)
+                {
+                    hwndSourceObserver.NotifySourceChange(source);
+                }
 
                 var window = args.OldSource.RootVisual as Window;
                 if (window != null)
@@ -2268,12 +2282,49 @@ namespace CefSharp.Wpf
         /// </summary>
         public void UseLegacyKeyboardHandler()
         {
-            if (!(WpfKeyboardHandler is WpfLegacyKeyboardHandler))
+            //Do nothing if already using legacy handler
+            if (WpfKeyboardHandler is WpfLegacyKeyboardHandler)
             {
-                WpfKeyboardHandler.Dispose();
-                WpfKeyboardHandler = new WpfLegacyKeyboardHandler(this);
-                WpfKeyboardHandler.Setup(source);
+                return;
             }
+
+            var handler = new WpfLegacyKeyboardHandler(this);
+
+            WpfKeyboardHandler = handler;
+
+            RegisterHwndSourceObserver(handler);
+        }
+
+        public void DisalbeLegacyKeyboardHandler()
+        {
+            var handler = WpfKeyboardHandler as WpfLegacyKeyboardHandler;
+
+            if (handler != null)
+            {
+                UnRegisterHwndSourceObserver(handler);
+
+                WpfKeyboardHandler = new WpfKeyboardHandler(this);
+            }
+        }
+
+        internal void RegisterHwndSourceObserver(IHwndSourceObserver observer)
+        {
+            hwndSourceObservers.Add(observer);
+
+            //If the HwndSource has already been created then setup the notify the keyboard
+            //handler of the change
+            if (source != null)
+            {
+
+                observer.NotifySourceChange(source);
+            }
+        }
+
+        internal void UnRegisterHwndSourceObserver(IHwndSourceObserver observer)
+        {
+            hwndSourceObservers.Remove(observer);
+
+            observer.Dispose();
         }
 
         /// <summary>

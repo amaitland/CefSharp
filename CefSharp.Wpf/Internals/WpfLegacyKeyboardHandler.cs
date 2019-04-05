@@ -9,7 +9,7 @@ using CefSharp.Internals;
 
 namespace CefSharp.Wpf.Internals
 {
-    public class WpfLegacyKeyboardHandler : IWpfKeyboardHandler
+    public class WpfLegacyKeyboardHandler : IWpfKeyboardHandler, IHwndSourceObserver
     {
         /// <summary>
         /// The source hook		
@@ -31,8 +31,10 @@ namespace CefSharp.Wpf.Internals
             this.owner = owner;
         }
 
-        public virtual void Setup(HwndSource source)
+        public virtual void NotifySourceChange(HwndSource source)
         {
+            ReleaseHook();
+
             this.source = source;
             if (source != null)
             {
@@ -42,6 +44,11 @@ namespace CefSharp.Wpf.Internals
         }
 
         public virtual void Dispose()
+        {
+            ReleaseHook();
+        }
+
+        private void ReleaseHook()
         {
             if (source != null && sourceHook != null)
             {

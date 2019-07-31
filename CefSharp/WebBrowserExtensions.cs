@@ -55,6 +55,7 @@ namespace CefSharp
         ///                                     called before the underlying CEF browser is created.</exception>
         public static void RegisterJsObject(this IWebBrowser webBrowser, string name, object objectToBind, BindingOptions options = null)
         {
+            throw new NotImplementedException("This method has been removed.");
             CefSharpSettings.WcfEnabled = true;
             webBrowser.ValidateBrowserBeforeRegistering();
             webBrowser.JavascriptObjectRepository.Register(name, objectToBind, false, options);
@@ -74,6 +75,7 @@ namespace CefSharp
         /// object will be a standard javascript Promise object which is usable to wait for completion or failure.</remarks>
         public static void RegisterAsyncJsObject(this IWebBrowser webBrowser, string name, object objectToBind, BindingOptions options = null)
         {
+            throw new NotImplementedException("This method has been removed.");
             webBrowser.ValidateBrowserBeforeRegistering();
             webBrowser.JavascriptObjectRepository.Register(name, objectToBind, true, options);
         }

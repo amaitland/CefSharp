@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using CefSharp.Enums;
 using CefSharp.Event;
 
 namespace CefSharp.Internals
@@ -58,9 +59,9 @@ namespace CefSharp.Internals
             ObjectsBoundInJavascript = null;
         }
 
-        public bool HasBoundObjects
+        public bool HasBoundObjects(JavascriptBindingStrategy strategy)
         {
-            get { return objects.Count > 0; }
+            return objects.Values.Count(x => x.Strategy == strategy) > 0;
         }
 
         public bool IsBound(string name)
@@ -70,7 +71,7 @@ namespace CefSharp.Internals
 
         //Ideally this would internal, unfurtunately it's used in C++
         //and it's hard to expose internals
-        public List<JavascriptObject> GetObjects(List<string> names = null)
+        public List<JavascriptObject> GetObjects(JavascriptBindingStrategy strategy, List<string> names = null)
         {
             //If there are no objects names or the count is 0 then we will raise
             //the resolve event then return all objects that are registered,
@@ -78,20 +79,20 @@ namespace CefSharp.Internals
             var getAllObjects = names == null || names.Count == 0;
             if (getAllObjects)
             {
-                RaiseResolveObjectEvent(AllObjects);
+                RaiseResolveObjectEvent(strategy, AllObjects);
 
-                return objects.Values.Where(x => x.RootObject).ToList();
+                return objects.Values.Where(x => x.RootObject && x.Strategy == strategy).ToList();
             }
 
             foreach (var name in names)
             {
                 if (!IsBound(name))
                 {
-                    RaiseResolveObjectEvent(name);
+                    RaiseResolveObjectEvent(strategy, name);
                 }
             }
 
-            var objectsByName = objects.Values.Where(x => names.Contains(x.JavascriptName) && x.RootObject).ToList();
+            var objectsByName = objects.Values.Where(x => names.Contains(x.JavascriptName) && x.RootObject && x.Strategy == strategy).ToList();
 
             //TODO: JSB Add another event that signals when no object matching a name
             //in the list was provided.
@@ -180,6 +181,7 @@ namespace CefSharp.Internals
             jsObject.IsAsync = isAsync;
             jsObject.Binder = options?.Binder;
             jsObject.MethodInterceptor = options?.MethodInterceptor;
+            jsObject.Strategy = options.Strategy;
 
             AnalyseObjectForBinding(jsObject, analyseMethods: true, analyseProperties: !isAsync, readPropertyValue: false, camelCaseJavascriptNames: camelCaseJavascriptNames);
         }
@@ -470,9 +472,9 @@ namespace CefSharp.Internals
             }
         }
 
-        private void RaiseResolveObjectEvent(string name)
+        private void RaiseResolveObjectEvent(JavascriptBindingStrategy strategy, string name)
         {
-            ResolveObject?.Invoke(this, new JavascriptBindingEventArgs(this, name));
+            ResolveObject?.Invoke(this, new JavascriptBindingEventArgs(this, strategy, name));
         }
 
         private static JavascriptMethod CreateJavaScriptMethod(MethodInfo methodInfo, bool camelCaseJavascriptNames)

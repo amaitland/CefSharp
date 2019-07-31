@@ -1039,7 +1039,7 @@ namespace CefSharp
                     //Call GetObjects with the list of names provided (will default to all if the list is empty
                     //Previously we only sent a response if there were bound objects, now we always send
                     //a response so the promise is resolved.
-                    auto objs = objectRepository->GetObjects(names);
+                    auto objs = objectRepository->GetObjects(Enums::JavascriptBindingStrategy::Default, names);
 
                     auto msg = CefProcessMessage::Create(kJavascriptRootObjectResponse);
                     auto responseArgList = msg->GetArgumentList();

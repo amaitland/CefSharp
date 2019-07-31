@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using CefSharp.Enums;
 
 namespace CefSharp.Event
 {
@@ -22,13 +23,20 @@ namespace CefSharp.Event
         public string ObjectName { get; private set; }
 
         /// <summary>
+        /// Binding Strategy
+        /// </summary>
+        public JavascriptBindingStrategy Strategy { get; private set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="objectRepository">object repository</param>
+        /// <param name="strategy">strategy</param>
         /// <param name="name">object name</param>
-        public JavascriptBindingEventArgs(IJavascriptObjectRepository objectRepository, string name)
+        public JavascriptBindingEventArgs(IJavascriptObjectRepository objectRepository, JavascriptBindingStrategy strategy, string name)
         {
             ObjectRepository = objectRepository;
+            Strategy = strategy;
             ObjectName = name;
         }
     }

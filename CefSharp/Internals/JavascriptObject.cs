@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using CefSharp.Enums;
 using CefSharp.ModelBinding;
 
 namespace CefSharp.Internals
@@ -66,6 +67,8 @@ namespace CefSharp.Internals
         public IBinder Binder { get; set; }
 
         public IMethodInterceptor MethodInterceptor { get; set; }
+
+        public JavascriptBindingStrategy Strategy { get; set; }
 
         public JavascriptObject()
         {

@@ -40,23 +40,19 @@ void ManagedCefBrowserAdapter::CreateBrowser(IWindowInfo^ windowInfo, BrowserSet
     }
 
     CefRefPtr<CefDictionaryValue> extraInfo = CefDictionaryValue::Create();
-    auto legacyBindingEnabled = false;
 
-    if (CefSharpSettings::LegacyJavascriptBindingEnabled)
+    auto objectRepository = JavascriptObjectRepository;
+    auto legacyBindingEnabled = objectRepository->HasBoundObjects(Enums::JavascriptBindingStrategy::Legacy);
+
+    //For legacy binding we only add values if we have bond objects
+    if (legacyBindingEnabled)
     {
-        auto objectRepository = JavascriptObjectRepository;
+        auto listValue = CefListValue::Create();
+        auto objects = objectRepository->GetObjects(Enums::JavascriptBindingStrategy::Legacy, nullptr);
 
-        legacyBindingEnabled = objectRepository->HasBoundObjects;
+        SerializeJsObjects(objects, listValue, 0);
 
-        //For legacy binding we only add values if we have bond objects
-        if (legacyBindingEnabled)
-        {
-            auto listValue = CefListValue::Create();
-
-            SerializeJsObjects(objectRepository->GetObjects(nullptr), listValue, 0);
-
-            extraInfo->SetList("LegacyBindingObjects", listValue);
-        }
+        extraInfo->SetList("LegacyBindingObjects", listValue);
     }
 
     extraInfo->SetBool("LegacyBindingEnabled", legacyBindingEnabled);

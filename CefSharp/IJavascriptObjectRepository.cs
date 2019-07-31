@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using CefSharp.Enums;
 using CefSharp.Event;
 
 namespace CefSharp
@@ -47,9 +48,11 @@ namespace CefSharp
         /// <returns>returns true if the object was successfully unbound otherwise false.</returns>
         bool UnRegister(string name);
         /// <summary>
-        /// Has bound objects
+        /// Has bound objects for the given strategy.
         /// </summary>
-        bool HasBoundObjects { get; }
+        /// <param name="strategy">strategy</param>
+        /// <returns>bool </returns>
+        bool HasBoundObjects(JavascriptBindingStrategy strategy);
         /// <summary>
         /// Is object bound
         /// </summary>

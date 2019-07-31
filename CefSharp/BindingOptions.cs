@@ -2,6 +2,7 @@
 //
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
+using CefSharp.Enums;
 using CefSharp.ModelBinding;
 
 namespace CefSharp
@@ -37,11 +38,17 @@ namespace CefSharp
         public IMethodInterceptor MethodInterceptor { get; set; }
 
         /// <summary>
+        /// Strategy for how the objects will be bound.
+        /// </summary>
+        public JavascriptBindingStrategy Strategy { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public BindingOptions()
         {
             CamelCaseJavascriptNames = true;
+            Strategy = JavascriptBindingStrategy.Default;
         }
     }
 }

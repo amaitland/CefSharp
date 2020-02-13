@@ -1305,7 +1305,7 @@ namespace CefSharp
             return handled;
         }
 
-        PendingTaskRepository<JavascriptResponse^>^ ClientAdapter::GetPendingTaskRepository()
+        IPendingTaskRepository<JavascriptResponse^>^ ClientAdapter::GetPendingTaskRepository()
         {
             return _pendingTaskRepository;
         }

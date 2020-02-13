@@ -45,15 +45,15 @@ namespace CefSharp
             gcroot<String^> _tooltip;
             gcroot<IBrowserAdapter^> _browserAdapter;
             //contains in-progress eval script tasks
-            gcroot<PendingTaskRepository<JavascriptResponse^>^> _pendingTaskRepository;
+            gcroot<IPendingTaskRepository<JavascriptResponse^>^> _pendingTaskRepository;
             //contains js callback factories for each browser
             IBrowser^ GetBrowserWrapper(int browserId, bool isPopup);
 
         public:
-            ClientAdapter(IWebBrowserInternal^ browserControl, IBrowserAdapter^ browserAdapter) :
+            ClientAdapter(IWebBrowserInternal^ browserControl, IBrowserAdapter^ browserAdapter, IPendingTaskRepository<JavascriptResponse^>^ pendingTaskRepository) :
                 _browserControl(browserControl),
                 _popupBrowsers(gcnew Dictionary<int, IBrowser^>()),
-                _pendingTaskRepository(gcnew PendingTaskRepository<JavascriptResponse^>()),
+                _pendingTaskRepository(pendingTaskRepository),
                 _browserAdapter(browserAdapter),
                 _browserHwnd(NULL)
             {
@@ -63,9 +63,6 @@ namespace CefSharp
             ~ClientAdapter()
             {
                 CloseAllPopups(true);
-
-                //this will dispose the repository and cancel all pending tasks
-                delete _pendingTaskRepository;
 
                 _browser = nullptr;
                 _browserControl = nullptr;
@@ -77,7 +74,7 @@ namespace CefSharp
             }
 
             HWND GetBrowserHwnd() { return _browserHwnd; }
-            PendingTaskRepository<JavascriptResponse^>^ GetPendingTaskRepository();
+            IPendingTaskRepository<JavascriptResponse^>^ GetPendingTaskRepository();
             void CloseAllPopups(bool forceClose);
             void MethodInvocationComplete(MethodInvocationResult^ result);
             IBrowser^ GetBrowserWrapper(int browserId);

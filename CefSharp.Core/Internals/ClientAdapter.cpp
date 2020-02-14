@@ -1280,7 +1280,7 @@ namespace CefSharp
                     methodInvocation->Parameters->Add(DeserializeObject(arguments, i, _javascriptCallbackFactory));
                 }
 
-                _browserAdapter->MethodRunnerQueue->Enqueue(methodInvocation);
+                _methodRunnerQueue->Enqueue(methodInvocation);
 
                 handled = true;
             }
@@ -1304,6 +1304,7 @@ namespace CefSharp
             return handled;
         }
 
+        //TODO: Inject this directly into the frame wrapper reference
         IPendingTaskRepository<JavascriptResponse^>^ ClientAdapter::GetPendingTaskRepository()
         {
             return _pendingTaskRepository;

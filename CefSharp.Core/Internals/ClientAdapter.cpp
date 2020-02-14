@@ -1073,7 +1073,6 @@ namespace CefSharp
             auto handled = false;
             auto name = message->GetName();
             auto argList = message->GetArgumentList();
-            IJavascriptCallbackFactory^ callbackFactory = _browserAdapter->JavascriptCallbackFactory;
 
             //TODO: JSB Rename messages (remove Root from name)
             if (name == kJavascriptRootObjectRequest)
@@ -1256,7 +1255,7 @@ namespace CefSharp
 
                     if (success)
                     {
-                        response->Result = DeserializeObject(argList, 2, callbackFactory);
+                        response->Result = DeserializeObject(argList, 2, _javascriptCallbackFactory);
                     }
                     else
                     {
@@ -1278,7 +1277,7 @@ namespace CefSharp
                 auto methodInvocation = gcnew MethodInvocation(browser->GetIdentifier(), frameId, objectId, methodName, (callbackId > 0 ? Nullable<int64>(callbackId) : Nullable<int64>()));
                 for (auto i = 0; i < static_cast<int>(arguments->GetSize()); i++)
                 {
-                    methodInvocation->Parameters->Add(DeserializeObject(arguments, i, callbackFactory));
+                    methodInvocation->Parameters->Add(DeserializeObject(arguments, i, _javascriptCallbackFactory));
                 }
 
                 _browserAdapter->MethodRunnerQueue->Enqueue(methodInvocation);
@@ -1294,7 +1293,7 @@ namespace CefSharp
                     auto browserWrapper = GetBrowserWrapper(browser->GetIdentifier(), browser->IsPopup());
                     CefFrameWrapper frameWrapper(frame);
 
-                    auto deserializedMessage = DeserializeObject(argList, 0, callbackFactory);
+                    auto deserializedMessage = DeserializeObject(argList, 0, _javascriptCallbackFactory);
 
                     _browserControl->SetJavascriptMessageReceived(gcnew JavascriptMessageReceivedEventArgs(browserWrapper, %frameWrapper, deserializedMessage));
                 }

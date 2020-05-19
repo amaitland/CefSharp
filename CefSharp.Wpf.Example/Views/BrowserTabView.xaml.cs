@@ -52,17 +52,18 @@ namespace CefSharp.Wpf.Example.Views
             browser.JavascriptObjectRepository.ResolveObject += (sender, e) =>
             {
                 var repo = e.ObjectRepository;
-                if (e.ObjectName == "boundAsync2")
+
+                if (e.ObjectName == "bound")
                 {
-                    repo.Register("boundAsync2", new AsyncBoundObject(), isAsync: true, options: bindingOptions);
-                }
-                else if (e.ObjectName == "bound")
-                {
-                    browser.JavascriptObjectRepository.Register("bound", new BoundObject(), isAsync: false, options: BindingOptions.DefaultBinder);
+                    repo.Register("bound", new BoundObject(), isAsync: false, options: BindingOptions.DefaultBinder);
                 }
                 else if (e.ObjectName == "boundAsync")
                 {
-                    browser.JavascriptObjectRepository.Register("boundAsync", new AsyncBoundObject(), isAsync: true, options: bindingOptions);
+                    repo.Register("boundAsync", new AsyncBoundObject(), isAsync: true, options: bindingOptions);
+                }
+                else if (e.ObjectName == "boundAsync2")
+                {
+                    repo.Register("boundAsync2", new AsyncBoundObject(), isAsync: true, options: bindingOptions);
                 }
             };
 
@@ -148,11 +149,15 @@ namespace CefSharp.Wpf.Example.Views
                 //dynamic msg = e.Message;
                 //Alternatively you can use the built in Model Binder to convert to a custom model
                 var msg = e.ConvertMessageTo<PostMessageExample>();
-                var callback = msg.Callback;
-                var type = msg.Type;
-                var property = msg.Data.Property;
 
-                callback.ExecuteAsync(type);
+                if (msg.Type == "Update")
+                {
+                    var callback = msg.Callback;
+                    var type = msg.Type;
+                    var property = msg.Data.Property;
+
+                    callback.ExecuteAsync(type);
+                }
             }
             else if (e.Message is int)
             {

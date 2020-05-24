@@ -78,8 +78,23 @@ namespace CefSharp.ModelBinding
             }
         }
 
+
         /// <summary>
-        /// Returns an enumerable sequence of bindable properties for the specified type.
+        /// Builds a <see cref="BindingMemberInfo"/> collection from all of the valid properties returned from <see cref="ModelBindingExtensions.GetValidProperties(Type)"/>
+        /// </summary>
+        /// <param name="type">The type the collection will be based on..</param>
+        /// <returns>The <see cref="BindingMemberInfo"/> collection.</returns>
+        /// <remarks>
+        /// <see cref="Collect"/> is slightly misleading in it's description, as fields are quite different than properties.
+        /// This method only returns properties that allow for encapsulation which is more aligned with how something like JSON.NET works.
+        /// </remarks>
+        public static IEnumerable<BindingMemberInfo> CollectEncapsulatedProperties(Type type)
+        {
+            return type.GetValidProperties().Select(property => new BindingMemberInfo(property));
+        }
+
+        /// <summary>
+        ///     Returns an enumerable sequence of bindable properties for the specified type.
         /// </summary>
         /// <param name="type">The type to enumerate.</param>
         /// <returns>Bindable properties.</returns>

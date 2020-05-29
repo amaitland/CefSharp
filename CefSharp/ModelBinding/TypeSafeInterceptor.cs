@@ -12,10 +12,8 @@ namespace CefSharp.ModelBinding
     /// Asynchronous <see cref="Task{TResult}"/> are also supported and can be bound to the window to allow support for promises without <see cref="CefSharpSettings.ConcurrentTaskExecution"/><br/>
     /// The Javascript side will get back values it can use without forcing boilerplate on users.
     /// </summary>
-    public class TypeSafeInterceptor : IMethodInterceptor
+    public class TypeSafeInterceptor : AsyncMethodInterceptorBase
     {
-        public bool IsAsynchronous => true;
-
         /// <summary>
         /// Interception starts when we detect Javascript has attempted to invoke a .NET method.
         /// Now we evaluate the method and return what we deem to be the correct result for Javascript.
@@ -24,7 +22,7 @@ namespace CefSharp.ModelBinding
         /// <param name="parameters">all of the input parameters</param>
         /// <param name="methodName">the name of the method</param>
         /// <returns>The serialized return value of the executed method</returns>
-        public async Task<object> InterceptAsync(Func<object[], object> method, object[] parameters, string methodName)
+        protected override async Task<object> InterceptAsync(Func<object[], object> method, object[] parameters, string methodName)
         {
             // execute the method using the provided parameters
             var returnValue = method(parameters);
@@ -38,23 +36,11 @@ namespace CefSharp.ModelBinding
         }
 
         /// <summary>
-        /// Not used.
-        /// </summary>
-        /// <param name="method"></param>
-        /// <param name="parameters"></param>
-        /// <param name="methodName"></param>
-        /// <returns></returns>
-        public object Intercept(Func<object[], object> method, object[] parameters, string methodName)
-        {
-            throw new NotImplementedException("To use the TypeSafeInterceptor please set IsAsynchronous to true");
-        }
-
-        /// <summary>
         /// Performs dynamic analysis on a given input value and determines the best serialization to apply.
         /// </summary>
         /// <param name="value">the value the analyze</param>
         /// <returns>the serialized value</returns>
-        public static async Task<object> Intercept(object value)
+        private static async Task<object> Intercept(object value)
         {
             var returnType = value.GetType();
             // the .NET method didn't return an asynchronous Task so we can just serialize and return.
@@ -109,38 +95,59 @@ namespace CefSharp.ModelBinding
         private static object SerializeObject(object value)
         {
             if (value == null)
+            {
                 return null;
+            }
+
             var resultType = value.GetType();
             // check if the incoming value needs special care
             // this would be a lot cleaner with C# 8.0 pattern matching
 
             // serialize the Guid to a Javascript safe object (string)
             if (value is Guid guid)
+            {
                 return SerializeGuid(guid);
+            }
+
             if (value is Version version)
+            {
                 return SerializeVersion(version);
+            }
             // serialize the dictionary 
             if (value is IDictionary dict)
+            {
                 return SerializeDictionary(dict);
+            }
             // serialize the list
             if (value is ICollection collection)
+            {
                 return SerializeCollection(collection);
+            }
             // serialize tuples so they are usable
             if (resultType.IsTupleType() || resultType.IsValueTupleType())
+            {
                 return SerializeTuple(value);
+            }
             // no conversion necessary other than a cast 
             if (resultType.IsEnum)
+            {
                 return (int)value;
+            }
             // all primitive types should be fine as is
             if (value.IsNumber())
+            {
                 return value;
+            }
             // a string doesn't require special conversion.
             if (value is string)
+            {
                 return value;
+            }
             // nor does a boolean
             if (value is bool)
+            {
                 return value;
-
+            }
 
             var typeName = resultType.FullName;
             // no type name, no pass.
@@ -174,7 +181,9 @@ namespace CefSharp.ModelBinding
             }
             // if the underlying value isn't a .NET class or interface, return the value as it is.
             if (!resultType.IsClass && !resultType.IsInterface)
+            {
                 return value;
+            }
 
             var javaScriptObject = new Dictionary<string, object>();
             // I Write Sins Not Tragedies
@@ -259,7 +268,9 @@ namespace CefSharp.ModelBinding
             {
                 var key = entry.Key.ToString();
                 if (entry.Key.GetType().IsEnum)
+                {
                     key = ((int)entry.Key).ToString();
+                }
 
                 ret[key] = SerializeObject(entry.Value);
             }

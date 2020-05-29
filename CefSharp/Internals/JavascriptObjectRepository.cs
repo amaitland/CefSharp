@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using CefSharp.Event;
-using CefSharp.ModelBinding;
 
 namespace CefSharp.Internals
 {
@@ -36,7 +35,7 @@ namespace CefSharp.Internals
         public const string AllObjects = "All";
         public const string LegacyObjects = "Legacy";
 
-        private static long LastId;
+        private static long lastId;
 
         public event EventHandler<JavascriptBindingEventArgs> ResolveObject;
         public event EventHandler<JavascriptBindingCompleteEventArgs> ObjectBoundInJavascript;
@@ -139,7 +138,7 @@ namespace CefSharp.Internals
 
         private JavascriptObject CreateJavascriptObject(bool camelCaseJavascriptNames, bool rootObject)
         {
-            var id = Interlocked.Increment(ref LastId);
+            var id = Interlocked.Increment(ref lastId);
 
             var result = new JavascriptObject
             {
@@ -191,17 +190,15 @@ namespace CefSharp.Internals
                 throw new ArgumentException("Registering of .Net framework built in types is not supported, " +
                     "create your own Object and proxy the calls if you need to access a Window/Form/Control.", "value");
             }
-            // if TypeSafeMarshaling is enabled then we always set names to camelCase
-            var camelCaseJavascriptNames = CefSharpSettings.TypeSafeMarshaling || (options?.CamelCaseJavascriptNames ?? true);
+
+            var camelCaseJavascriptNames = options == null ? true : options.CamelCaseJavascriptNames;
             var jsObject = CreateJavascriptObject(camelCaseJavascriptNames, rootObject: true);
             jsObject.Value = value;
             jsObject.Name = name;
             jsObject.JavascriptName = name;
-            // if TypeSafeMarshaling is enabled force async to ensure modern Javascript is used. 
-            jsObject.IsAsync = CefSharpSettings.TypeSafeMarshaling || isAsync;
-            // if TypeSafeMarshaling is enabled then we use the typesafe binders and interceptors on every bound object
-            jsObject.Binder = CefSharpSettings.TypeSafeMarshaling ? new TypeSafeBinder() : options?.Binder;
-            jsObject.MethodInterceptor = CefSharpSettings.TypeSafeMarshaling ? new TypeSafeInterceptor() : options?.MethodInterceptor;
+            jsObject.IsAsync = isAsync;
+            jsObject.Binder = options?.Binder;
+            jsObject.MethodInterceptor = options?.MethodInterceptor;
 
             AnalyseObjectForBinding(jsObject, analyseMethods: true, analyseProperties: !isAsync, readPropertyValue: false, camelCaseJavascriptNames: camelCaseJavascriptNames);
         }
@@ -317,14 +314,6 @@ namespace CefSharp.Internals
                     }
                     else
                     {
-                        // anyone extending the Method Interceptor should be able to use Task 
-                        if (obj.MethodInterceptor.IsAsynchronous)
-                        {
-                            // run the asynchronous interceptor without worrying about creating a deadlock 
-                            var asyncIntercept = Task.Run(() => obj.MethodInterceptor.InterceptAsync((p) => method.Function(obj.Value, p), parameters, method.ManagedName));
-                            // blocks until the result is safely available on the current execution context. 
-                            result = asyncIntercept.Result;
-                        }
                         result = obj.MethodInterceptor.Intercept((p) => method.Function(obj.Value, p), parameters, method.ManagedName);
                     }
                 }
@@ -478,7 +467,7 @@ namespace CefSharp.Internals
                     {
                         var jsObject = CreateJavascriptObject(camelCaseJavascriptNames, rootObject: false);
                         jsObject.Name = propertyInfo.Name;
-                        jsObject.JavascriptName = camelCaseJavascriptNames ? propertyInfo.ConvertNameToCamelCase() : propertyInfo.Name;
+                        jsObject.JavascriptName = GetJavascriptName(propertyInfo.Name, camelCaseJavascriptNames);
                         jsObject.Value = jsProperty.GetValue(obj.Value);
                         jsProperty.JsObject = jsObject;
 
@@ -503,11 +492,11 @@ namespace CefSharp.Internals
             var jsMethod = new JavascriptMethod();
 
             jsMethod.ManagedName = methodInfo.Name;
-            jsMethod.JavascriptName = camelCaseJavascriptNames ? methodInfo.ConvertNameToCamelCase() : methodInfo.Name;
+            jsMethod.JavascriptName = GetJavascriptName(methodInfo.Name, camelCaseJavascriptNames);
             jsMethod.Function = methodInfo.Invoke;
             jsMethod.ParameterCount = methodInfo.GetParameters().Length;
             jsMethod.Parameters = methodInfo.GetParameters()
-                .Select(t => new MethodParameter
+                .Select(t => new MethodParameter()
                 {
                     IsParamArray = t.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0,
                     Type = t.ParameterType
@@ -523,9 +512,9 @@ namespace CefSharp.Internals
             var jsProperty = new JavascriptProperty();
 
             jsProperty.ManagedName = propertyInfo.Name;
-            jsProperty.JavascriptName = camelCaseJavascriptNames ? propertyInfo.ConvertNameToCamelCase() : propertyInfo.Name;
+            jsProperty.JavascriptName = GetJavascriptName(propertyInfo.Name, camelCaseJavascriptNames);
             jsProperty.SetValue = (o, v) => propertyInfo.SetValue(o, v, null);
-            jsProperty.GetValue = o => propertyInfo.GetValue(o, null);
+            jsProperty.GetValue = (o) => propertyInfo.GetValue(o, null);
 
             jsProperty.IsComplexType = IsComplexType(propertyInfo.PropertyType);
             jsProperty.IsReadOnly = !propertyInfo.CanWrite;
@@ -560,6 +549,26 @@ namespace CefSharp.Internals
             }
 
             return !baseType.IsPrimitive && baseType != typeof(string);
+        }
+
+        private static string GetJavascriptName(string str, bool camelCaseJavascriptNames)
+        {
+            if (!camelCaseJavascriptNames)
+            {
+                return str;
+            }
+
+            return ConvertStringToCamelCase(str);
+        }
+
+        private static string ConvertStringToCamelCase(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return string.Empty;
+            }
+
+            return char.ToLowerInvariant(str[0]) + str.Substring(1);
         }
     }
 }

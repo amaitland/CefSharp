@@ -29,7 +29,8 @@ namespace CefSharp
                 return new BindingOptions
                 {
                     Binder = new TypeSafeBinder(),
-                    MethodInterceptor = new TypeSafeInterceptor()
+                    MethodInterceptor = new TypeSafeInterceptor(),
+                    NameConverter = new TypeSafeNamingConverter()
                 };
             }
         }

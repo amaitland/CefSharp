@@ -35,12 +35,6 @@ namespace CefSharp
         }
 
         /// <summary>
-        /// Camel case the javascript names of properties/methods, defaults to true
-        /// </summary>
-        public bool CamelCaseJavascriptNames { get; set; }
-
-
-        /// <summary>
         /// Model binder used for passing complex classes as params to methods
         /// </summary>
         public IBinder Binder { get; set; }
@@ -52,11 +46,9 @@ namespace CefSharp
         public IMethodInterceptor MethodInterceptor { get; set; }
 
         /// <summary>
-        /// Default constructor
+        /// Converter used to translate .Net property/method names to
+        /// javascript names
         /// </summary>
-        public BindingOptions()
-        {
-            CamelCaseJavascriptNames = true;
-        }
+        public IJavascriptNameConverter NameConverter { get; set; }
     }
 }

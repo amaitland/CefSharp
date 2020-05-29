@@ -23,16 +23,29 @@ namespace CefSharp.ModelBinding
         private static readonly MethodInfo ToArrayMethodInfo = typeof(Enumerable).GetMethod("ToArray", BindingFlags.Public | BindingFlags.Static);
 
         /// <summary>
+        /// Register our custom type converters
+        /// </summary>
+        static TypeSafeBinder()
+        {
+            BinderGuidConverter.Register();
+            BinderVersionConverter.Register();
+        }
+
+        /// <summary>
+        /// Convert names to javascript
+        /// </summary>
+        private readonly IJavascriptNameConverter javascriptNameConverter;
+
+        /// <summary>
         /// Creates a new instance of the <see cref="TypeSafeBinder"/> and registers converters with <see cref="TypeDescriptor"/> <br/>
         /// This binder can reliably marshal data between the Javascript and .NET domains. <br/>
         /// For example it provides interoperability for Typescript, Javascript, and C# style conventions without making you drop conventions in one of your languages. <br/>
         /// It will also handle types like <see cref="Guid"/> or <see cref="Enum"/> fields that have flags. <br/>
         /// Finally it ensure there is type safety by throwing <see cref="TypeBindingException"/> whenever data is malformed so you can catch issues in your code.
         /// </summary>
-        public TypeSafeBinder()
+        public TypeSafeBinder(IJavascriptNameConverter javascriptNameConverter = null)
         {
-            BinderGuidConverter.Register();
-            BinderVersionConverter.Register();
+            this.javascriptNameConverter = javascriptNameConverter ?? new TypeSafeNamingConverter();
         }
 
         /// <summary>
@@ -181,8 +194,10 @@ namespace CefSharp.ModelBinding
                     // now for every Javascript member we try to find it's corresponding .NET member on the native Type 
                     foreach (var nativeMember in nativeMembers)
                     {
+                        var memberName = javascriptNameConverter.ConvertToJavascript(nativeMember.Name);
+
                         // make sure the native members name is an EXACT match to what would have been bound to the window
-                        if (javaScriptMember.Key.Equals(nativeMember.ConvertNameToCamelCase()))
+                        if (javaScriptMember.Key.Equals(memberName))
                         {
                             // bind the Javascript members value to to the native Type 
                             var nativeValue = Bind(javaScriptMember.Value, nativeMember.Type);

@@ -111,7 +111,9 @@ namespace CefSharp.ModelBinding
                 var token = tok.Trim();
                 // we should never experience an empty token given the code above, but if we do skip.
                 if (token.Length == 0)
+                {
                     continue;
+                }
 
                 // either we're going to get back the enum because the string had separator but one token
                 // or the integral representation of a token, which leads to us forming the actual enum member after all tokens are parsed.
@@ -343,7 +345,9 @@ namespace CefSharp.ModelBinding
         public static bool IsTupleType(this Type source)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException(nameof(source));
+            }
 
             // if the source is a class, is a generic type, then it might be an old Tuple type
             if (source.IsClass && source.IsGenericType && TupleTypes.Contains(source))
@@ -441,64 +445,6 @@ namespace CefSharp.ModelBinding
             var enumerableType = typeof(IEnumerable<>);
 
             return source.GetTypeInfo().IsGenericType && source.GetGenericTypeDefinition() == enumerableType;
-        }
-
-        /// <summary>
-        /// Converts the name property of <see cref="BindingMemberInfo"/> into camelCase
-        /// </summary>
-        /// <param name="member">the member info which will have it's name converted</param>
-        /// <returns>the camel case version of the method name.</returns>
-        public static string ConvertNameToCamelCase(this BindingMemberInfo member)
-        {
-            return ConvertNameToCamelCase(member.Name);
-        }
-
-        /// <summary>
-        /// Converts the name of a method into camelCase
-        /// </summary>
-        /// <param name="method">the method which will have it's name converted</param>
-        /// <returns>the camel case version of the method name.</returns>
-        public static string ConvertNameToCamelCase(this MethodInfo method)
-        {
-            return ConvertNameToCamelCase(method.Name);
-        }
-
-        /// <summary>
-        /// Converts the name of a property into camelCase
-        /// </summary>
-        /// <param name="property">the property which will have it's name converted</param>
-        /// <returns>the camel case version of the property name.</returns>
-        public static string ConvertNameToCamelCase(this PropertyInfo property)
-        {
-            return ConvertNameToCamelCase(property.Name);
-        }
-
-        /// <summary>
-        /// Converts a string (usually .NET value of some sort) to a camelCase representation.
-        /// </summary>
-        /// <param name="sourceString"></param>
-        /// <returns>the string converted to camelCase or preserved based on it's original structure.</returns>
-        private static string ConvertNameToCamelCase(this string sourceString)
-        {
-            // don't allow whitespace in property names.
-            // because we use this in the actual binding process, we should be throwing and not allowing invalid entries.
-            if (string.IsNullOrWhiteSpace(sourceString))
-            {
-                throw new TypeBindingException(typeof(string), typeof(string), BindingFailureCode.SourceObjectNullOrEmpty);
-            }
-
-            // camelCase says that if the string is only one character that it is preserved.
-            if (sourceString.Length == 1)
-                return sourceString;
-
-            var firstHalf = sourceString.Substring(0, 1);
-            var remainingHalf = sourceString.Substring(1);
-
-            // camelCase says that if the entire string is uppercase to preserve it.
-            if (char.IsUpper(firstHalf[0]) && char.IsUpper(remainingHalf[0]))
-                return sourceString;
-
-            return firstHalf.ToLowerInvariant() + remainingHalf;
         }
     }
 }

@@ -14,6 +14,13 @@ namespace CefSharp.ModelBinding
     /// </summary>
     public class TypeSafeInterceptor : AsyncMethodInterceptorBase
     {
+        private readonly IJavascriptNameConverter javascriptNameConverter;
+
+        public TypeSafeInterceptor(IJavascriptNameConverter javascriptNameConverter = null)
+        {
+            this.javascriptNameConverter = javascriptNameConverter ?? new TypeSafeNamingConverter();
+        }
+
         /// <summary>
         /// Interception starts when we detect Javascript has attempted to invoke a .NET method.
         /// Now we evaluate the method and return what we deem to be the correct result for Javascript.
@@ -40,7 +47,7 @@ namespace CefSharp.ModelBinding
         /// </summary>
         /// <param name="value">the value the analyze</param>
         /// <returns>the serialized value</returns>
-        private static async Task<object> Intercept(object value)
+        private async Task<object> Intercept(object value)
         {
             var returnType = value.GetType();
             // the .NET method didn't return an asynchronous Task so we can just serialize and return.
@@ -92,7 +99,7 @@ namespace CefSharp.ModelBinding
         /// <remarks>
         /// It's dictionaries all the way down
         /// </remarks>
-        private static object SerializeObject(object value)
+        private object SerializeObject(object value)
         {
             if (value == null)
             {
@@ -203,9 +210,10 @@ namespace CefSharp.ModelBinding
             var properties = value.GetType().GetValidProperties();
             foreach (var property in properties)
             {
+                var propertyName = javascriptNameConverter.ConvertToJavascript(property.Name);
                 // convert the model property name to camelCase to respect Javascript conventions
                 // then grab the current value of the property and serialize the result of that as well.
-                javaScriptObject[property.ConvertNameToCamelCase()] = SerializeObject(property.GetValue(value));
+                javaScriptObject[propertyName] = SerializeObject(property.GetValue(value));
             }
             return javaScriptObject;
         }
@@ -235,7 +243,7 @@ namespace CefSharp.ModelBinding
         /// </summary>
         /// <param name="tuple">Can be a Tuple or ValueTuple</param>
         /// <returns></returns>
-        private static List<object> SerializeTuple(object tuple)
+        private List<object> SerializeTuple(object tuple)
         {
             // ValueTuples are structs, so we get it objects fields
             if (tuple.GetType().IsValueTupleType())
@@ -251,7 +259,7 @@ namespace CefSharp.ModelBinding
         /// </summary>
         /// <param name="collection">The collection that contains .NET types that need to be serialized.</param>
         /// <returns>The newly formed Javascript collection</returns>
-        private static List<object> SerializeCollection(IEnumerable collection)
+        private List<object> SerializeCollection(IEnumerable collection)
         {
             return (from object entry in collection select SerializeObject(entry)).ToList();
         }
@@ -261,7 +269,7 @@ namespace CefSharp.ModelBinding
         /// </summary>
         /// <param name="dict">The dictionary that contains .NET types that need to be serialized.</param>
         /// <returns>The newly formed Javascript ready dictionary.</returns>
-        private static Dictionary<string, object> SerializeDictionary(IEnumerable dict)
+        private Dictionary<string, object> SerializeDictionary(IEnumerable dict)
         {
             var ret = new Dictionary<string, object>();
             foreach (DictionaryEntry entry in dict)

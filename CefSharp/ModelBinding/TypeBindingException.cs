@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 
 namespace CefSharp.ModelBinding
@@ -48,7 +49,8 @@ namespace CefSharp.ModelBinding
         {
             var enumType = value.GetType();
             var name = Enum.GetName(enumType, value);
-            return enumType.GetField(name).GetCustomAttributes(false).OfType<BindingFailureContextAttribute>().SingleOrDefault()?.Value ?? "No context is available this error code.";
+
+            return enumType.GetField(name).GetCustomAttributes(false).OfType<DescriptionAttribute>().SingleOrDefault()?.Description ?? "No context is available this error code.";
         }
 
         /// <summary>

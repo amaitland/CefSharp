@@ -120,7 +120,6 @@
     <Compile Include="Lagacy\ResourceHandler.cs" />
     <Compile Include="ModelBinding\AsyncInterceptorBase.cs" />
     <Compile Include="ModelBinding\BindingFailureCode.cs" />
-    <Compile Include="ModelBinding\BindingFailureContextAttribute.cs" />
     <Compile Include="ModelBinding\CamelCaseNamingConverter.cs" />
     <Compile Include="ModelBinding\Converters\BinderGuidConverter.cs" />
     <Compile Include="ModelBinding\Converters\BinderVersionConverter.cs" />

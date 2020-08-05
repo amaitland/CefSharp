@@ -30,5 +30,6 @@
     <Compile Remove="obj/**/*.*" />
   </ItemGroup>
 
+  <Import Project="$(SolutionDir)\GenApi.targets" />
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 </Project>

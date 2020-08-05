@@ -1,0 +1,22 @@
+<Project>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.GenAPI" Version="5.0.0-beta.20374.3" GeneratePathProperty="true" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- 
+      By default, GenAPI's target (GenerateReferenceAssemblySource) generates code into $(TargetDir).
+      CefSharp generates into the RefAssembly directory in the project's root directory.
+    -->
+	<GenerateReferenceAssemblySource>true</GenerateReferenceAssemblySource>
+    <GenAPITargetDir>$(SolutionDir)RefAssembly\</GenAPITargetDir>
+    <GenAPITargetPath>$(GenAPITargetDir)$(AssemblyName).cs</GenAPITargetPath>
+  </PropertyGroup>
+
+  <Target Name="EnsureGenAPITargetDirectory"
+        BeforeTargets="GenerateReferenceAssemblySource"
+        Condition="!Exists('$(GenAPITargetDir)')">
+    <MakeDir Directories="$(GenAPITargetDir)" />
+  </Target>
+
+</Project>

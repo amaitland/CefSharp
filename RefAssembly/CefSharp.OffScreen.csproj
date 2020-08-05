@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>CefSharp.OffScreen</RootNamespace>
+    <AssemblyName>CefSharp.OffScreen</AssemblyName>
+    <DocumentationFile>$(AssemblyName).xml</DocumentationFile>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\CefSharp.snk</AssemblyOriginatorKeyFile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="CefSharp.Core.csproj" />
+    <ProjectReference Include="CefSharp.csproj" />
+  </ItemGroup>
+</Project>

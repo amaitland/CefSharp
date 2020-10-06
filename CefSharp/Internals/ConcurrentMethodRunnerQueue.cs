@@ -24,12 +24,25 @@ namespace CefSharp.Internals
         public ConcurrentMethodRunnerQueue(IJavascriptObjectRepositoryInternal repository)
         {
             this.repository = repository;
+
+            GetTaskScheduler = () => TaskScheduler.Default;
         }
 
         public void Dispose()
         {
             cancellationTokenSource.Cancel();
         }
+
+        /// <summary>
+        /// Allows you to override the TasScheduler used to execute
+        /// JSB methods. Must return a valid TaskScheduler
+        /// </summary>
+        /// <remarks>
+        /// If you choose to the use the UI Thread TaskScheduler make sure you
+        /// are aware of the performance implications. Performance of your applications
+        /// UI may suffer if you perform processing on the UI Thread.
+        /// </remarks>
+        public Func<TaskScheduler> GetTaskScheduler { get; set; }
 
         public void Enqueue(MethodInvocation methodInvocation)
         {
@@ -99,7 +112,7 @@ namespace CefSharp.Internals
 
             }, cancellationTokenSource.Token);
 
-            task.Start(TaskScheduler.Default);
+            task.Start(GetTaskScheduler());
         }
 
         private MethodInvocationResult ExecuteMethodInvocation(MethodInvocation methodInvocation)

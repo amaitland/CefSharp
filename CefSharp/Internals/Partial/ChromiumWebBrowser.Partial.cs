@@ -287,6 +287,22 @@ namespace CefSharp.WinForms
             get { return managedCefBrowserAdapter; }
         }
 
+        IObjectFactory IWebBrowserInternal.GetObjectFactory()
+        {
+            return GetInternalObjectFactory();
+        }
+
+        /// <summary>
+        /// Override to provide a custom instance of <see cref="IObjectFactory"/>
+        /// which is used internally. This can be used to customise some advanced
+        /// behaviour. 
+        /// </summary>
+        /// <returns>IObjectFactory instance, cannot return null.</returns>
+        protected virtual IObjectFactory GetInternalObjectFactory()
+        {
+            return new ObjectFactory();
+        }
+
         private void SetHandlersToNullExceptLifeSpan()
         {
             AudioHandler = null;

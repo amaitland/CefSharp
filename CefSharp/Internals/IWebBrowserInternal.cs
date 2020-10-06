@@ -27,5 +27,6 @@ namespace CefSharp.Internals
 
         IBrowserAdapter BrowserAdapter { get; }
         bool HasParent { get; set; }
+        IObjectFactory GetObjectFactory();
     }
 }

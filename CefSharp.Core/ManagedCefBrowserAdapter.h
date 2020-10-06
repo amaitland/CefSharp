@@ -57,15 +57,7 @@ namespace CefSharp
         ManagedCefBrowserAdapter(IWebBrowserInternal^ webBrowserInternal, bool offScreenRendering)
             : _isDisposed(false)
         {
-            if (CefSharpSettings::ConcurrentTaskExecution)
-            {
-                _methodRunnerQueue = gcnew CefSharp::Internals::ConcurrentMethodRunnerQueue(_javaScriptObjectRepository);
-            }
-            else
-            {
-                _methodRunnerQueue = gcnew CefSharp::Internals::MethodRunnerQueue(_javaScriptObjectRepository);
-            }
-
+            _methodRunnerQueue = webBrowserInternal->GetObjectFactory()->CreateMethodRunnerQueue(_javaScriptObjectRepository);
             _methodRunnerQueue->MethodInvocationComplete += gcnew EventHandler<MethodInvocationCompleteArgs^>(this, &ManagedCefBrowserAdapter::MethodInvocationComplete);
 
             _pendingTaskRepository = gcnew PendingTaskRepository<JavascriptResponse^>();

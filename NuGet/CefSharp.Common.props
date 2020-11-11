@@ -12,10 +12,10 @@
   <Choose>
     <When Condition="'$(Platform)' == 'x64'">
       <ItemGroup>
-        <Reference Include="CefSharp">
-          <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x64\CefSharp.dll</HintPath>
-          <Private>False</Private>
-        </Reference>
+        <!-- <Reference Include="CefSharp"> -->
+          <!-- <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x64\CefSharp.dll</HintPath> -->
+          <!-- <Private>False</Private> -->
+        <!-- </Reference> -->
         <Reference Include="CefSharp.Core">
           <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x64\CefSharp.Core.dll</HintPath>
           <Private>False</Private>
@@ -25,10 +25,10 @@
     <!-- x86, Win32 and AnyCPU -->
     <Otherwise>
       <ItemGroup>
-        <Reference Include="CefSharp">
-          <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x86\CefSharp.dll</HintPath>
-          <Private>False</Private>
-        </Reference>
+        <!-- <Reference Include="CefSharp"> -->
+          <!-- <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x86\CefSharp.dll</HintPath> -->
+          <!-- <Private>False</Private> -->
+        <!-- </Reference> -->
         <Reference Include="CefSharp.Core">
           <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x86\CefSharp.Core.dll</HintPath>
           <Private>False</Private>

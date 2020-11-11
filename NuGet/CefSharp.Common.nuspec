@@ -17,7 +17,11 @@
     </dependencies>
   </metadata>
   <files>
-    <!-- Cannot put these inside lib\net40 etc, since there are both x86 and x64 versions which we must distinguish between. We
+    <file src="..\CefSharp\bin\Release\CefSharp.dll" target="lib\net452"/>
+    <file src="..\CefSharp\bin\Release\CefSharp.xml" target="lib\net452"/>
+    <file src="..\CefSharp\bin\Release\CefSharp.pdb" target="lib\net452"/>
+	
+	<!-- Cannot put these inside lib\net40 etc, since there are both x86 and x64 versions which we must distinguish between. We
          solve this using a .props file instead. -->
 
     <!-- Common CefSharp stuff (shared between both WPF, Offscreen and WinForms) -->
@@ -28,15 +32,7 @@
     <file src="..\CefSharp.Core\bin\x64\Release\CefSharp.Core.dll" target="CefSharp\x64"/>
     <file src="..\CefSharp.Core\bin\x64\Release\CefSharp.Core.xml" target="CefSharp\x64"/>
     <file src="..\CefSharp.Core\bin\x64\Release\CefSharp.Core.pdb" target="CefSharp\x64"/>
-  
-    <file src="..\CefSharp\bin\x86\Release\CefSharp.dll" target="CefSharp\x86"/>
-    <file src="..\CefSharp\bin\x86\Release\CefSharp.xml" target="CefSharp\x86"/>
-    <file src="..\CefSharp\bin\x86\Release\CefSharp.pdb" target="CefSharp\x86"/>
-  
-    <file src="..\CefSharp\bin\x64\Release\CefSharp.dll" target="CefSharp\x64"/>
-    <file src="..\CefSharp\bin\x64\Release\CefSharp.xml" target="CefSharp\x64"/>
-    <file src="..\CefSharp\bin\x64\Release\CefSharp.pdb" target="CefSharp\x64"/>
-  
+    
     <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.Core.dll" target="CefSharp\x86"/>
     <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.Core.pdb" target="CefSharp\x86"/>
     <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.exe" target="CefSharp\x86"/>

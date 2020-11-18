@@ -16,8 +16,8 @@
           <!-- <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x64\CefSharp.dll</HintPath> -->
           <!-- <Private>False</Private> -->
         <!-- </Reference> -->
-        <Reference Include="CefSharp.Core">
-          <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x64\CefSharp.Core.dll</HintPath>
+        <Reference Include="CefSharp.Core.Runtime">
+          <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x64\CefSharp.Core.Runtime.dll</HintPath>
           <Private>False</Private>
         </Reference>
       </ItemGroup>
@@ -29,8 +29,8 @@
           <!-- <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x86\CefSharp.dll</HintPath> -->
           <!-- <Private>False</Private> -->
         <!-- </Reference> -->
-        <Reference Include="CefSharp.Core">
-          <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x86\CefSharp.Core.dll</HintPath>
+        <Reference Include="CefSharp.Core.Runtime">
+          <HintPath>$(MSBuildThisFileDirectory)..\CefSharp\x86\CefSharp.Core.Runtime.dll</HintPath>
           <Private>False</Private>
         </Reference>
       </ItemGroup>

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30223.230
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CefSharp.netcore", "CefSharp\CefSharp.netcore.csproj", "{39E385AD-DC5C-451E-B061-09AF3EE038EB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CefSharp.Core.netcore", "CefSharp.Core\CefSharp.Core.netcore.vcxproj", "{7B495581-2271-4F41-9476-ACB86E8C864F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CefSharp.Core.Runtime.netcore", "CefSharp.Core.Runtime\CefSharp.Core.Runtime.netcore.vcxproj", "{7B495581-2271-4F41-9476-ACB86E8C864F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CefSharp.BrowserSubprocess.Core.netcore", "CefSharp.BrowserSubprocess.Core\CefSharp.BrowserSubprocess.Core.netcore.vcxproj", "{6C4BB501-2F8E-48AC-9AB5-8CFB2D74185C}"
 EndProject
@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CefSharp.Test.netcore", "Ce
 		{FBFBD752-467C-444F-93E4-80D6242E8513} = {FBFBD752-467C-444F-93E4-80D6242E8513}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CefSharp.Core.RefAssembly", "CefSharp.Core.RefAssembly\CefSharp.Core.RefAssembly.csproj", "{310E5602-C920-4A4C-B0B0-178155528149}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CefSharp.Core", "CefSharp.Core\CefSharp.Core.csproj", "{310E5602-C920-4A4C-B0B0-178155528149}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

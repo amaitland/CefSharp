@@ -11,54 +11,57 @@
 
 namespace CefSharp
 {
-    /// <exclude />
-    public ref class CookieManager : public ICookieManager
+    namespace Internals
     {
-    private:
-        MCefRefPtr<CefCookieManager> _cookieManager;
-
-        void ThrowIfDisposed();
-
-    internal:
-        CookieManager(const CefRefPtr<CefCookieManager> &cookieManager)
-            :_cookieManager(cookieManager.get())
+        /// <exclude />
+        private ref class CookieManager : public ICookieManager
         {
+        private:
+            MCefRefPtr<CefCookieManager> _cookieManager;
 
-        }
+            void ThrowIfDisposed();
 
-        operator CefRefPtr<CefCookieManager>()
-        {
-            if (this == nullptr)
+        internal:
+            CookieManager(const CefRefPtr<CefCookieManager>& cookieManager)
+                :_cookieManager(cookieManager.get())
             {
-                return NULL;
+
             }
-            return _cookieManager.get();
-        }
 
-    public:
-        !CookieManager()
-        {
-            this->_cookieManager = nullptr;
-        }
-
-        ~CookieManager()
-        {
-            this->!CookieManager();
-        }
-
-        virtual bool DeleteCookies(String^ url, String^ name, IDeleteCookiesCallback^ callback);
-        virtual bool SetCookie(String^ url, Cookie^ cookie, ISetCookieCallback^ callback);
-        virtual void SetSupportedSchemes(cli::array<String^>^ schemes, bool includeDefaults, ICompletionCallback^ callback);
-        virtual bool VisitAllCookies(ICookieVisitor^ visitor);
-        virtual bool VisitUrlCookies(String^ url, bool includeHttpOnly, ICookieVisitor^ visitor);
-        virtual bool FlushStore(ICompletionCallback^ callback);
-
-        virtual property bool IsDisposed
-        {
-            bool get()
+            operator CefRefPtr<CefCookieManager>()
             {
-                return !_cookieManager.get();
+                if (this == nullptr)
+                {
+                    return NULL;
+                }
+                return _cookieManager.get();
             }
-        }
-    };
+
+        public:
+            !CookieManager()
+            {
+                this->_cookieManager = nullptr;
+            }
+
+            ~CookieManager()
+            {
+                this->!CookieManager();
+            }
+
+            virtual bool DeleteCookies(String^ url, String^ name, IDeleteCookiesCallback^ callback);
+            virtual bool SetCookie(String^ url, Cookie^ cookie, ISetCookieCallback^ callback);
+            virtual void SetSupportedSchemes(cli::array<String^>^ schemes, bool includeDefaults, ICompletionCallback^ callback);
+            virtual bool VisitAllCookies(ICookieVisitor^ visitor);
+            virtual bool VisitUrlCookies(String^ url, bool includeHttpOnly, ICookieVisitor^ visitor);
+            virtual bool FlushStore(ICompletionCallback^ callback);
+
+            virtual property bool IsDisposed
+            {
+                bool get()
+                {
+                    return !_cookieManager.get();
+                }
+            }
+        };
+    }
 }

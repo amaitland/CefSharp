@@ -22,7 +22,7 @@ namespace CefSharp
         bool CefResourceHandlerAdapter::Open(CefRefPtr<CefRequest> request, bool& handleRequest, CefRefPtr<CefCallback> callback)
         {
             auto callbackWrapper = gcnew CefCallbackWrapper(callback);
-            _request = gcnew Request(request);
+            _request = gcnew CefSharp::Core::Request(request);
 
             return _handler->Open(_request, handleRequest, callbackWrapper);
         }
@@ -65,7 +65,7 @@ namespace CefSharp
         bool CefResourceHandlerAdapter::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback)
         {
             auto callbackWrapper = gcnew CefCallbackWrapper(callback);
-            _request = gcnew Request(request);
+            _request = gcnew CefSharp::Core::Request(request);
 
             return _handler->ProcessRequest(_request, callbackWrapper);
         }

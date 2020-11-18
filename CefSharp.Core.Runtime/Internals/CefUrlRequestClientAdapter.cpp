@@ -8,6 +8,7 @@
 #include "CefAuthCallbackWrapper.h"
 
 using namespace System::IO;
+using namespace CefSharp::Core;
 
 void CefUrlRequestClientAdapter::OnRequestComplete(CefRefPtr<CefURLRequest> request)
 {

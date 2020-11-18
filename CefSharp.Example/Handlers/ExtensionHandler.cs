@@ -25,7 +25,6 @@ namespace CefSharp.Example.Handlers
         IBrowser IExtensionHandler.GetActiveBrowser(IExtension extension, IBrowser browser, bool includeIncognito)
         {
             return GetActiveBrowser?.Invoke(extension, includeIncognito);
-            return null;
         }
 
         bool IExtensionHandler.GetExtensionResource(IExtension extension, IBrowser browser, string file, IGetExtensionResourceCallback callback)

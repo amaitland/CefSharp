@@ -119,7 +119,7 @@ namespace CefSharp.Wpf.Internals
         /// </summary>
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         /// <returns>CefDragDataWrapper.</returns>
-        public static CefDragDataWrapper GetDragDataWrapper(this DragEventArgs e)
+        public static IDragData GetDragDataWrapper(this DragEventArgs e)
         {
             // Convert Drag Data
             var dragData = CefDragDataWrapper.Create();

@@ -216,6 +216,6 @@ namespace CefSharp
         /// instances created by CefSharp will be Disposed of after use. To control the lifespan yourself
         /// create an set BrowserSettings yourself.
         /// </summary>
-        bool FrameworkCreated { get; }
+        bool AutoDispose { get; }
     }
 }

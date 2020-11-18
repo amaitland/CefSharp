@@ -15,6 +15,7 @@
 
 using namespace System::IO;
 using namespace System::Collections::Specialized;
+using namespace CefSharp::Core;
 
 namespace CefSharp
 {

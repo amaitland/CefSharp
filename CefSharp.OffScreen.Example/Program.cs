@@ -54,14 +54,14 @@ namespace CefSharp.OffScreen.Example
             var browserSettings = new BrowserSettings();
             //Reduce rendering speed to one frame per second so it's easier to take screen shots
             browserSettings.WindowlessFrameRate = 1;
-            var requestContextSettings = new RequestContextSettings
-            {
-                CachePath = Path.GetFullPath(cachePath)
-            };
+
+            var requestContext = RequestContext.Configure()
+                .WithCachePath(Path.GetFullPath(cachePath))
+                .Create();
 
             // RequestContext can be shared between browser instances and allows for custom settings
             // e.g. CachePath
-            using (var requestContext = new RequestContext(requestContextSettings))
+            using (requestContext)
             using (var browser = new ChromiumWebBrowser(TestUrl, browserSettings, requestContext))
             {
                 if (zoomLevel > 1)

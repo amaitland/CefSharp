@@ -37,7 +37,7 @@ namespace CefSharp.Test.Framework
         {
             Assert.Throws<Exception>(() =>
             {
-                var requestContext = new RequestContext();
+                var requestContext = new CefSharp.Core.RequestContext();
 
                 RequestContext
                     .Configure()
@@ -51,7 +51,7 @@ namespace CefSharp.Test.Framework
         {
             Assert.Throws<Exception>(() =>
             {
-                var requestContext = new RequestContext();
+                var requestContext = new CefSharp.Core.RequestContext();
 
                 RequestContext
                     .Configure()

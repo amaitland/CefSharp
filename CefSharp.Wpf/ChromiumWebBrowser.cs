@@ -81,7 +81,7 @@ namespace CefSharp.Wpf
         /// <summary>
         /// The managed cef browser adapter
         /// </summary>
-        private ManagedCefBrowserAdapter managedCefBrowserAdapter;
+        private IBrowserAdapter managedCefBrowserAdapter;
         /// <summary>
         /// The ignore URI change
         /// </summary>
@@ -550,7 +550,7 @@ namespace CefSharp.Wpf
             UndoCommand = new DelegateCommand(this.Undo);
             RedoCommand = new DelegateCommand(this.Redo);
 
-            managedCefBrowserAdapter = new ManagedCefBrowserAdapter(this, true);
+            managedCefBrowserAdapter = ManagedCefBrowserAdapter.Create(this, true);
 
             browserSettings = new BrowserSettings(autoDispose: true);
 
@@ -1749,7 +1749,7 @@ namespace CefSharp.Wpf
                 var windowInfo = CreateOffscreenBrowserWindowInfo(source == null ? IntPtr.Zero : source.Handle);
                 //Pass null in for Address and rely on Load being called in OnAfterBrowserCreated
                 //Workaround for issue https://github.com/cefsharp/CefSharp/issues/2300
-                managedCefBrowserAdapter.CreateBrowser(windowInfo, browserSettings as BrowserSettings, requestContext as RequestContext, address: initialAddress);
+                managedCefBrowserAdapter.CreateBrowser(windowInfo, browserSettings, requestContext, address: initialAddress);
 
                 //Dispose of BrowserSettings if we created it, if user created then they're responsible
                 if (browserSettings.AutoDispose)

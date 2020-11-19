@@ -26,7 +26,7 @@ namespace CefSharp
             return _isDisposed;
         }
 
-        void ManagedCefBrowserAdapter::CreateBrowser(IWindowInfo^ windowInfo, BrowserSettings^ browserSettings, RequestContext^ requestContext, String^ address)
+        void ManagedCefBrowserAdapter::CreateBrowser(IWindowInfo^ windowInfo, IBrowserSettings^ browserSettings, IRequestContext^ requestContext, String^ address)
         {
             auto cefWindowInfoWrapper = static_cast<WindowInfo^>(windowInfo);
 
@@ -43,6 +43,13 @@ namespace CefSharp
                     "BrowserSettings created by CefSharp are automatically disposed, to control the lifecycle create and set your own instance.");
             }
 
+            if (requestContext == nullptr)
+            {
+                throw gcnew ArgumentNullException("requestContext", "cannot be null");
+            }
+
+            auto settings = static_cast<BrowserSettings^>(browserSettings);
+            auto reqContext = static_cast<RequestContext^>(requestContext);
             auto objectRepository = _javaScriptObjectRepository;
 
             //It's no longer possible to change these settings
@@ -85,7 +92,7 @@ namespace CefSharp
             }
 
             if (!CefBrowserHost::CreateBrowser(*cefWindowInfoWrapper->GetWindowInfo(), _clientAdapter.get(), addressNative,
-                *browserSettings->_browserSettings, extraInfo, static_cast<CefRefPtr<CefRequestContext>>(requestContext)))
+                *settings->_browserSettings, extraInfo, static_cast<CefRefPtr<CefRequestContext>>(reqContext)))
             {
                 throw gcnew InvalidOperationException("CefBrowserHost::CreateBrowser call failed, review the CEF log file for more details.");
             }

@@ -31,7 +31,7 @@ namespace CefSharp.WinForms
         /// <summary>
         /// The managed cef browser adapter
         /// </summary>
-        private ManagedCefBrowserAdapter managedCefBrowserAdapter;
+        private IBrowserAdapter managedCefBrowserAdapter;
         /// <summary>
         /// The parent form message interceptor
         /// </summary>
@@ -363,7 +363,7 @@ namespace CefSharp.WinForms
                     browserSettings = new BrowserSettings(autoDispose: true);
                 }
 
-                managedCefBrowserAdapter = new ManagedCefBrowserAdapter(this, false);
+                managedCefBrowserAdapter = ManagedCefBrowserAdapter.Create(this, false);
 
                 initialized = true;
             }
@@ -596,7 +596,7 @@ namespace CefSharp.WinForms
 
                     initialAddressLoaded = !string.IsNullOrEmpty(Address);
 
-                    managedCefBrowserAdapter.CreateBrowser(windowInfo, browserSettings as BrowserSettings, requestContext as RequestContext, Address);
+                    managedCefBrowserAdapter.CreateBrowser(windowInfo, browserSettings, requestContext, Address);
                 }
             }
         }

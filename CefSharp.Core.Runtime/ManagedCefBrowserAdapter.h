@@ -31,7 +31,7 @@ namespace CefSharp
     namespace Core
     {
         /// <exclude />
-        public ref class ManagedCefBrowserAdapter abstract : public IBrowserAdapter
+        public ref class ManagedCefBrowserAdapter : public IBrowserAdapter
         {
             MCefRefPtr<ClientAdapter> _clientAdapter;
 #ifndef NETCOREAPP
@@ -130,7 +130,7 @@ namespace CefSharp
             }
 
             virtual void OnAfterBrowserCreated(IBrowser^ browser);
-            void CreateBrowser(IWindowInfo^ windowInfo, BrowserSettings^ browserSettings, RequestContext^ requestContext, String^ address);
+            virtual void CreateBrowser(IWindowInfo^ windowInfo, IBrowserSettings^ browserSettings, IRequestContext^ requestContext, String^ address);
             virtual void Resize(int width, int height);
 
             virtual IBrowser^ GetBrowser(int browserId);

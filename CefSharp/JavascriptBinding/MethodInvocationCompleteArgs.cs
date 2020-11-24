@@ -4,12 +4,22 @@
 
 using System;
 
-namespace CefSharp.Internals
+namespace CefSharp.JavascriptBinding
 {
+    /// <summary>
+    /// MethodInvocationComplete Event Args
+    /// </summary>
     public sealed class MethodInvocationCompleteArgs : EventArgs
     {
+        /// <summary>
+        /// Invocation result
+        /// </summary>
         public MethodInvocationResult Result { get; private set; }
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="result">Invocation result</param>
         public MethodInvocationCompleteArgs(MethodInvocationResult result)
         {
             Result = result;

@@ -6,7 +6,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CefSharp.Internals
+using CefSharp.Internals;
+
+namespace CefSharp.JavascriptBinding
 {
     /// <summary>
     /// ConcurrentMethodRunnerQueue - Async Javascript Binding methods are run

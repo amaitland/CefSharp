@@ -24,6 +24,8 @@ namespace CefSharp.WinForms
             "The undelying CefBrowser instance is not yet initialized. Use the IsBrowserInitializedChanged event and check " +
             "the IsBrowserInitialized property to determine when the browser has been initialized.";
 
+        private static IObjectFactoryInternal ObjectFactoryInternal = new ObjectFactoryInternal();
+
         /// <summary>
         /// Used as workaround for issue https://github.com/cefsharp/CefSharp/issues/3021
         /// </summary>
@@ -285,6 +287,22 @@ namespace CefSharp.WinForms
         IBrowserAdapter IWebBrowserInternal.BrowserAdapter
         {
             get { return managedCefBrowserAdapter; }
+        }
+
+        IObjectFactoryInternal IWebBrowserInternal.ObjectFactory
+        {
+            get { return GetObjectFactory(); }
+        }
+
+        /// <summary>
+        /// Gets and instance of <see cref="IObjectFactoryInternal"/> used to create some of the
+        /// inner workings, e.g JavascriptObjectRepository
+        /// Override to provide your own custom implementations.
+        /// </summary>
+        /// <returns>returns <see cref="IObjectFactoryInternal"/>, cannot return null.</returns>
+        protected virtual IObjectFactoryInternal GetObjectFactory()
+        {
+            return ObjectFactoryInternal;
         }
 
         private void SetHandlersToNullExceptLifeSpan()

@@ -7,7 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using CefSharp.Internals.Tasks;
 
-namespace CefSharp.Internals
+using CefSharp.Internals;
+
+namespace CefSharp.JavascriptBinding
 {
     public sealed class MethodRunnerQueue : IMethodRunnerQueue
     {

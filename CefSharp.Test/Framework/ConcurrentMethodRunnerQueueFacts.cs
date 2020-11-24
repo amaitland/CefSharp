@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CefSharp.Example.JavascriptBinding;
 using CefSharp.Internals;
+using CefSharp.JavascriptBinding;
 using Nito.AsyncEx;
 using Xunit;
 using Xunit.Abstractions;

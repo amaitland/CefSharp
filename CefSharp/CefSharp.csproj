@@ -130,7 +130,9 @@
     <Compile Include="Internals\CefThread.cs" />
     <Compile Include="Internals\FreezableBase.cs" />
     <Compile Include="Internals\IBrowserRefCounter.cs" />
+    <Compile Include="Internals\IObjectFactoryInternal.cs" />
     <Compile Include="Internals\MimeTypeMapping.cs" />
+    <Compile Include="Internals\ObjectFactoryInternal.cs" />
     <Compile Include="Internals\Tasks\SyncContextTaskCompletionSource.cs" />
     <Compile Include="IRegistration.cs" />
     <Compile Include="JavascriptBinding\JavascriptBindingSettings.cs" />
@@ -175,8 +177,8 @@
     <Compile Include="IApp.cs" />
     <Compile Include="Handler\IAudioHandler.cs" />
     <Compile Include="IExtension.cs" />
-    <Compile Include="Internals\IMethodRunnerQueue.cs" />
-    <Compile Include="Internals\ConcurrentMethodRunnerQueue.cs" />
+    <Compile Include="JavascriptBinding\IMethodRunnerQueue.cs" />
+    <Compile Include="JavascriptBinding\ConcurrentMethodRunnerQueue.cs" />
     <Compile Include="Internals\InMemoryResourceRequestHandler.cs" />
     <Compile Include="IResourceRequestHandlerFactory.cs" />
     <Compile Include="ISchemeRegistrar.cs" />
@@ -291,10 +293,10 @@
     <Compile Include="Structs\KeyEvent.cs" />
     <Compile Include="IPostData.cs" />
     <Compile Include="IPostDataElement.cs" />
-    <Compile Include="Internals\MethodInvocation.cs" />
-    <Compile Include="Internals\MethodInvocationCompleteArgs.cs" />
-    <Compile Include="Internals\MethodInvocationResult.cs" />
-    <Compile Include="Internals\MethodRunnerQueue.cs" />
+    <Compile Include="JavascriptBinding\MethodInvocation.cs" />
+    <Compile Include="JavascriptBinding\MethodInvocationCompleteArgs.cs" />
+    <Compile Include="JavascriptBinding\MethodInvocationResult.cs" />
+    <Compile Include="JavascriptBinding\MethodRunnerQueue.cs" />
     <Compile Include="CefSharpSettings.cs" />
     <Compile Include="Cookie.cs" />
     <Compile Include="DependencyChecker.cs" />

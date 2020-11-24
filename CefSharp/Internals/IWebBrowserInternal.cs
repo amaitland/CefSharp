@@ -26,6 +26,7 @@ namespace CefSharp.Internals
         void OnLoadError(LoadErrorEventArgs args);
 
         IBrowserAdapter BrowserAdapter { get; }
+        IObjectFactoryInternal ObjectFactory { get; }
         bool HasParent { get; set; }
     }
 }

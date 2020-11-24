@@ -26,6 +26,8 @@ using namespace CefSharp::Internals::Wcf;
 using namespace System::Threading;
 using namespace System::Threading::Tasks;
 
+using namespace CefSharp::JavascriptBinding;
+
 namespace CefSharp
 {
     /// <exclude />
@@ -66,18 +68,9 @@ namespace CefSharp
             }
 
             _webBrowserInternal = webBrowserInternal;
-            _javaScriptObjectRepository = gcnew CefSharp::Internals::JavascriptObjectRepository();
+            _javaScriptObjectRepository = webBrowserInternal->ObjectFactory->CreateJavascriptObjectRepository();
             _javascriptCallbackFactory = gcnew CefSharp::Internals::JavascriptCallbackFactory(_clientAdapter->GetPendingTaskRepository());
-
-            if (CefSharpSettings::ConcurrentTaskExecution)
-            {
-                _methodRunnerQueue = gcnew CefSharp::Internals::ConcurrentMethodRunnerQueue(_javaScriptObjectRepository);
-            }
-            else
-            {
-                _methodRunnerQueue = gcnew CefSharp::Internals::MethodRunnerQueue(_javaScriptObjectRepository);
-            }
-
+            _methodRunnerQueue = webBrowserInternal->ObjectFactory->CreateMethodRunnerQueue(_javaScriptObjectRepository);
             _methodRunnerQueue->MethodInvocationComplete += gcnew EventHandler<MethodInvocationCompleteArgs^>(this, &ManagedCefBrowserAdapter::MethodInvocationComplete);
         }
 
@@ -90,7 +83,7 @@ namespace CefSharp
         {
             _isDisposed = true;
 
-            // Stop the method runner before releasing browser adapter and browser wrapper (#2529)
+            // Dispose the method runner before releasing browser adapter and browser wrapper (#2529)
             if (_methodRunnerQueue != nullptr)
             {
                 _methodRunnerQueue->MethodInvocationComplete -= gcnew EventHandler<MethodInvocationCompleteArgs^>(this, &ManagedCefBrowserAdapter::MethodInvocationComplete);
@@ -145,7 +138,7 @@ namespace CefSharp
 
         virtual property IMethodRunnerQueue^ MethodRunnerQueue
         {
-            CefSharp::Internals::IMethodRunnerQueue^ get();
+            IMethodRunnerQueue^ get();
         }
     };
 }

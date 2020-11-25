@@ -83,6 +83,7 @@ namespace CefSharp
         /// A single method is exeucted at a time. Setting this property to true allows for concurrent task execution.
         /// Method calls are executed on <see cref="System.Threading.Tasks.TaskScheduler.Default"/> (ThreadPool).
         /// </summary>
+        [Obsolete("This property will soon be removed, MethodRunnerQueue will be configurable on a per ChromiumwWebBrowser instance.")]
         public static bool ConcurrentTaskExecution { get; set; }
 
         /// <summary>

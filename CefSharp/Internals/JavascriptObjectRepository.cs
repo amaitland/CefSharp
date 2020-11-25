@@ -54,6 +54,8 @@ namespace CefSharp.Internals
         /// </summary>
         private IJavascriptNameConverter nameConverter;
 
+        private IMethodRunnerQueue methodRunnerQueue;
+
         /// <summary>
         /// Has the browser this repository is associated with been initilized (set in OnAfterCreated)
         /// </summary>
@@ -64,6 +66,9 @@ namespace CefSharp.Internals
             ResolveObject = null;
             ObjectBoundInJavascript = null;
             ObjectsBoundInJavascript = null;
+            nameConverter = null;
+            //Note: We don't dispose of methodRunnerQueue here, it's disposed in ManagedCefBrowserAdapter
+            methodRunnerQueue = null;
         }
 
         public bool HasBoundObjects
@@ -89,6 +94,20 @@ namespace CefSharp.Internals
                 ThrowIfFrozen();
 
                 nameConverter = value;
+            }
+        }
+
+        /// <summary>
+        /// Used to Queue/Execute method/function calls from Javascript.
+        /// </summary>
+        public IMethodRunnerQueue MethodRunnerQueue
+        {
+            get { return methodRunnerQueue; }
+            set
+            {
+                ThrowIfFrozen();
+
+                methodRunnerQueue = value;
             }
         }
 

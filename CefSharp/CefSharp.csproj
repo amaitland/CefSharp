@@ -184,7 +184,7 @@
     <Compile Include="ISchemeRegistrar.cs" />
     <Compile Include="IValue.cs" />
     <Compile Include="IImage.cs" />
-    <Compile Include="IJavascriptObjectRepository.cs" />
+    <Compile Include="JavascriptBinding\IJavascriptObjectRepository.cs" />
     <Compile Include="Internals\ByteArrayResourceHandler.cs" />
     <Compile Include="Internals\DateTimeUtils.cs" />
     <Compile Include="Internals\FileResourceHandler.cs" />

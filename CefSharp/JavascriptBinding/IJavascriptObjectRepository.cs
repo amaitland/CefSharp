@@ -12,6 +12,7 @@ namespace CefSharp
     /// Javascript object repository, object are registered for binding
     /// One repository per ChromiumWebBrowser instance
     /// </summary>
+    //NOTE: To avoid breaking change this is left in the CefSharp namespace
     public interface IJavascriptObjectRepository : IDisposable
     {
         /// <summary>
@@ -24,6 +25,10 @@ namespace CefSharp
         /// differ from Javascript naming conventions.
         /// </summary>
         IJavascriptNameConverter NameConverter { get; set; }
+        /// <summary>
+        /// Used to Queue/Execute method/function calls from Javascript.
+        /// </summary>
+        IMethodRunnerQueue MethodRunnerQueue { get; set; }
         /// <summary>
         /// Register an object for binding in Javascript. You can either
         /// register an object in advance or as part of the <see cref="ResolveObject"/>

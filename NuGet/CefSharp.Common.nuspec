@@ -24,8 +24,47 @@
     <file src="..\CefSharp.Core\bin\Release\CefSharp.Core.xml" target="lib\net452"/>
     <file src="..\CefSharp.Core\bin\Release\CefSharp.Core.pdb" target="lib\net452"/>
     
-    <!-- Net Core Libs -->
-	<!-- These are actually our net452 libs, we just put them in the netcoreapp3 folder for better support -->
+	<file src="..\CefSharp\bin\Release\CefSharp.dll" target="ref\net452"/>
+	<file src="..\CefSharp.Core\bin\Release\CefSharp.Core.dll" target="ref\net452"/>
+	
+	<file src="..\CefSharp\bin\Release\CefSharp.dll" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp\bin\Release\CefSharp.xml" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp\bin\Release\CefSharp.pdb" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp.Core\bin\Release\CefSharp.Core.dll" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp.Core\bin\Release\CefSharp.Core.xml" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp.Core\bin\Release\CefSharp.Core.pdb" target="runtimes\win-x86\lib\net452"/> 
+	<file src="..\CefSharp.Core.Runtime\bin\Win32\Release\CefSharp.Core.Runtime.dll" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp.Core.Runtime\bin\Win32\Release\CefSharp.Core.Runtime.xml" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp.Core.Runtime\bin\Win32\Release\CefSharp.Core.Runtime.pdb" target="runtimes\win-x86\lib\net452"/>
+  
+    <file src="..\CefSharp\bin\Release\CefSharp.dll" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp\bin\Release\CefSharp.xml" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp\bin\Release\CefSharp.pdb" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp.Core\bin\Release\CefSharp.Core.dll" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp.Core\bin\Release\CefSharp.Core.xml" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp.Core\bin\Release\CefSharp.Core.pdb" target="runtimes\win-x64\lib\net452"/> 
+	<file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.dll" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.xml" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.pdb" target="runtimes\win-x64\lib\net452"/>
+    
+    <!-- For packages.config we use the .targets file to copy them based on PlatformTarget -->
+
+    <!-- Common CefSharp stuff (shared between both WPF, Offscreen and WinForms) -->
+    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.Core.dll" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.Core.pdb" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.exe" target="runtimes\win-x86\lib\net452"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.pdb" target="runtimes\win-x86\lib\net452"/>
+  
+    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.Core.dll" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.Core.pdb" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.exe" target="runtimes\win-x64\lib\net452"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.pdb" target="runtimes\win-x64\lib\net452"/>
+	
+	<!--
+	Duplicated to support Net Core 3.0 these are actually our Net 4.5.2 libs and we're doing this short term
+	until the Net Core 3.1 packages have been fully tested
+	-->
+	
 	<file src="..\CefSharp\bin\Release\CefSharp.dll" target="ref\netcoreapp3.0"/>
 	<file src="..\CefSharp.Core\bin\Release\CefSharp.Core.dll" target="ref\netcoreapp3.0"/>
 	
@@ -48,29 +87,19 @@
 	<file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.dll" target="runtimes\win-x64\lib\netcoreapp3.0"/>
     <file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.xml" target="runtimes\win-x64\lib\netcoreapp3.0"/>
     <file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.pdb" target="runtimes\win-x64\lib\netcoreapp3.0"/>
-	
     
-    <!-- Cannot put these inside lib\net452 etc, since there are both x86 and x64 versions which we must distinguish between. We
-         solve this using a .targets file instead to copy them based on PlatformTarget -->
+    <!-- For packages.config we use the .targets file to copy them based on PlatformTarget -->
 
     <!-- Common CefSharp stuff (shared between both WPF, Offscreen and WinForms) -->
-    <file src="..\CefSharp.Core.Runtime\bin\Win32\Release\CefSharp.Core.Runtime.dll" target="CefSharp\x86"/>
-    <file src="..\CefSharp.Core.Runtime\bin\Win32\Release\CefSharp.Core.Runtime.xml" target="CefSharp\x86"/>
-    <file src="..\CefSharp.Core.Runtime\bin\Win32\Release\CefSharp.Core.Runtime.pdb" target="CefSharp\x86"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.Core.dll" target="runtimes\win-x86\lib\netcoreapp3.0"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.Core.pdb" target="runtimes\win-x86\lib\netcoreapp3.0"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.exe" target="runtimes\win-x86\lib\netcoreapp3.0"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.pdb" target="runtimes\win-x86\lib\netcoreapp3.0"/>
   
-    <file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.dll" target="CefSharp\x64"/>
-    <file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.xml" target="CefSharp\x64"/>
-    <file src="..\CefSharp.Core.Runtime\bin\x64\Release\CefSharp.Core.Runtime.pdb" target="CefSharp\x64"/>
-    
-    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.Core.dll" target="CefSharp\x86"/>
-    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.Core.pdb" target="CefSharp\x86"/>
-    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.exe" target="CefSharp\x86"/>
-    <file src="..\CefSharp.BrowserSubprocess\bin\x86\Release\CefSharp.BrowserSubprocess.pdb" target="CefSharp\x86"/>
-  
-    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.Core.dll" target="CefSharp\x64"/>
-    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.Core.pdb" target="CefSharp\x64"/>
-    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.exe" target="CefSharp\x64"/>
-    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.pdb" target="CefSharp\x64"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.Core.dll" target="runtimes\win-x64\lib\netcoreapp3.0"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.Core.pdb" target="runtimes\win-x64\lib\netcoreapp3.0"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.exe" target="runtimes\win-x64\lib\netcoreapp3.0"/>
+    <file src="..\CefSharp.BrowserSubprocess\bin\x64\Release\CefSharp.BrowserSubprocess.pdb" target="runtimes\win-x64\lib\netcoreapp3.0"/>
 
     <file src="CefSharp.Common.props" target="buildTransitive" />
     <file src="CefSharp.Common.targets" target="buildTransitive" />

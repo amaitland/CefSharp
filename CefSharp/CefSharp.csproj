@@ -167,9 +167,6 @@
     <Compile Include="Internals\ByteArrayResourceHandler.cs" />
     <Compile Include="Internals\DateTimeUtils.cs" />
     <Compile Include="Internals\FileResourceHandler.cs" />
-    <Compile Include="RenderProcess\IRenderProcessHandler.cs" />
-    <Compile Include="RenderProcess\IV8Context.cs" />
-    <Compile Include="RenderProcess\V8Exception.cs" />
     <Compile Include="RequestContextExtensions.cs" />
     <Compile Include="ResponseFilter\StreamResponseFilter.cs" />
     <Compile Include="Structs\AudioParamaters.cs" />

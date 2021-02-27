@@ -7,6 +7,8 @@
 #include "Stdafx.h"
 
 #include "include\cef_v8.h"
+#include "RenderProcess\V8Exception.h"
+#include "RenderProcess\IV8Context.h"
 
 using namespace System::Runtime::InteropServices;
 using namespace CefSharp::RenderProcess;
@@ -15,6 +17,7 @@ namespace CefSharp
 {
     namespace BrowserSubprocess
     {
+        //TODO: Move into the RenderProcess namespace/folder
         private ref class V8Context : public IV8Context
         {
         private:

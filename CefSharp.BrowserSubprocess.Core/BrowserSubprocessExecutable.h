@@ -106,7 +106,7 @@ namespace CefSharp
             /// </returns>
             int Main(IEnumerable<String^>^ args, IRenderProcessHandler^ handler)
             {
-                auto type = CommandLineArgsParser::GetArgumentValue(args, CefSharpArguments::SubProcessTypeArgument);
+                auto type = CommandLineArgsParser::GetArgumentValue(args, "--type");
 
                 if (String::IsNullOrEmpty(type))
                 {
@@ -122,8 +122,13 @@ namespace CefSharp
                 // parse it lest we want an ArgumentNullException.
                 if (type != "crashpad-handler")
                 {
-                    parentProcessId = int::Parse(CommandLineArgsParser::GetArgumentValue(args, CefSharpArguments::HostProcessIdArgument));
-                    if (CommandLineArgsParser::HasArgument(args, CefSharpArguments::ExitIfParentProcessClosed))
+                    //Needs to be kept in sync with CefSharpArguments::HostProcessIdArgument
+                    //Shortly we'll remove the dependency on CefSharp.dll from the NetCore projects
+                    parentProcessId = int::Parse(CommandLineArgsParser::GetArgumentValue(args, "--host-process-id"));
+                    
+                    //Needs to be kept in sync with CefSharpArguments::ExitIfParentProcessClosed
+                    //Shortly we'll remove the dependency on CefSharp.dll from the NetCore projects
+                    if (CommandLineArgsParser::HasArgument(args, "--cefsharpexitsub"))
                     {
                         ParentProcessMonitor::StartMonitorTask(parentProcessId);
                     }

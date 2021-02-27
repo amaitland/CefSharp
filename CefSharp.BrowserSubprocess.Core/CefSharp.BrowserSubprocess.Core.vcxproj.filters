@@ -196,6 +196,15 @@
     <ClCompile Include="BrowserSubprocessExecutable.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderProcess\IRenderProcessHandler.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProcess\IV8Context.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProcess\V8Exception.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

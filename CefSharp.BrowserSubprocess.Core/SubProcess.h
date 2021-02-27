@@ -92,7 +92,9 @@ namespace CefSharp
             /// <returns>list of scheme objects</returns>
             static List<Tuple<String^, int>^>^ ParseCommandLineArguments(IEnumerable<String^>^ args)
             {
-                auto schemes = CommandLineArgsParser::GetArgumentValue(args, CefSharp::Internals::CefSharpArguments::CustomSchemeArgument);
+                //Needs to be kept in sync with CefSharp::Internals::CefSharpArguments::CustomSchemeArgument
+                //Shortly we'll remove the reference on CefSharp.dll for the NetCore projects
+                auto schemes = CommandLineArgsParser::GetArgumentValue(args, "--custom-scheme");
                 auto customSchemes = gcnew List<Tuple<String^, int>^>();
 
                 if (!String::IsNullOrEmpty(schemes))

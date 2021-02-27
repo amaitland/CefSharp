@@ -178,6 +178,9 @@
     <ClInclude Include="Cef.h" />
     <ClInclude Include="CommandLineArgsParser.h" />
     <ClInclude Include="JavascriptPromiseHandler.h" />
+    <ClCompile Include="RenderProcess\IRenderProcessHandler.h" />
+    <ClCompile Include="RenderProcess\IV8Context.h" />
+    <ClCompile Include="RenderProcess\V8Exception.h" />
     <ClInclude Include="SubProcessApp.h" />
     <ClInclude Include="Async\JavascriptAsyncMethodCallback.h" />
     <ClInclude Include="Async\JavascriptAsyncMethodHandler.h" />

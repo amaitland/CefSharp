@@ -10,6 +10,7 @@
 #include "SubProcessApp.h"
 #include "CefBrowserWrapper.h"
 #include "RegisterBoundObjectRegistry.h"
+#include "RenderProcess\IRenderProcessHandler.h"
 
 using namespace System::Collections::Generic;
 using namespace CefSharp::RenderProcess;

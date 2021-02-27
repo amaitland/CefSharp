@@ -7,10 +7,11 @@
 #include "Stdafx.h"
 
 #include <include/cef_browser.h>
+#include "IBrowser.h"
 
 namespace CefSharp
 {
-    namespace BrowserSubprocess
+    namespace RenderProcess
     {
         private ref class Browser : public IBrowser
         {
@@ -37,12 +38,6 @@ namespace CefSharp
             }
 
         public:
-            ///
-            // Returns the browser host object. This method can only be called in the
-            // browser process.
-            ///
-            /*--cef()--*/
-            virtual IBrowserHost^ GetHost();
 
             ///
             // Returns true if the browser can navigate backwards.
@@ -82,8 +77,6 @@ namespace CefSharp
             {
                 bool get();
             }
-
-            virtual void CloseBrowser(bool forceClose);
 
             ///
             // Reload the current page.
@@ -135,7 +128,7 @@ namespace CefSharp
             // Returns the main (top-level) frame for the browser window.
             ///
             /*--cef()--*/
-            virtual property IFrame^ MainFrame
+            virtual property CefSharp::RenderProcess::IFrame^ MainFrame
             {
                 IFrame^ get();
             }
@@ -144,7 +137,7 @@ namespace CefSharp
             // Returns the focused frame for the browser window.
             ///
             /*--cef()--*/
-            virtual property IFrame^ FocusedFrame
+            virtual property CefSharp::RenderProcess::IFrame^ FocusedFrame
             {
                 IFrame^ get();
             }
@@ -153,13 +146,13 @@ namespace CefSharp
             // Returns the frame with the specified identifier, or NULL if not found.
             ///
             /*--cef(capi_name=get_frame_byident)--*/
-            virtual IFrame^ GetFrame(Int64 identifier);
+            virtual CefSharp::RenderProcess::IFrame^ GetFrame(Int64 identifier);
 
             ///
             // Returns the frame with the specified name, or NULL if not found.
             ///
             /*--cef(optional_param=name)--*/
-            virtual IFrame^ GetFrame(String^ name);
+            virtual CefSharp::RenderProcess::IFrame^ GetFrame(String^ name);
 
             ///
             // Returns the number of frames that currently exist.

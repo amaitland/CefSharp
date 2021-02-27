@@ -7,12 +7,14 @@
 #include "Stdafx.h"
 
 #include "include\cef_frame.h"
+#include "IFrame.h"
+#include "IBrowser.h"
 
 using namespace System::Threading::Tasks;
 
 namespace CefSharp
 {
-    namespace BrowserSubprocess
+    namespace RenderProcess
     {
         ///
         // Class used to represent a frame in the browser window. When used in the
@@ -25,8 +27,8 @@ namespace CefSharp
         {
         private:
             MCefRefPtr<CefFrame> _frame;
-            IFrame^ _parentFrame;
-            IBrowser^ _owningBrowser;
+            CefSharp::RenderProcess::IFrame^ _parentFrame;
+            CefSharp::RenderProcess::IBrowser^ _owningBrowser;
             Object^ _syncRoot;
             bool _disposed;
 
@@ -107,48 +109,6 @@ namespace CefSharp
             virtual void SelectAll();
 
             ///
-            // Save this frame's HTML source to a temporary file and open it in the
-            // default text viewing application. This method can only be called from the
-            // browser process.
-            ///
-            /*--cef()--*/
-            virtual void ViewSource();
-
-            ///
-            // Retrieve this frame's HTML source as a string sent to the specified
-            // visitor.
-            ///
-            /*--cef()--*/
-            virtual Task<String^>^ GetSourceAsync();
-
-            ///
-            // Retrieve this frame's HTML source as a string sent to the specified
-            // visitor.
-            ///
-            /*--cef()--*/
-            virtual void GetSource(IStringVisitor^ visitor);
-
-            ///
-            // Retrieve this frame's display text as a string sent to the specified
-            // visitor.
-            ///
-            /*--cef()--*/
-            virtual Task<String^>^ GetTextAsync();
-
-            ///
-            // Retrieve this frame's display text as a string sent to the specified
-            // visitor.
-            ///
-            /*--cef()--*/
-            virtual void GetText(IStringVisitor^ visitor);
-
-            ///
-            /// Load the request represented by the |request| object.
-            ///
-            /*--cef()--*/
-            virtual void LoadRequest(IRequest^ request);
-
-            ///
             // Load the specified |url|.
             ///
             /*--cef()--*/
@@ -163,8 +123,6 @@ namespace CefSharp
             ///
             /*--cef(optional_param=script_url)--*/
             virtual void ExecuteJavaScriptAsync(String^ code, String^ scriptUrl, int startLine);
-
-            virtual Task<JavascriptResponse^>^ EvaluateScriptAsync(String^ script, String^ scriptUrl, int startLine, Nullable<TimeSpan> timeout, bool useImmediatelyInvokedFuncExpression);
 
             ///
             // Returns true if this is the main (top-level) frame.
@@ -211,9 +169,9 @@ namespace CefSharp
             // frame.
             ///
             /*--cef()--*/
-            virtual property IFrame^ Parent
+            virtual property CefSharp::RenderProcess::IFrame^ Parent
             {
-                IFrame^ get();
+                CefSharp::RenderProcess::IFrame^ get();
             }
 
             ///
@@ -229,14 +187,10 @@ namespace CefSharp
             // Returns the browser that this frame belongs to.
             ///
             /*--cef()--*/
-            virtual property IBrowser^ Browser
+            virtual property CefSharp::RenderProcess::IBrowser^ Browser
             {
-                IBrowser^ get();
+                CefSharp::RenderProcess::IBrowser^ get();
             }
-
-            virtual IRequest^ CreateRequest(bool initializePostData);
-
-            virtual IUrlRequest^ CreateUrlRequest(IRequest^ request, IUrlRequestClient^ client);
 
             virtual property bool IsDisposed
             {

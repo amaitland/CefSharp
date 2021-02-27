@@ -98,15 +98,6 @@
     <ClInclude Include="RegisterBoundObjectRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Wrapper\Frame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Wrapper\Browser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Wrapper\V8Context.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="JavascriptPostMessageHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -123,6 +114,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CommandLineArgsParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderProcess\Browser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderProcess\Frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderProcess\V8Context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -184,12 +184,6 @@
     <ClCompile Include="WcfEnabledSubProcess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Wrapper\Frame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Wrapper\Browser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WcfBrowserSubprocessExecutable.h">
       <Filter>Header Files</Filter>
     </ClCompile>
@@ -204,6 +198,18 @@
     </ClCompile>
     <ClCompile Include="RenderProcess\V8Exception.h">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProcess\IBrowser.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProcess\IFrame.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProcess\Browser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProcess\Frame.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

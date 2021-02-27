@@ -6,6 +6,8 @@
 
 #include "Stdafx.h"
 #include "IV8Context.h"
+#include "IFrame.h"
+#include "IBrowser.h"
 
 namespace CefSharp
 {
@@ -24,7 +26,7 @@ namespace CefSharp
             /// <param name="browser">the browser</param>
             /// <param name="frame">the frame</param>
             /// <param name="context">the V8Context</param>
-            void OnContextCreated(IBrowser^ browser, IFrame^ frame, IV8Context^ context);
+            void OnContextCreated(CefSharp::RenderProcess::IBrowser^ browser, CefSharp::RenderProcess::IFrame^ frame, CefSharp::RenderProcess::IV8Context^ context);
 
             /// <summary>
             /// Called immediately before the V8 context for a frame is released.
@@ -33,7 +35,7 @@ namespace CefSharp
             /// <param name="browser">the browser</param>
             /// <param name="frame">the frame</param>
             /// <param name="context">the V8Context</param>
-            void OnContextReleased(IBrowser^ browser, IFrame^ frame, IV8Context^ context);
+            void OnContextReleased(CefSharp::RenderProcess::IBrowser^ browser, CefSharp::RenderProcess::IFrame^ frame, CefSharp::RenderProcess::IV8Context^ context);
 
             /// <summary>
             /// Called after WebKit has been initialized.

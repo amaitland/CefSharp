@@ -15,7 +15,7 @@ using namespace CefSharp::RenderProcess;
 
 namespace CefSharp
 {
-    namespace BrowserSubprocess
+    namespace RenderProcess
     {
         //TODO: Move into the RenderProcess namespace/folder
         private ref class V8Context : public IV8Context

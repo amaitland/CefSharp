@@ -11,10 +11,10 @@
 #include "CefBrowserWrapper.h"
 #include "CefAppUnmanagedWrapper.h"
 #include "Cef.h"
+#include "CommandLineArgsParser.h"
 
 using namespace System::Collections::Generic;
 using namespace System::Linq;
-using namespace CefSharp::Internals;
 using namespace CefSharp::RenderProcess;
 
 namespace CefSharp
@@ -32,7 +32,7 @@ namespace CefSharp
             {
                 auto onBrowserCreated = gcnew Action<CefBrowserWrapper^>(this, &SubProcess::OnBrowserCreated);
                 auto onBrowserDestroyed = gcnew Action<CefBrowserWrapper^>(this, &SubProcess::OnBrowserDestroyed);
-                auto schemes = CefCustomScheme::ParseCommandLineArguments(args);
+                auto schemes = ParseCommandLineArguments(args);
                 auto enableFocusedNodeChanged = CommandLineArgsParser::HasArgument(args, CefSharpArguments::FocusedNodeChangedEnabledArgument);
 
                 _cefApp = new CefAppUnmanagedWrapper(handler, schemes, enableFocusedNodeChanged, onBrowserCreated, onBrowserDestroyed);
@@ -78,11 +78,46 @@ namespace CefSharp
 
                 CefMainArgs cefMainArgs((HINSTANCE)hInstance.ToPointer());
 
-                auto schemes = CefCustomScheme::ParseCommandLineArguments(args);
+                auto schemes = ParseCommandLineArguments(args);
 
                 CefRefPtr<CefApp> app = new SubProcessApp(schemes);
 
                 return CefExecuteProcess(cefMainArgs, app, NULL);
+            }
+
+            /// <summary>
+            /// Method used internally
+            /// </summary>
+            /// <param name="args">command line arguments</param>
+            /// <returns>list of scheme objects</returns>
+            static List<Tuple<String^, int>^>^ ParseCommandLineArguments(IEnumerable<String^>^ args)
+            {
+                auto schemes = CommandLineArgsParser::GetArgumentValue(args, CefSharp::Internals::CefSharpArguments::CustomSchemeArgument);
+                auto customSchemes = gcnew List<Tuple<String^, int>^>();
+
+                if (!String::IsNullOrEmpty(schemes))
+                {
+                    auto schemeTokens = schemes->Split(';');
+                    for each (auto x in schemeTokens)
+                    {
+                        auto tokens = x->Split('|');
+                        auto schemeName = tokens[0];
+                        int schemeOptions = 0;
+
+                        if (int::TryParse(tokens[1], schemeOptions))
+                        {
+                            auto customScheme = gcnew Tuple<String^, int>(schemeName, schemeOptions);
+
+                            customSchemes->Add(customScheme);
+                        }
+                        else
+                        {
+                            LOG(ERROR) << "SubProcess::ParseCommandLineArguments failed for schemeName:" << StringUtils::ToNative(schemeName);
+                        }
+                    }
+                }
+
+                return customSchemes;
             }
         };
     }

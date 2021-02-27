@@ -39,7 +39,7 @@ namespace CefSharp
     public:
         static const CefString kPromiseCreatorScript;
 
-        CefAppUnmanagedWrapper(IRenderProcessHandler^ handler, List<CefCustomScheme^>^ schemes, bool enableFocusedNodeChanged, Action<CefBrowserWrapper^>^ onBrowserCreated, Action<CefBrowserWrapper^>^ onBrowserDestroyed) : SubProcessApp(schemes)
+        CefAppUnmanagedWrapper(IRenderProcessHandler^ handler, List<Tuple<String^, int>^>^ schemes, bool enableFocusedNodeChanged, Action<CefBrowserWrapper^>^ onBrowserCreated, Action<CefBrowserWrapper^>^ onBrowserDestroyed) : SubProcessApp(schemes)
         {
             _handler = handler;
             _onBrowserCreated = onBrowserCreated;

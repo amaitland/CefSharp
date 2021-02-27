@@ -6,7 +6,9 @@
 
 using CefSharp.Internals;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CefSharp.BrowserSubprocess
 {
@@ -43,7 +45,7 @@ namespace CefSharp.BrowserSubprocess
     ///   }
     /// }
     /// </example>
-public class SelfHost
+    public class SelfHost
     {
         /// <summary>
         /// This function should be called from the application entry point function (typically Program.Main)
@@ -62,7 +64,7 @@ public class SelfHost
         /// </returns>
         public static int Main(string[] args)
         {
-            var type = CommandLineArgsParser.GetArgumentValue(args, CefSharpArguments.SubProcessTypeArgument);
+            var type = GetArgumentValue(args, CefSharpArguments.SubProcessTypeArgument);
 
             if (string.IsNullOrEmpty(type))
             {
@@ -96,6 +98,24 @@ public class SelfHost
             var exitCode = mainMethod.Invoke(null, methodArgs);
 
             return (int)exitCode;
+        }
+
+        /// <summary>
+        /// Gets the argument value from the command line
+        /// args are in the format --key=value
+        /// </summary>
+        /// <param name="args">command line argument collection</param>
+        /// <param name="argumentName">command line argument to get value of</param>
+        /// <returns>argument value or null</returns>
+        private static string GetArgumentValue(IEnumerable<string> args, string argumentName)
+        {
+            var arg = args.FirstOrDefault(a => a.StartsWith(argumentName));
+            if (arg == null)
+            {
+                return null;
+            }
+
+            return arg.Split('=').Last();
         }
     }
 }

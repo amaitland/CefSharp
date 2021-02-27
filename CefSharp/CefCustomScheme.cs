@@ -2,11 +2,7 @@
 //
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using CefSharp.Enums;
-using CefSharp.Internals;
 
 namespace CefSharp
 {
@@ -235,35 +231,6 @@ namespace CefSharp
         {
             SchemeName = schemeName;
             schemeOptions = options;
-        }
-
-        /// <summary>
-        /// Method used internally
-        /// </summary>
-        /// <param name="args">command line arguments</param>
-        /// <returns>list of scheme objects</returns>
-        public static List<CefCustomScheme> ParseCommandLineArguments(IEnumerable<string> args)
-        {
-            var schemes = args.GetArgumentValue(CefSharpArguments.CustomSchemeArgument);
-            var customSchemes = new List<CefCustomScheme>();
-
-            if (!string.IsNullOrEmpty(schemes))
-            {
-                schemes.Split(';').ToList().ForEach(x =>
-                {
-                    var tokens = x.Split('|');
-                    var schemeName = tokens[0];
-                    var schemeOptions = SchemeOptions.None;
-
-                    Enum.TryParse(tokens[1], out schemeOptions);
-
-                    var customScheme = new CefCustomScheme(schemeName, schemeOptions);
-
-                    customSchemes.Add(customScheme);
-                });
-            }
-
-            return customSchemes;
         }
     }
 }

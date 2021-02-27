@@ -7,9 +7,9 @@
 #include "Stdafx.h"
 
 #include "SubProcess.h"
+#include "CommandLineArgsParser.h"
 
 using namespace System;
-using namespace CefSharp::Internals;
 
 namespace CefSharp
 {

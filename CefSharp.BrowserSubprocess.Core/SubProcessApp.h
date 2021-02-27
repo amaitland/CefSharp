@@ -15,10 +15,10 @@ namespace CefSharp
     public class SubProcessApp : public CefApp
     {
     private:
-        gcroot<List<CefCustomScheme^>^> _schemes;
+        gcroot<List<Tuple<String^, int>^>^> _schemes;
 
     public:
-        SubProcessApp(List<CefCustomScheme^>^ schemes)
+        SubProcessApp(List<Tuple<String^, int>^>^ schemes)
         {
             _schemes = schemes;
         }
@@ -31,10 +31,10 @@ namespace CefSharp
 
         void OnRegisterCustomSchemes(CefRawPtr<CefSchemeRegistrar> registrar) OVERRIDE
         {
-            for each (CefCustomScheme^ scheme in _schemes->AsReadOnly())
+            for each (auto scheme in _schemes->AsReadOnly())
             {
-                auto schemeName = StringUtils::ToNative(scheme->SchemeName);
-                auto schemeOptions = (int)scheme->Options;
+                auto schemeName = StringUtils::ToNative(scheme->Item1);
+                auto schemeOptions = scheme->Item2;
                 if (!registrar->AddCustomScheme(schemeName, schemeOptions))
                 {
                     LOG(ERROR) << "SubProcessApp::OnRegisterCustomSchemes failed for schemeName:" << schemeName;

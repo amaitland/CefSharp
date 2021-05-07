@@ -821,5 +821,10 @@ namespace CefSharp.WinForms
 
             return base.IsInputKey(keyData);
         }
+
+        internal void CallWndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+        }
     }
 }

@@ -78,6 +78,15 @@ namespace CefSharp.Example.Handlers
 
         protected override bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
         {
+            if (isProxy)
+            {
+                using (callback)
+                {
+                    callback.Continue("test", "pass");
+                    return true;
+                }
+            }
+
             //NOTE: We also suggest you explicitly Dispose of the callback as it wraps an unmanaged resource.
 
             //Example #1

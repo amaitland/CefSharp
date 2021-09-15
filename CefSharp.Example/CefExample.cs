@@ -146,26 +146,26 @@ namespace CefSharp.Example
                 //settings.CefCommandLineArgs.Add("enable-begin-frame-scheduling");
             }
 
-            var proxy = ProxyConfig.GetProxyInformation();
-            switch (proxy.AccessType)
-            {
-                case InternetOpenType.Direct:
-                {
-                    //Don't use a proxy server, always make direct connections.
-                    settings.CefCommandLineArgs.Add("no-proxy-server");
-                    break;
-                }
-                case InternetOpenType.Proxy:
-                {
-                    settings.CefCommandLineArgs.Add("proxy-server", proxy.ProxyAddress);
-                    break;
-                }
-                case InternetOpenType.PreConfig:
-                {
-                    settings.CefCommandLineArgs.Add("proxy-auto-detect");
-                    break;
-                }
-            }
+            //var proxy = ProxyConfig.GetProxyInformation();
+            //switch (proxy.AccessType)
+            //{
+            //    case InternetOpenType.Direct:
+            //    {
+            //        //Don't use a proxy server, always make direct connections.
+            //        settings.CefCommandLineArgs.Add("no-proxy-server");
+            //        break;
+            //    }
+            //    case InternetOpenType.Proxy:
+            //    {
+            //        settings.CefCommandLineArgs.Add("proxy-server", proxy.ProxyAddress);
+            //        break;
+            //    }
+            //    case InternetOpenType.PreConfig:
+            //    {
+            //        settings.CefCommandLineArgs.Add("proxy-auto-detect");
+            //        break;
+            //    }
+            //}
 
             //settings.LogSeverity = LogSeverity.Verbose;
 

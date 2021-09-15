@@ -41,6 +41,8 @@ namespace CefSharp.Wpf.Example.Views
             //ImeHandler.ColorBKCOLOR = Cef.ColorSetARGB(transparent.A, transparent.R, transparent.G, transparent.B);
             //ImeHandler.ColorUNDERLINE = Cef.ColorSetARGB(black.A, black.R, black.G, black.B);
 
+            browser.RequestContext = MainWindow.GetProfile();
+
             browser.RequestHandler = new ExampleRequestHandler();
 
             var bindingOptions = new BindingOptions()

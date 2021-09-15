@@ -21,9 +21,23 @@ namespace CefSharp.Wpf.Example
 {
     public partial class MainWindow : Window
     {
-        private const string DefaultUrlForAddedTabs = "https://www.google.com";
+        private const string DefaultUrlForAddedTabs = "http://cefsharp.github.io/";
 
         public ObservableCollection<BrowserTabViewModel> BrowserTabs { get; set; }
+
+        private static IRequestContext profile;
+
+        public static IRequestContext GetProfile()
+        {
+            if(profile == null || profile.IsDisposed)
+            {
+                var path = Path.GetFullPath("cache\\myProfile");
+
+                profile = RequestContext.Configure().PersistUserPreferences().WithCachePath(path).WithProxyServer("127.0.0.1", 8080).Create();
+            }
+
+            return profile;
+        }
 
         public MainWindow()
         {
@@ -80,7 +94,7 @@ namespace CefSharp.Wpf.Example
 
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
-            CreateNewTab(CefExample.DefaultUrl, true);
+            //CreateNewTab(CefExample.DefaultUrl, true);
         }
 
         private void CreateNewTab(string url = DefaultUrlForAddedTabs, bool showSideBar = false, bool legacyBindingEnabled = false)
@@ -91,6 +105,19 @@ namespace CefSharp.Wpf.Example
         private void CustomCommandBinding(object sender, ExecutedRoutedEventArgs e)
         {
             var param = e.Parameter.ToString();
+
+            if (param == "DisposeContext")
+            {
+                if (BrowserTabs.Count != 0)
+                {
+                    MessageBox.Show("Close all browsers!!!");
+                    return;
+                }
+
+                if(profile!=null && !profile.IsDisposed)
+                    profile.Dispose();
+                return;
+            }
 
             if (BrowserTabs.Count > 0)
             {

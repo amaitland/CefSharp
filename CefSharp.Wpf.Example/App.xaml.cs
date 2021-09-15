@@ -29,10 +29,15 @@ namespace CefSharp.Wpf.Example
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            proxyServer = new ProxyServer(userTrustRootCertificate: false);
+            proxyServer = new ProxyServer(userTrustRootCertificate: true);
             proxyServer.ProxyBasicAuthenticateFunc = OnBasicAuth;
 
-            var explicitEndPoint = new ExplicitProxyEndPoint(IPAddress.Loopback, 8080, false);
+            proxyServer.CertificateManager.CertificateEngine = Titanium.Web.Proxy.Network.CertificateEngine.DefaultWindows;
+            proxyServer.CertificateManager.EnsureRootCertificate();
+
+            proxyServer.CertificateManager.TrustRootCertificate(true);
+
+            var explicitEndPoint = new ExplicitProxyEndPoint(IPAddress.Loopback, 8080, true);
 
             // An explicit endpoint is where the client knows about the existence of a proxy
             // So client sends request in a proxy friendly manner

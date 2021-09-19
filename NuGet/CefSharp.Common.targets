@@ -119,12 +119,19 @@
     Task correctly sets the build to AnyCPU, unfortunately it's too late. Previous attempt to hack around this failed,
     relying on user to manually specify $(PlatformTarget) until the SDK issue is fixed.
     When AnyCPU and Prefer32Bit we just set the PlatformTarget to x86 (only when CefSharpAnyCpuSupport is empty)
+	**This is must be kept in sync with _CefSharpCopyFilesSetProperties**
     -->
     <CefSharpPlatformTarget>$(PlatformTarget)</CefSharpPlatformTarget>
     <CefSharpPlatformTarget Condition="'$(CefSharpPlatformTarget)' == ''">$(Platform)</CefSharpPlatformTarget>
     <CefSharpPlatformTarget Condition="'$(CefSharpPlatformTarget)' == 'Win32'">x86</CefSharpPlatformTarget>
     <CefSharpPlatformTarget Condition="'$(CefSharpPlatformTarget)' == 'AnyCPU' AND '$(Prefer32Bit)' == 'true' AND '$(CefSharpAnyCpuSupport)' == ''">x86</CefSharpPlatformTarget>
     <CefSharpPlatformTarget Condition="'$(CefSharpPlatformTargetOverride)' != ''">$(CefSharpPlatformTargetOverride)</CefSharpPlatformTarget>
+	
+	<!--
+	We use this to check if this property group was loaded so we know when to use our copy targets to workaround
+	https://github.com/dotnet/project-system/issues/4158
+	-->
+	<CefSharpPropertiesLoaded>true</CefSharpPropertiesLoaded>
     
     <!--
     For PackageReference library projects where buildTransitive is supported we'll default to setting CefSharpAnyCpuSupport to true
@@ -382,12 +389,10 @@
   We cannot use any of the variables defined in this targets file as they won't have been loaded initially.
   So we can only use PlatformTarget rather than CefSharpPlatformTarget, leaving the other CefSharp specific variables for now as
   they can be user defined so will be loaded.
-  TODO: Can we remove the Exists(libcef.dll) checks from here? Checking say CefSharpPlatformTarget == '' should be sufficent to known
-  that our properties weren't loaded and the CefSharp files weren't copied.
   -->
-  <Target Name="CefSharpCopyFilesAfterNugetRestore" AfterTargets="Build" DependsOnTargets="_CefSharpCopyFilesSetProperties" Condition="'$(NuGetProjectStyle)' != 'PackageReference' AND '$(CefSharpBuildAction)' != 'NoAction' AND (!Exists('$(TargetDir)$(CefSharpTargetDir)libcef.dll') OR !Exists('$(TargetDir)$(CefSharpTargetDir)x86\libcef.dll')) AND '$(CefSharpPlatformTarget)' == ''">
-    <CallTarget Targets="CefSharpCopyFilesAfterNugetRestore32" Condition="'$(PlatformTarget)' == 'x86' OR '$(PlatformTarget)' == 'AnyCPU' OR '$(PlatformTarget)' == 'Win32'" />
-	<CallTarget Targets="CefSharpCopyFilesAfterNugetRestore64" Condition="'$(PlatformTarget)' == 'x64' OR '$(PlatformTarget)' == 'AnyCPU'"/>
+  <Target Name="CefSharpCopyFilesAfterNugetRestore" AfterTargets="Build" DependsOnTargets="_CefSharpCopyFilesSetProperties" Condition="'$(NuGetProjectStyle)' != 'PackageReference' AND '$(CefSharpBuildAction)' != 'NoAction' AND '$(CefSharpPropertiesLoaded)' == ''">
+    <CallTarget Targets="CefSharpCopyFilesAfterNugetRestore32" Condition="'$(_CefSharpPlatformTarget)' == 'x86' OR '$(_CefSharpPlatformTarget)' == 'AnyCPU'" />
+	<CallTarget Targets="CefSharpCopyFilesAfterNugetRestore64" Condition="'$(_CefSharpPlatformTarget)' == 'x64' OR '$(_CefSharpPlatformTarget)' == 'AnyCPU'"/>
   </Target>
   
   <Target Name="CefSharpCopyFilesAfterNugetRestore32">
@@ -414,10 +419,17 @@
   
   <Target Name="_CefSharpCopyFilesSetProperties">
 	<PropertyGroup>
+	  <!-- This is must be kept in sync with the main property group above -->
+	  <_CefSharpPlatformTarget>$(PlatformTarget)</_CefSharpPlatformTarget>
+      <_CefSharpPlatformTarget Condition="'$(_CefSharpPlatformTarget)' == ''">$(Platform)</_CefSharpPlatformTarget>
+      <_CefSharpPlatformTarget Condition="'$(_CefSharpPlatformTarget)' == 'Win32'">x86</_CefSharpPlatformTarget>
+      <_CefSharpPlatformTarget Condition="'$(_CefSharpPlatformTarget)' == 'AnyCPU' AND '$(Prefer32Bit)' == 'true' AND '$(CefSharpAnyCpuSupport)' == ''">x86</_CefSharpPlatformTarget>
+	  <_CefSharpPlatformTarget Condition="'$(CefSharpPlatformTargetOverride)' != ''">$(CefSharpPlatformTargetOverride)</_CefSharpPlatformTarget>
+	
 	  <CefRedist32TargetDir Condition="'$(CefRedist32TargetDir)' == ''">$(TargetDir)$(CefSharpTargetDir)</CefRedist32TargetDir>
 	  <CefRedist64TargetDir Condition="'$(CefRedist64TargetDir)' == ''">$(TargetDir)$(CefSharpTargetDir)</CefRedist64TargetDir>
-	  <CefRedist32TargetDir Condition="'$(PlatformTarget)' == 'AnyCPU'">$(CefRedist32TargetDir)x86\</CefRedist32TargetDir>
-      <CefRedist64TargetDir Condition="'$(PlatformTarget)' == 'AnyCPU'">$(CefRedist64TargetDir)x64\</CefRedist64TargetDir>
+	  <CefRedist32TargetDir Condition="'$(_CefSharpPlatformTarget)' == 'AnyCPU'">$(CefRedist32TargetDir)x86\</CefRedist32TargetDir>
+      <CefRedist64TargetDir Condition="'$(_CefSharpPlatformTarget)' == 'AnyCPU'">$(CefRedist64TargetDir)x64\</CefRedist64TargetDir>
     </PropertyGroup>
 	<ItemGroup>
       <_CefSharpCommonManagedDll Include="$(MSBuildThisFileDirectory)..\lib\net452\CefSharp.dll" />

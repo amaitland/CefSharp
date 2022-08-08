@@ -150,6 +150,7 @@ namespace CefSharp
             virtual DECL bool OnTooltip(CefRefPtr<CefBrowser> browser, CefString& text) override;
             virtual DECL bool OnConsoleMessage(CefRefPtr<CefBrowser> browser, cef_log_severity_t level, const CefString& message, const CefString& source, int line) override;
             virtual DECL void OnStatusMessage(CefRefPtr<CefBrowser> browser, const CefString& message) override;
+            virtual DECL void OnMediaAccessChange(CefRefPtr<CefBrowser> browser, bool has_video_access, bool has_audio_access) override;
 
             virtual DECL void InternalCursorChange(CefRefPtr<CefBrowser> browser, CefCursorHandle cursor, cef_cursor_type_t type, const CefCursorInfo& custom_cursor_info);
 

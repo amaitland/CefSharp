@@ -473,6 +473,17 @@ namespace CefSharp
             }
         }
 
+        void ClientAdapter::OnMediaAccessChange(CefRefPtr<CefBrowser> browser, bool has_video_access, bool has_audio_access)
+        {
+            auto handler = _browserControl->DisplayHandler;
+            if (handler != nullptr)
+            {
+                auto browserWrapper = GetBrowserWrapper(browser->GetIdentifier(), browser->IsPopup());
+
+                handler->OnMediaAccessChange(_browserControl, browserWrapper, has_video_access, has_audio_access);
+            }
+        }
+
         bool ClientAdapter::OnKeyEvent(CefRefPtr<CefBrowser> browser, const CefKeyEvent& event, CefEventHandle os_event)
         {
             auto handler = _browserControl->KeyboardHandler;

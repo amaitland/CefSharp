@@ -104,5 +104,15 @@ namespace CefSharp
         /// <param name="consoleMessageArgs">args</param>
         /// <returns>Return true to stop the message from being output to the console.</returns>
         bool OnConsoleMessage(IWebBrowser chromiumWebBrowser, ConsoleMessageEventArgs consoleMessageArgs);
+
+        /// <summary>
+        /// Called when the browser's access to an audio and/or video source has
+        /// changed.
+        /// </summary>
+        /// <param name="chromiumWebBrowser">The ChromiumWebBrowser control</param>
+        /// <param name="browser">the browser object</param>
+        /// <param name="hasVideoAccess">has video access</param>
+        /// <param name="hasAudioAccess">has audio access</param>
+        void OnMediaAccessChange(IWebBrowser chromiumWebBrowser, IBrowser browser, bool hasVideoAccess, bool hasAudioAccess);
     }
 }
